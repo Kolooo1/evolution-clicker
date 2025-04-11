@@ -1,0 +1,19 @@
+{
+    "game_title": "Evolution Clicker",
+    "points": "Evolution Points",
+    "per_click": "Per Click",
+    "per_second": "Per Second",
+    "click_btn": "Evolve",
+    "reset_confirm": "Are you sure you want to reset all progress?",
+    "yes": "Yes",
+    "no": "No",
+    "achievements": "Achievements",
+    "research_unlocked": "Research unlocked: ",
+    "achievement_unlocked": "Achievement unlocked: ",
+    "max_level": "Maximum level!",
+    "not_enough_points": "Not enough evolution points!",
+    "stage_cosmos": "Cosmos",
+    "stage_life": "Life",
+    "stage_intellect": "Intellect",
+    "reset_progress": "Progress reset"
+} 

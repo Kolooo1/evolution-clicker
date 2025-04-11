@@ -1,0 +1,18 @@
+{
+    "game_title": "Evolution Clicker",
+    "points": "Очки эволюции",
+    "per_click": "За клик",
+    "per_second": "В секунду",
+    "click_btn": "Эволюция",
+    "reset_confirm": "Вы уверены, что хотите сбросить весь прогресс?",
+    "yes": "Да",
+    "no": "Нет",
+    "achievements": "Достижения",
+    "research_unlocked": "Исследование открыто: ",
+    "achievement_unlocked": "Достижение разблокировано: ",
+    "max_level": "Максимальный уровень!",
+    "stage_cosmos": "Космос",
+    "stage_life": "Жизнь",
+    "stage_intellect": "Интеллект",
+    "reset_progress": "Прогресс сброшен"
+} 

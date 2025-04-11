@@ -1,0 +1,1431 @@
+/* Основные переменные для обеих тем */
+:root {
+    /* Светлая тема (по умолчанию) */
+    --bg-color: #f5f5f5;
+    --text-color: #333;
+    --panel-bg: #fff;
+    --button-bg: #4caf50;
+    --button-hover: #45a049;
+    --button-text: white;
+    --tree-line-color: #888;
+    --node-bg: #e0f7fa;  /* Светло-голубой фон */
+    --node-border: #4fc3f7; /* Голубая граница */
+    --node-available: #29b6f6; /* Яркий голубой для доступных узлов */
+    --node-locked: #b3e5fc; /* Бледно-голубой для заблокированных узлов */
+    --notification-bg: rgba(255, 255, 255, 0.9);
+    --notification-border: #4caf50;
+    --modal-bg: rgba(0, 0, 0, 0.5);
+    --modal-content-bg: white;
+    --nav-bg: rgba(255, 255, 255, 0.85);
+    --nav-border: #ddd;
+    --nav-active: #4caf50;
+    --search-bg: white;
+    --theme-toggle-bg: #333;
+    --theme-toggle-color: #f5f5f5;
+    --lang-toggle-bg: #3eb8d7;
+    --lang-toggle-color: white;
+    --top-controls-bg: #333;
+}
+
+/* Темная тема */
+.dark-theme {
+    --bg-color: #222;
+    --text-color: #eee;
+    --panel-bg: #333;
+    --button-bg: #2d6a30;
+    --button-hover: #1e4b20;
+    --button-text: #eee;
+    --tree-line-color: #666;
+    --node-bg: #444;
+    --node-border: #555;
+    --node-available: #4a8c2e;
+    --node-locked: #555;
+    --notification-bg: rgba(51, 51, 51, 0.9);
+    --notification-border: #2d6a30;
+    --modal-bg: rgba(0, 0, 0, 0.7);
+    --modal-content-bg: #333;
+    --nav-bg: rgba(51, 51, 51, 0.85);
+    --nav-border: #444;
+    --nav-active: #2d6a30;
+    --search-bg: #333;
+    --theme-toggle-bg: #f5f5f5;
+    --theme-toggle-color: #333;
+    --lang-toggle-bg: #3eb8d7;
+    --lang-toggle-color: white;
+    --top-controls-bg: #2a2a2a;
+}
+
+/* Общие стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    line-height: 1.6;
+}
+
+/* Верхняя панель управления */
+.top-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--top-controls-bg);
+    color: white;
+    padding: 10px 20px;
+    width: 100%;
+    position: relative;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.game-title h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    padding-left: 10px;
+    border-left: 3px solid var(--button-bg);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 60px); /* Учитываем высоту top-controls */
+}
+
+/* Стили для кнопки переключения темы */
+.theme-toggle {
+    background-color: var(--theme-toggle-bg) !important;
+    color: var(--theme-toggle-color) !important;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* Стили для кнопки переключения языка */
+.language-toggle {
+    background-color: var(--lang-toggle-bg) !important;
+    color: var(--lang-toggle-color) !important;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* Стили для других кнопок в верхней панели */
+.sound-toggle, .reset-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+    color: white;
+}
+
+.sound-toggle {
+    background-color: #6c757d !important;
+}
+
+.reset-button {
+    background-color: #28a745 !important;
+}
+
+.header-controls button:hover {
+    transform: scale(1.15);
+}
+
+/* Панель статистики */
+.stats-panel {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    background-color: var(--panel-bg);
+    border-radius: 12px;
+    padding: 20px 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, transparent 80%);
+    z-index: 1;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 15px;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    min-width: 120px;
+    border-radius: 8px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.stat:hover {
+    transform: translateY(-3px);
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.stat::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 3px;
+    border-radius: 3px;
+    background-color: var(--button-bg);
+    opacity: 0;
+    transition: opacity 0.3s, width 0.3s;
+}
+
+.stat:hover::after {
+    opacity: 0.7;
+    width: 70%;
+}
+
+.stat-label {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    opacity: 0.8;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--text-color), var(--text-color) 60%, var(--button-bg));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
+}
+
+.stat-icon {
+    font-size: 1.2rem;
+    margin-top: 5px;
+    opacity: 0.7;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.stat:hover .stat-icon {
+    transform: scale(1.2);
+    opacity: 1;
+}
+
+/* Основная кнопка клика */
+.main-area {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.main-button {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    font-size: 1.3rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.main-button:hover {
+    background-color: var(--button-hover);
+}
+
+.main-button:active {
+    transform: scale(0.95);
+}
+
+/* Анимация для клика */
+.main-button.clicked {
+    transform: scale(0.95);
+}
+
+/* Дерево исследований */
+.tree-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: var(--panel-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative; /* Для позиционирования навигации */
+    height: 600px; /* Фиксированная высота для более предсказуемого скролла */
+}
+
+.research-tree {
+    position: relative;
+    min-height: 2000px; /* Увеличиваем высоту для большего количества исследований */
+    padding: 20px;
+    transition: transform 0.3s ease;
+    transform-origin: center top;
+}
+
+.tree-node {
+    position: absolute;
+    width: 140px; /* Увеличение с 130px */
+    height: 140px; /* Увеличение с 130px */
+    padding: 8px;
+    background-color: var(--node-bg);
+    border: 2px solid var(--node-border);
+    border-radius: 50%;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+    z-index: 5;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+}
+
+/* Специфичные стили для темной темы */
+.dark-theme .tree-node {
+    background-color: rgba(68, 68, 68, 0.9);
+    border: 2px solid #555;
+    color: white;
+}
+
+/* Специфичные стили для светлой темы */
+body:not(.dark-theme) .tree-node {
+    color: #333; /* Темный текст на светлом фоне */
+    box-shadow: 0 0 15px rgba(79, 195, 247, 0.6); /* Голубая тень */
+}
+
+.node-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 70%;
+}
+
+.tree-node .node-title {
+    font-weight: bold;
+    margin-bottom: 3px;
+    font-size: 0.8rem;
+}
+
+/* Темный текст для светлой темы */
+body:not(.dark-theme) .tree-node .node-title {
+    color: #0277bd;
+}
+
+/* Белый текст для темной темы */
+.dark-theme .tree-node .node-title {
+    color: white;
+}
+
+.tree-node .node-level {
+    font-size: 0.7rem;
+    margin-bottom: 3px;
+}
+
+/* Стили уровня для светлой темы */
+body:not(.dark-theme) .tree-node .node-level {
+    color: #0288d1;
+    background: rgba(3, 169, 244, 0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+/* Стили уровня для темной темы */
+.dark-theme .tree-node .node-level {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tree-node .node-cost {
+    font-size: 0.75rem;
+}
+
+/* Стиль стоимости для светлой темы */
+body:not(.dark-theme) .tree-node .node-cost {
+    color: #01579b;
+}
+
+/* Стиль стоимости для темной темы */
+.dark-theme .tree-node .node-cost {
+    color: #ff6b9b;
+}
+
+.tree-node .node-effect {
+    font-size: 0.8rem;
+    margin-top: 4px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: visible;
+    z-index: 6;
+}
+
+/* Стиль эффекта для светлой темы */
+body:not(.dark-theme) .tree-node .node-effect {
+    color: #0288d1;
+}
+
+/* Стиль эффекта для темной темы */
+.dark-theme .tree-node .node-effect {
+    color: #4be6ff;
+}
+
+/* Стили для исследованных нодов */
+.tree-node.researched {
+    border-color: var(--node-available);
+}
+
+/* Исследованные ноды для темной темы */
+.dark-theme .tree-node.researched {
+    border-color: #4be6ff;
+    background-color: rgba(40, 40, 40, 0.95);
+    color: white;
+    box-shadow: 0 0 15px rgba(75, 230, 255, 0.6), inset 0 0 15px rgba(75, 230, 255, 0.4);
+}
+
+/* Исследованные ноды для светлой темы */
+body:not(.dark-theme) .tree-node.researched {
+    background-color: #e1f5fe;
+    border-color: #039be5;
+    box-shadow: 0 0 15px rgba(3, 155, 229, 0.6), inset 0 0 15px rgba(3, 155, 229, 0.3);
+}
+
+.tree-node.researched .node-cost {
+    color: var(--node-available);
+}
+
+/* Стоимость исследованных нодов для светлой темы */
+body:not(.dark-theme) .tree-node.researched .node-cost {
+    color: #0288d1;
+}
+
+/* Стоимость исследованных нодов для темной темы */
+.dark-theme .tree-node.researched .node-cost {
+    color: #4be6ff;
+}
+
+.tree-node.available {
+    border-color: var(--node-available);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+
+/* Доступные ноды для светлой темы */
+body:not(.dark-theme) .tree-node.available {
+    border-color: #29b6f6;
+    box-shadow: 0 0 10px rgba(41, 182, 246, 0.7);
+}
+
+/* Доступные ноды для темной темы */
+.dark-theme .tree-node.available {
+    border-color: #8fceff;
+    box-shadow: 0 0 10px rgba(143, 206, 255, 0.5);
+}
+
+.tree-node.locked {
+    border-color: var(--node-locked);
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* Заблокированные ноды для светлой темы */
+body:not(.dark-theme) .tree-node.locked {
+    background-color: #e1f5fe;
+    border-color: #b3e5fc;
+}
+
+/* Заблокированные ноды для темной темы */
+.dark-theme .tree-node.locked {
+    background-color: rgba(40, 40, 40, 0.7);
+    border-color: #444;
+}
+
+.tree-node:hover:not(.locked) {
+    transform: scale(1.1);
+    z-index: 10;
+}
+
+/* Ховер для светлой темы */
+body:not(.dark-theme) .tree-node:hover:not(.locked) {
+    box-shadow: 0 0 15px rgba(3, 169, 244, 0.8);
+}
+
+/* Ховер для темной темы */
+.dark-theme .tree-node:hover:not(.locked) {
+    box-shadow: 0 0 15px rgba(75, 230, 255, 0.8);
+}
+
+/* Улучшенные соединения между узлами */
+.tree-connection {
+    position: absolute;
+    background-color: var(--tree-line-color);
+    z-index: 1; /* Линии должны быть под узлами */
+    transform-origin: 0 50%;
+    height: 2px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    opacity: 0.8;
+    border-radius: 2px;
+}
+
+/* Соединения для темной темы */
+.dark-theme .tree-connection {
+    background-color: #555;
+    background-image: linear-gradient(90deg, 
+                     rgba(255, 255, 255, 0.3), 
+                     rgba(255, 255, 255, 0.7), 
+                     rgba(255, 255, 255, 0.3));
+}
+
+/* Соединения для светлой темы */
+body:not(.dark-theme) .tree-connection {
+    background-color: #81d4fa;
+    background-image: linear-gradient(90deg, 
+                     rgba(3, 169, 244, 0.3), 
+                     rgba(3, 169, 244, 0.7), 
+                     rgba(3, 169, 244, 0.3));
+    box-shadow: 0 0 8px rgba(3, 169, 244, 0.5);
+}
+
+.tree-connection.active {
+    height: 2px;
+    opacity: 1;
+}
+
+/* Активные соединения для темной темы */
+.dark-theme .tree-connection.active {
+    background-color: #4be6ff;
+    box-shadow: 0 0 10px rgba(75, 230, 255, 0.8), 0 0 20px rgba(75, 230, 255, 0.4);
+    animation: glow 1.5s infinite alternate;
+}
+
+/* Активные соединения для светлой темы */
+body:not(.dark-theme) .tree-connection.active {
+    background-color: #03a9f4;
+    box-shadow: 0 0 10px rgba(3, 169, 244, 0.8), 0 0 20px rgba(3, 169, 244, 0.4);
+    animation: glow-blue 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px rgba(75, 230, 255, 0.8), 0 0 15px rgba(75, 230, 255, 0.4);
+    }
+    to {
+        box-shadow: 0 0 15px rgba(75, 230, 255, 0.8), 0 0 25px rgba(75, 230, 255, 0.6);
+    }
+}
+
+@keyframes glow-blue {
+    from {
+        box-shadow: 0 0 10px rgba(3, 169, 244, 0.8), 0 0 15px rgba(3, 169, 244, 0.4);
+    }
+    to {
+        box-shadow: 0 0 15px rgba(3, 169, 244, 0.8), 0 0 25px rgba(3, 169, 244, 0.6);
+    }
+}
+
+/* Подсветка при поиске */
+.tree-node.highlight {
+    animation: highlight 2s ease;
+    z-index: 15;
+}
+
+@keyframes highlight {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(76, 175, 80, 1), 0 0 30px rgba(76, 175, 80, 0.8);
+        transform: scale(1.15);
+    }
+}
+
+/* Навигация по дереву */
+.tree-navigation {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--nav-bg);
+    border-bottom: 1px solid var(--nav-border);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 20;
+    backdrop-filter: blur(5px);
+    margin-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tree-nav-tabs {
+    display: flex;
+    gap: 5px;
+}
+
+.tree-nav-tab {
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    font-size: 0.9rem;
+    user-select: none;
+}
+
+.tree-nav-tab:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.tree-nav-tab.active {
+    background-color: var(--nav-active);
+    color: var(--button-text);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.tree-search-container {
+    position: relative;
+    width: 50%;
+    max-width: 300px;
+}
+
+.tree-search {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--nav-border);
+    border-radius: 5px;
+    background-color: var(--search-bg);
+    color: var(--text-color);
+    transition: all 0.3s;
+}
+
+.tree-search:focus {
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    border-color: var(--button-bg);
+    outline: none;
+}
+
+.tree-search::placeholder {
+    opacity: 0.7;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--nav-border);
+    border-radius: 0 0 5px 5px;
+    max-height: 300px; /* Увеличиваем максимальную высоту */
+    overflow-y: auto;
+    z-index: 30;
+    display: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.search-results.visible {
+    display: block;
+}
+
+.search-result-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.search-result-item.stage {
+    font-weight: bold;
+    color: var(--button-bg);
+    background-color: rgba(0, 0, 0, 0.02);
+    padding: 6px 10px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* Zoom контролы */
+.tree-zoom-controls {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background-color: var(--panel-bg);
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    z-index: 20;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+}
+
+.tree-zoom-controls:hover {
+    opacity: 1;
+}
+
+.tree-zoom-controls button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    transition: transform 0.2s, background-color 0.3s;
+    border-radius: 3px;
+}
+
+.tree-zoom-controls button:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Панель достижений */
+.achievements-panel {
+    background-color: var(--panel-bg);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.achievements-panel h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.achievements-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.achievement {
+    background-color: var(--node-bg);
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.achievement.unlocked {
+    border: 2px solid var(--node-available);
+}
+
+.achievement.locked {
+    opacity: 0.6;
+}
+
+.achievement-icon {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.achievement-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.achievement-desc {
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--notification-bg);
+    border-left: 4px solid var(--notification-border);
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.notification.hidden {
+    transform: translateX(150%);
+    opacity: 0;
+}
+
+/* Модальное окно подтверждения */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: var(--modal-content-bg);
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#confirm-yes {
+    background-color: #f44336;
+    color: white;
+}
+
+#confirm-no {
+    background-color: #9e9e9e;
+    color: white;
+}
+
+/* Анимации */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(139, 195, 74, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(139, 195, 74, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(139, 195, 74, 0);
+    }
+}
+
+/* Анимация пульсации для светлой темы */
+body:not(.dark-theme) .tree-node.available {
+    animation-name: pulse-blue;
+}
+
+@keyframes pulse-blue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(3, 169, 244, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(3, 169, 244, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(3, 169, 244, 0);
+    }
+}
+
+/* Стили для кнопок улучшения */
+.node-upgrade-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 5px;
+    opacity: 0; /* По умолчанию скрыты */
+    transition: opacity 0.3s;
+    position: absolute;
+    bottom: -30px; /* Размещаем под узлом */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(40, 40, 40, 0.9);
+    border-radius: 12px;
+    padding: 3px 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 6;
+}
+
+.tree-node:hover .node-upgrade-buttons {
+    opacity: 1; /* Показываем при наведении */
+}
+
+.upgrade-btn {
+    border: none;
+    background-color: #2d6a30;
+    color: white;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.upgrade-btn:hover {
+    background-color: #3e8a40;
+    transform: scale(1.1);
+}
+
+/* Стили для кнопок улучшения в светлой теме */
+body:not(.dark-theme) .node-upgrade-buttons {
+    background-color: rgba(225, 245, 254, 0.9);
+    border: 1px solid #03a9f4;
+    box-shadow: 0 3px 8px rgba(3, 169, 244, 0.4);
+    border-radius: 20px;
+    padding: 4px 8px;
+}
+
+body:not(.dark-theme) .upgrade-btn {
+    background-color: #039be5;
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 3px 6px;
+    transition: all 0.2s ease;
+}
+
+body:not(.dark-theme) .upgrade-btn:hover {
+    background-color: #0288d1;
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(3, 169, 244, 0.4);
+}
+
+/* Улучшаем внешний вид для разных состояний узла */
+.tree-node.researched .node-upgrade-buttons {
+    border: 1px solid rgba(75, 230, 255, 0.4);
+}
+
+.tree-node.researched .upgrade-btn {
+    background-color: #2a85a0;
+}
+
+.tree-node.researched .upgrade-btn:hover {
+    background-color: #3aa8c5;
+}
+
+/* Стили для светлой темы - исследованные узлы */
+body:not(.dark-theme) .tree-node.researched .node-upgrade-buttons {
+    border: 1px solid rgba(3, 169, 244, 0.4);
+    background-color: rgba(225, 245, 254, 0.95);
+}
+
+body:not(.dark-theme) .tree-node.researched .upgrade-btn {
+    background-color: #0288d1;
+}
+
+body:not(.dark-theme) .tree-node.researched .upgrade-btn:hover {
+    background-color: #0277bd;
+}
+
+.tree-node.locked .node-upgrade-buttons {
+    display: none; /* Скрываем кнопки для заблокированных узлов */
+}
+
+/* Адаптивность для кнопок улучшения */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+    
+    .header-controls button {
+        font-size: 1.4rem;
+        margin-left: 10px;
+    }
+    
+    .main-button {
+        width: 150px;
+        height: 150px;
+        font-size: 1.2rem;
+    }
+    
+    .stat {
+        padding: 8px 10px;
+        min-width: 100px;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+    
+    .stat-value {
+        font-size: 1.3rem;
+    }
+    
+    .tree-container {
+        padding: 10px;
+    }
+    
+    .node-upgrade-buttons {
+        padding: 2px 4px;
+    }
+    
+    .upgrade-btn {
+        padding: 1px 3px;
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-container {
+        padding: 10px;
+    }
+    
+    header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .stats-panel {
+        padding: 15px 10px;
+    }
+    
+    .stat {
+        min-width: 80px;
+        padding: 6px 8px;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    .stat-value {
+        font-size: 1.1rem;
+    }
+    
+    .main-button {
+        width: 120px;
+        height: 120px;
+        font-size: 1rem;
+    }
+    
+    .achievements-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Анимация для обновления значений статистики */
+@keyframes value-update {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+        color: var(--button-bg);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.stat-value.updated {
+    animation: value-update 0.5s ease;
+}
+
+/* Стили для кнопки достижений */
+.achievements-button {
+    background-color: #f1c40f !important;
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1.2rem;
+}
+
+.achievements-button:hover {
+    transform: scale(1.15);
+    box-shadow: 0 3px 8px rgba(241, 196, 15, 0.5);
+}
+
+/* Стили для модального окна достижений */
+.achievements-modal-content {
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--button-bg);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    transform: scale(1.2);
+}
+
+/* Обновленные стили для списка достижений */
+.achievements-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.achievement {
+    background-color: var(--panel-bg);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+.achievement::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--button-bg), transparent);
+}
+
+.achievement.unlocked {
+    border: none;
+    box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+}
+
+.achievement.unlocked::before {
+    background: linear-gradient(90deg, var(--button-bg), var(--button-bg));
+}
+
+.achievement.locked {
+    opacity: 0.7;
+    filter: grayscale(0.7);
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: rgba(76, 175, 80, 0.1);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.achievement.unlocked .achievement-icon {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: var(--button-bg);
+}
+
+.achievement-name {
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--button-bg);
+}
+
+.achievement-desc {
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 10px;
+    flex-grow: 1;
+    line-height: 1.4;
+}
+
+.achievement-reward {
+    font-size: 0.85rem;
+    background-color: rgba(76, 175, 80, 0.1);
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: var(--button-bg);
+    margin-top: auto;
+}
+
+/* Адаптивность для модального окна достижений */
+@media (max-width: 768px) {
+    .achievements-list {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        padding: 15px;
+        gap: 10px;
+    }
+    
+    .achievement {
+        padding: 12px;
+    }
+    
+    .achievement-icon {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+        width: 45px;
+        height: 45px;
+    }
+    
+    .achievement-name {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .achievements-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .achievement-icon {
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Стили для подвала сайта */
+.game-footer {
+    margin-top: 20px;
+    padding: 25px 15px;
+    background-color: var(--panel-bg);
+    border-top: 2px solid var(--button-bg);
+    color: var(--text-color);
+    font-size: 0.95rem;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-description h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: var(--button-bg);
+}
+
+.footer-description p {
+    line-height: 1.5;
+    opacity: 0.9;
+    max-width: 800px;
+}
+
+.footer-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: space-between;
+}
+
+.footer-stat-group {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.footer-stat:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.footer-stat-label {
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.footer-stat-value {
+    font-weight: bold;
+    font-family: monospace;
+    letter-spacing: 0.5px;
+    color: var(--button-bg);
+}
+
+.footer-copyright {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+
+/* Светлая тема для подвала */
+body:not(.dark-theme) .game-footer {
+    border-top-color: #03a9f4;
+    background-color: #f5f5f5;
+}
+
+body:not(.dark-theme) .footer-description h3 {
+    color: #0288d1;
+}
+
+body:not(.dark-theme) .footer-stat {
+    background-color: rgba(3, 169, 244, 0.08);
+}
+
+body:not(.dark-theme) .footer-stat:hover {
+    background-color: rgba(3, 169, 244, 0.15);
+}
+
+body:not(.dark-theme) .footer-stat-value {
+    color: #0288d1;
+}
+
+body:not(.dark-theme) .footer-copyright {
+    border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Адаптивность для подвала */
+@media (max-width: 768px) {
+    .footer-content {
+        gap: 15px;
+    }
+    
+    .footer-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .footer-stat-group {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-footer {
+        padding: 15px 10px;
+    }
+    
+    .footer-description h3 {
+        font-size: 1.1rem;
+    }
+    
+    .footer-stat {
+        padding: 6px 8px;
+        font-size: 0.9rem;
+    }
+} 
