@@ -1254,15 +1254,15 @@ body:not(.dark-theme) .tree-node.researched .upgrade-btn:hover {
     
     /* Настраиваем контейнер дерева для мобильных устройств */
     .research-tree {
-        padding: 10px 20px;
-        min-height: 2600px; /* Увеличиваем высоту для лучшего размещения */
+        padding: 15px 25px;
+        min-height: 3200px; /* Увеличиваем высоту с 2600px до 3200px для большего пространства */
         transform-origin: top center !important; /* Фиксируем точку трансформации */
         margin-bottom: 30px; /* Добавляем отступ снизу */
     }
     
     /* Настраиваем размер текста внутри узлов */
     .tree-node .node-title {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
         margin-bottom: 3px;
         font-weight: bold; /* Делаем заголовок жирным для лучшей читаемости */
     }

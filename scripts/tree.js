@@ -401,9 +401,19 @@ class ResearchTree {
             nodeElement.classList.add('locked');
         }
         
-        // Устанавливаем позицию узла
-        nodeElement.style.left = `${node.x}%`;
-        nodeElement.style.top = `${node.y}%`;
+        // Проверяем, мобильное ли устройство для увеличения расстояния между узлами
+        const isMobile = window.innerWidth <= 480;
+        
+        // Устанавливаем позицию узла, увеличивая расстояние для мобильных устройств
+        if (isMobile) {
+            // Увеличиваем расстояние между узлами на мобильных устройствах
+            nodeElement.style.left = `${node.x * 1.5}%`;
+            nodeElement.style.top = `${node.y * 1.3}%`;
+        } else {
+            // Стандартная позиция для десктопа
+            nodeElement.style.left = `${node.x}%`;
+            nodeElement.style.top = `${node.y}%`;
+        }
         
         // Создаем основной контент узла
         const nodeContent = document.createElement('div');
