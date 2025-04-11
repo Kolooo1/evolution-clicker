@@ -1242,36 +1242,84 @@ body:not(.dark-theme) .tree-node.researched .upgrade-btn:hover {
         display: none;
     }
     
-    /* Уменьшаем размер узлов исследований на мобильных устройствах */
+    /* Оптимизируем отображение узлов исследований на мобильных устройствах */
     .tree-node {
-        width: 100px; /* Уменьшаем со 110px до 100px */
-        height: 100px; /* Уменьшаем со 110px до 100px */
-        padding: 4px; /* Уменьшаем внутренние отступы */
-        font-size: 0.8em; /* Уменьшаем шрифт */
+        width: 110px; 
+        height: 110px;
+        padding: 5px;
+        font-size: 0.85em;
+        margin: 15px; /* Добавляем внешние отступы между узлами */
+        box-shadow: 0 0 15px rgba(0, 120, 255, 0.5); /* Усиливаем свечение для лучшей видимости */
     }
     
-    /* Больше расстояния между исследованиями для удобства */
+    /* Настраиваем контейнер дерева для мобильных устройств */
     .research-tree {
-        padding: 35px; /* Увеличиваем с 30px до 35px */
-        min-height: 2500px; /* Увеличиваем высоту для большего пространства */
+        padding: 10px 20px;
+        min-height: 2600px; /* Увеличиваем высоту для лучшего размещения */
+        transform-origin: top center !important; /* Фиксируем точку трансформации */
+        margin-bottom: 30px; /* Добавляем отступ снизу */
     }
     
-    /* Уменьшаем размер текста внутри узлов */
+    /* Настраиваем размер текста внутри узлов */
     .tree-node .node-title {
-        font-size: 0.65rem; /* Уменьшаем с 0.7rem до 0.65rem */
-        margin-bottom: 2px;
+        font-size: 0.75rem;
+        margin-bottom: 3px;
+        font-weight: bold; /* Делаем заголовок жирным для лучшей читаемости */
     }
     
     .tree-node .node-effect {
-        font-size: 0.65rem; /* Уменьшаем с 0.7rem до 0.65rem */
+        font-size: 0.7rem;
+        margin-top: 2px;
     }
     
     .tree-node .node-cost {
-        font-size: 0.6rem; /* Уменьшаем с 0.65rem до 0.6rem */
+        font-size: 0.65rem;
+        margin-top: 2px;
     }
     
     .tree-node .node-level {
-        font-size: 0.55rem; /* Уменьшаем с 0.6rem до 0.55rem */
+        font-size: 0.65rem;
+    }
+    
+    /* Улучшаем отображение дерева исследований */
+    .tree-container {
+        overflow-x: auto; /* Добавляем горизонтальную прокрутку при необходимости */
+        margin-top: 10px;
+        -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+    }
+    
+    /* Кнопки улучшения для узлов */
+    .node-upgrade-buttons {
+        margin-top: 4px;
+    }
+    
+    .upgrade-btn {
+        padding: 2px 5px;
+        font-size: 0.65rem;
+        margin: 0 1px;
+    }
+    
+    /* Улучшаем навигацию по дереву на мобильных устройствах */
+    .tree-navigation {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background-color: var(--bg-color);
+        padding: 5px 0;
+        margin-bottom: 10px;
+    }
+    
+    .tree-nav-tabs {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+    
+    .tree-nav-tab {
+        padding: 5px 0;
+        font-size: 0.85rem;
+        flex: 1;
+        text-align: center;
     }
 }
 
