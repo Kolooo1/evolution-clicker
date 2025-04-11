@@ -1236,6 +1236,42 @@ body:not(.dark-theme) .tree-node.researched .upgrade-btn:hover {
     .achievements-list {
         grid-template-columns: 1fr;
     }
+    
+    /* Скрываем управление масштабом на мобильных устройствах */
+    .tree-zoom-controls {
+        display: none;
+    }
+    
+    /* Уменьшаем размер узлов исследований на мобильных устройствах */
+    .tree-node {
+        width: 120px;
+        height: 120px;
+        padding: 6px;
+        font-size: 0.9em;
+    }
+    
+    /* Немного больше расстояния между исследованиями для удобства */
+    .research-tree {
+        padding: 25px;
+        min-height: 2200px; /* Увеличиваем высоту для большего пространства */
+    }
+    
+    /* Уменьшаем размер текста внутри узлов */
+    .tree-node .node-title {
+        font-size: 0.75rem;
+    }
+    
+    .tree-node .node-effect {
+        font-size: 0.75rem;
+    }
+    
+    .tree-node .node-cost {
+        font-size: 0.7rem;
+    }
+    
+    .tree-node .node-level {
+        font-size: 0.65rem;
+    }
 }
 
 /* Анимация для обновления значений статистики */
@@ -1578,5 +1614,32 @@ body:not(.dark-theme) .footer-copyright {
     .footer-stat {
         padding: 6px 8px;
         font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    /* Средние устройства: немного уменьшаем узлы исследований */
+    .tree-node {
+        width: 130px;
+        height: 130px;
+        padding: 7px;
+    }
+    
+    /* Увеличиваем расстояние между исследованиями */
+    .research-tree {
+        padding: 22px;
+        min-height: 2100px;
+    }
+    
+    /* Уменьшаем масштаб элементов управления зумом */
+    .tree-zoom-controls {
+        right: 15px;
+        bottom: 15px;
+        padding: 3px;
+    }
+    
+    .tree-zoom-controls button {
+        font-size: 1.1rem;
+        padding: 6px;
     }
 } 
