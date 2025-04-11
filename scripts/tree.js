@@ -643,6 +643,9 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
             return "MAX";
         }
         
+        // Округляем число до целого перед форматированием
+        number = Math.ceil(number);
+        
         if (number >= 1e33) {
             return (number / 1e33).toFixed(2) + "D"; // Дециллионы
         } else if (number >= 1e30) {
