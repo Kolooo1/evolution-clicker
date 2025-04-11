@@ -1244,33 +1244,34 @@ body:not(.dark-theme) .tree-node.researched .upgrade-btn:hover {
     
     /* Уменьшаем размер узлов исследований на мобильных устройствах */
     .tree-node {
-        width: 120px;
-        height: 120px;
-        padding: 6px;
-        font-size: 0.9em;
+        width: 110px; /* Уменьшаем с 120px до 110px */
+        height: 110px; /* Уменьшаем с 120px до 110px */
+        padding: 5px; /* Уменьшаем внутренние отступы */
+        font-size: 0.85em; /* Уменьшаем шрифт */
     }
     
-    /* Немного больше расстояния между исследованиями для удобства */
+    /* Больше расстояния между исследованиями для удобства */
     .research-tree {
-        padding: 25px;
-        min-height: 2200px; /* Увеличиваем высоту для большего пространства */
+        padding: 30px; /* Увеличиваем с 25px до 30px */
+        min-height: 2400px; /* Увеличиваем высоту для большего пространства */
     }
     
     /* Уменьшаем размер текста внутри узлов */
     .tree-node .node-title {
-        font-size: 0.75rem;
+        font-size: 0.7rem; /* Уменьшаем с 0.75rem до 0.7rem */
+        margin-bottom: 2px;
     }
     
     .tree-node .node-effect {
-        font-size: 0.75rem;
+        font-size: 0.7rem; /* Уменьшаем с 0.75rem до 0.7rem */
     }
     
     .tree-node .node-cost {
-        font-size: 0.7rem;
+        font-size: 0.65rem; /* Уменьшаем с 0.7rem до 0.65rem */
     }
     
     .tree-node .node-level {
-        font-size: 0.65rem;
+        font-size: 0.6rem; /* Уменьшаем с 0.65rem до 0.6rem */
     }
 }
 
