@@ -370,7 +370,7 @@ class ResearchTree {
      */
     setContainerSize() {
         // Устанавливаем минимальную высоту контейнера (в процентах от viewport height)
-        const heightInVh = this.maxY * 1; // По 2vh на каждый % по Y
+        const heightInVh = this.maxY * 1.5; // По 2vh на каждый % по Y
         this.container.style.minHeight = `${heightInVh}vh`;
     }
     
