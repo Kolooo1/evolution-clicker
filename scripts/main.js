@@ -361,71 +361,59 @@ function animateValue(element) {
  */
 function updateGameValues() {
     // Базовое значение силы клика
-    let baseClickPower = 1;
-    let clickAdditive = 0; // Дополнительные бонусы к клику
+    let baseClickPower = 2; // Увеличено с 1
     
     // Базовое значение пассивного дохода
-    let basePassiveIncome = 0;
+    let basePassiveIncome = 0.5; // Добавлен стартовый пассивный доход
     
-    // Множители (начинаем с 1 = 100%)
-    let clickMultiplier = 1;
-    let passiveMultiplier = 1;
+    // Сбрасываем множители до 1
+    let clickMultiplier = gameStorage.gameData.clickMultiplier;
+    let passiveMultiplier = gameStorage.gameData.passiveMultiplier;
     
-    // Множители от достижений
-    const achievementClickMultiplier = gameStorage.gameData.clickMultiplier;
-    const achievementPassiveMultiplier = gameStorage.gameData.passiveMultiplier;
-    
-    // Первый проход - сбор базовых значений
-    RESEARCH_TREE.forEach(research => {
-        const level = gameStorage.getResearchLevel(research.id);
+    // Проходим по всем исследованиям
+    for (const researchId in gameStorage.gameData.research) {
+        // Получаем уровень исследования
+        const level = gameStorage.gameData.research[researchId];
         
+        // Проверяем, что уровень больше 0
         if (level > 0) {
+            // Ищем данные исследования
+            const research = RESEARCH_TREE.find(item => item.id === researchId);
+            if (!research) continue;
+            
+            // Рассчитываем эффект исследования
             const effectValue = research.effect.value + (research.effectPerLevel * (level - 1));
             
+            // Применяем эффект в зависимости от типа
             switch (research.effect.type) {
-                case 'click':
-                    clickAdditive += effectValue;
+                case "click":
+                    baseClickPower += effectValue;
                     break;
                     
-                case 'passive':
+                case "passive":
                     basePassiveIncome += effectValue;
                     break;
                     
-                case 'multiplier':
-                    // Каждое исследование с множителем дает процентное увеличение
-                    const multiplierValue = effectValue * level / 100; // Конвертируем в множитель (5 = 5%)
+                case "multiplier":
+                    // Увеличиваем оба множителя
+                    const multiplierValue = effectValue * level;
                     clickMultiplier += multiplierValue;
                     passiveMultiplier += multiplierValue;
                     break;
             }
         }
-    });
+    }
     
-    // Сначала применяем базовые значения
-    let finalClickPower = baseClickPower + clickAdditive;
-    let finalPassiveIncome = basePassiveIncome;
+    // Применяем множители
+    gameStorage.gameData.clickPower = baseClickPower * clickMultiplier;
+    gameStorage.gameData.passiveIncome = basePassiveIncome * passiveMultiplier;
     
-    // Затем применяем множители от исследований
-    finalClickPower *= clickMultiplier;
-    finalPassiveIncome *= passiveMultiplier;
+    // Округляем значения до 2 знаков после запятой для лучшего отображения
+    gameStorage.gameData.clickPower = Math.round(gameStorage.gameData.clickPower * 100) / 100;
+    gameStorage.gameData.passiveIncome = Math.round(gameStorage.gameData.passiveIncome * 100) / 100;
     
-    // В конце применяем множители от достижений
-    finalClickPower *= (1 + achievementClickMultiplier);
-    finalPassiveIncome *= (1 + achievementPassiveMultiplier);
-    
-    // Округляем значения
-    finalClickPower = Math.max(1, Math.floor(finalClickPower));
-    finalPassiveIncome = Math.floor(finalPassiveIncome);
-    
-    // Обновляем значения в хранилище
-    gameStorage.gameData.clickPower = finalClickPower;
-    gameStorage.gameData.passiveIncome = finalPassiveIncome;
-    
-    // Выводим отладочную информацию
-    console.log(`Обновлены значения игры:
-        Клик: ${finalClickPower} (база: ${baseClickPower + clickAdditive}, множитель: ${clickMultiplier.toFixed(2)})
-        Пассивно: ${finalPassiveIncome} (база: ${basePassiveIncome}, множитель: ${passiveMultiplier.toFixed(2)})
-    `);
+    // Обновляем отображаемые значения
+    updateStats();
 }
 
 /**

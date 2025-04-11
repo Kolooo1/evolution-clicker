@@ -74,29 +74,180 @@ body {
 .top-controls {
     display: flex;
     justify-content: space-between;
+    padding: 10px 15px;
+    background-color: var(--panel-bg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-radius: 0 0 10px 10px;
+}
+
+.game-title {
+    display: flex;
     align-items: center;
-    background-color: var(--top-controls-bg);
-    color: white;
-    padding: 10px 20px;
-    width: 100%;
-    position: relative;
-    z-index: 100;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .game-title h1 {
     font-size: 1.8rem;
-    font-weight: 700;
-    color: #fff;
     margin: 0;
-    padding-left: 10px;
-    border-left: 3px solid var(--button-bg);
+    color: var(--button-bg);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .header-controls {
     display: flex;
+    gap: 10px;
     align-items: center;
-    gap: 15px;
+}
+
+.theme-toggle, .language-toggle, .reset-button, .sound-toggle, .achievements-button {
+    width: 40px;
+    height: 40px;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:hover, .language-toggle:hover, .reset-button:hover, .sound-toggle:hover, .achievements-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Адаптивность для шапки на мобильных устройствах */
+@media (max-width: 768px) {
+    .top-controls {
+        padding: 8px 10px;
+        flex-wrap: wrap;
+    }
+
+    .game-title h1 {
+        font-size: 1.5rem;
+    }
+
+    .header-controls {
+        gap: 8px;
+    }
+
+    .theme-toggle, .language-toggle, .reset-button, .sound-toggle, .achievements-button {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-controls {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .game-title {
+        margin-bottom: 5px;
+    }
+
+    .game-title h1 {
+        font-size: 1.4rem;
+    }
+
+    .header-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Стили для панели статистики */
+.stats-panel {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--panel-bg);
+    border-radius: 10px;
+    margin: 15px 0;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+    padding: 0 10px;
+    position: relative;
+}
+
+.stat:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    height: 70%;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+    margin-right: 5px;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--button-bg);
+    min-width: 30px;
+    text-align: right;
+    transition: all 0.5s ease;
+}
+
+.stat-icon {
+    margin-left: 5px;
+    font-size: 1.2rem;
+}
+
+/* Адаптивность для панели статистики */
+@media (max-width: 768px) {
+    .stats-panel {
+        padding: 12px 10px;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+        min-width: 25px;
+    }
+
+    .stat-icon {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-panel {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .stat {
+        justify-content: space-between;
+        padding: 5px 10px;
+    }
+
+    .stat:not(:last-child)::after {
+        content: none;
+    }
+
+    .stat:not(:last-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 8px;
+    }
 }
 
 .game-container {
