@@ -12,6 +12,12 @@
         <div class="game-title">
             <h1>Evolution Clicker</h1>
         </div>
+        <!-- Кнопка бургер-меню для мобильных устройств -->
+        <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+        </button>
         <div class="header-controls">
             <div class="theme-control">
                 <button id="theme-toggle" class="theme-toggle" title="Сменить тему">
@@ -27,6 +33,39 @@
             <button id="achievements-button" class="achievements-button" title="Достижения">🏆</button>
             <button id="sound-toggle" class="sound-toggle" title="Вкл/Выкл звук">🔈</button>
             <button id="reset-button" class="reset-button" title="Сбросить прогресс">♻️</button>
+        </div>
+        <!-- Мобильное меню -->
+        <div id="mobile-menu" class="mobile-menu hidden">
+            <div class="mobile-menu-content">
+                <button id="mobile-theme-toggle" class="mobile-menu-item">
+                    <span class="mobile-icon">☀</span>
+                    <span class="mobile-item-text">Сменить тему</span>
+                </button>
+                <button id="mobile-language-toggle" class="mobile-menu-item">
+                    <span class="mobile-icon">🌐</span>
+                    <span class="mobile-item-text">Сменить язык (RU)</span>
+                </button>
+                <button id="mobile-achievements" class="mobile-menu-item">
+                    <span class="mobile-icon">🏆</span>
+                    <span class="mobile-item-text">Достижения</span>
+                </button>
+                <button id="mobile-sound-toggle" class="mobile-menu-item">
+                    <span class="mobile-icon">🔈</span>
+                    <span class="mobile-item-text">Звук</span>
+                </button>
+                <button id="mobile-reset" class="mobile-menu-item">
+                    <span class="mobile-icon">♻️</span>
+                    <span class="mobile-item-text">Сбросить прогресс</span>
+                </button>
+                <button id="mobile-zoom-in" class="mobile-menu-item">
+                    <span class="mobile-icon">🔍+</span>
+                    <span class="mobile-item-text">Приблизить</span>
+                </button>
+                <button id="mobile-zoom-out" class="mobile-menu-item">
+                    <span class="mobile-icon">🔍-</span>
+                    <span class="mobile-item-text">Отдалить</span>
+                </button>
+            </div>
         </div>
     </div>
     <div class="game-container">

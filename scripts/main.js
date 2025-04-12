@@ -23,6 +23,28 @@ const confirmModal = document.getElementById('confirm-modal');
 const confirmYes = document.getElementById('confirm-yes');
 const confirmNo = document.getElementById('confirm-no');
 
+// Элементы мобильного меню
+const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+const mobileLangToggle = document.getElementById('mobile-language-toggle');
+const mobileAchievements = document.getElementById('mobile-achievements');
+const mobileSoundToggle = document.getElementById('mobile-sound-toggle');
+const mobileReset = document.getElementById('mobile-reset');
+const mobileZoomIn = document.getElementById('mobile-zoom-in');
+const mobileZoomOut = document.getElementById('mobile-zoom-out');
+
+// Добавляем мобильные кнопки масштабирования
+const mobileZoomControls = document.createElement('div');
+mobileZoomControls.className = 'mobile-zoom-controls';
+mobileZoomControls.innerHTML = `
+    <button id="mobile-zoom-in-btn" class="mobile-zoom-btn">+</button>
+    <button id="mobile-zoom-out-btn" class="mobile-zoom-btn">-</button>
+`;
+document.body.appendChild(mobileZoomControls);
+const mobileZoomInBtn = document.getElementById('mobile-zoom-in-btn');
+const mobileZoomOutBtn = document.getElementById('mobile-zoom-out-btn');
+
 // Элементы подвала для статистики
 const playTimeDisplay = document.getElementById('play-time');
 const sessionStartDisplay = document.getElementById('session-start');
@@ -243,6 +265,203 @@ function setupEventListeners() {
             hideConfirmModal();
         }
     });
+    
+    // Настройка мобильного меню
+    setupMobileMenu();
+    
+    // Настройка сенсорных жестов для масштабирования и перемещения
+    setupTouchGestures();
+}
+
+/**
+ * Настройка мобильного меню и его обработчиков
+ */
+function setupMobileMenu() {
+    // Переключение меню при клике на бургер
+    mobileMenuToggle.addEventListener('click', () => {
+        mobileMenuToggle.classList.toggle('active');
+        
+        if (mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+        } else {
+            mobileMenu.classList.remove('hidden');
+            setTimeout(() => {
+                mobileMenu.classList.add('active');
+            }, 10);
+        }
+    });
+    
+    // Закрытие меню при клике вне его
+    document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && !mobileMenuToggle.contains(e.target) && 
+            mobileMenu.classList.contains('active')) {
+            mobileMenuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+        }
+    });
+    
+    // Обработчики для мобильных кнопок
+    mobileThemeToggle.addEventListener('click', () => {
+        handleThemeToggle();
+        closeMobileMenu();
+    });
+    
+    mobileLangToggle.addEventListener('click', () => {
+        handleLanguageToggle();
+        closeMobileMenu();
+    });
+    
+    mobileAchievements.addEventListener('click', () => {
+        document.getElementById('achievements-modal').classList.remove('hidden');
+        closeMobileMenu();
+    });
+    
+    mobileSoundToggle.addEventListener('click', () => {
+        handleSoundToggle();
+        closeMobileMenu();
+        
+        // Обновляем иконку звука в мобильном меню
+        const soundIcon = mobileSoundToggle.querySelector('.mobile-icon');
+        if (soundIcon) {
+            soundIcon.textContent = isSoundEnabled() ? '🔈' : '🔇';
+        }
+    });
+    
+    mobileReset.addEventListener('click', () => {
+        showResetConfirmation();
+        closeMobileMenu();
+    });
+    
+    // Масштабирование через мобильное меню
+    mobileZoomIn.addEventListener('click', () => {
+        zoomResearchTree(0.2);
+        closeMobileMenu();
+    });
+    
+    mobileZoomOut.addEventListener('click', () => {
+        zoomResearchTree(-0.2);
+        closeMobileMenu();
+    });
+    
+    // Кнопки масштабирования в нижнем углу
+    mobileZoomInBtn.addEventListener('click', () => zoomResearchTree(0.2));
+    mobileZoomOutBtn.addEventListener('click', () => zoomResearchTree(-0.2));
+}
+
+/**
+ * Закрытие мобильного меню
+ */
+function closeMobileMenu() {
+    mobileMenuToggle.classList.remove('active');
+    mobileMenu.classList.remove('active');
+    setTimeout(() => {
+        mobileMenu.classList.add('hidden');
+    }, 300);
+}
+
+/**
+ * Масштабирование дерева исследований
+ * @param {number} deltaScale - Изменение масштаба
+ */
+function zoomResearchTree(deltaScale) {
+    if (researchTree) {
+        researchTree.zoom(deltaScale);
+    }
+}
+
+/**
+ * Настройка сенсорных жестов для дерева исследований
+ */
+function setupTouchGestures() {
+    const container = document.querySelector('.tree-container');
+    if (!container) return;
+    
+    let isDragging = false;
+    let startX, startY;
+    let scrollLeft, scrollTop;
+    let startDistance = 0;
+    let initialScale = 1;
+    
+    // Обработка начала касания
+    container.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            // Одно касание - перемещение
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            scrollLeft = container.scrollLeft;
+            scrollTop = container.scrollTop;
+        } else if (e.touches.length === 2) {
+            // Два касания - масштабирование
+            isDragging = false;
+            startDistance = getDistance(
+                e.touches[0].clientX, e.touches[0].clientY,
+                e.touches[1].clientX, e.touches[1].clientY
+            );
+            initialScale = researchTree ? researchTree.currentScale : 1;
+        }
+    });
+    
+    // Обработка движения пальцами
+    container.addEventListener('touchmove', (e) => {
+        if (isDragging && e.touches.length === 1) {
+            // Перемещение дерева
+            e.preventDefault();
+            const x = e.touches[0].clientX;
+            const y = e.touches[0].clientY;
+            const moveX = x - startX;
+            const moveY = y - startY;
+            
+            container.scrollLeft = scrollLeft - moveX;
+            container.scrollTop = scrollTop - moveY;
+        } else if (e.touches.length === 2) {
+            // Масштабирование дерева
+            e.preventDefault();
+            const currentDistance = getDistance(
+                e.touches[0].clientX, e.touches[0].clientY,
+                e.touches[1].clientX, e.touches[1].clientY
+            );
+            
+            if (startDistance > 0 && researchTree) {
+                const scale = currentDistance / startDistance;
+                const newScale = Math.max(0.5, Math.min(initialScale * scale, 1.5));
+                researchTree.setScale(newScale);
+            }
+        }
+    });
+    
+    // Обработка окончания касания
+    container.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+    
+    // Предотвращаем масштабирование страницы при жестах на дереве
+    container.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 1) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+}
+
+/**
+ * Расчет расстояния между двумя точками
+ */
+function getDistance(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+}
+
+/**
+ * Проверяет, включен ли звук
+ * @returns {boolean} - Статус звука
+ */
+function isSoundEnabled() {
+    return gameStorage.gameData.options.soundEnabled !== false;
 }
 
 /**

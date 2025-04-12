@@ -138,9 +138,17 @@ class ResearchTree {
      */
     zoom(deltaScale) {
         const newScale = Math.max(0.5, Math.min(this.currentScale + deltaScale, 1.5));
-        this.currentScale = newScale;
+        this.setScale(newScale);
+    }
+    
+    /**
+     * Устанавливает конкретный масштаб для дерева
+     * @param {number} scale - Новое значение масштаба
+     */
+    setScale(scale) {
+        this.currentScale = scale;
         
-        this.container.style.transform = `scale(${newScale})`;
+        this.container.style.transform = `scale(${scale})`;
         this.container.style.transformOrigin = 'center top';
     }
     
@@ -148,8 +156,7 @@ class ResearchTree {
      * Сбрасывает масштаб к исходному значению
      */
     resetZoom() {
-        this.currentScale = 1;
-        this.container.style.transform = 'scale(1)';
+        this.setScale(1);
     }
     
     /**
