@@ -335,216 +335,164 @@ class ResearchTree {
     }
     
     /**
-     * Строит дерево исследований
+     * Строит всё дерево исследований
      */
     buildTree() {
         try {
             console.log("Начинаем построение дерева исследований");
             
-            // Очищаем контейнер
-            this.container.innerHTML = '';
-            this.drawnNodes = {};
+            // Убеждаемся, что исходные данные загружены
+            if (!this.researchNodes || this.researchNodes.length === 0) {
+                console.error("Нет данных для построения дерева");
+                return;
+            }
             
             // Устанавливаем размер контейнера
             this.setContainerSize();
             
-            // Фильтруем узлы по текущему фильтру стадии
-            const nodesToShow = this.filterStage === 'all' 
-                ? this.researchNodes 
-                : this.researchNodes.filter(node => node.stage === this.filterStage);
+            // Очищаем контейнер перед построением
+            this.container.innerHTML = '';
+            this.drawnNodes = {};
             
-            console.log(`Отрисовка ${nodesToShow.length} узлов для стадии '${this.filterStage}'`);
+            console.log(`Подготовлено ${this.researchNodes.length} узлов для отрисовки`);
             
-            // Сначала отрисовываем основные узлы
-            const mainNodes = nodesToShow.filter(node => !node.isSubResearch);
-            mainNodes.forEach(node => {
-                const nodeElement = this.createNode(node);
-                if (nodeElement) {
-                    this.container.appendChild(nodeElement);
-                    this.drawnNodes[node.id] = nodeElement;
-                }
+            // Сортируем узлы по Y-координате (чтобы верхние узлы отрисовывались первыми)
+            const sortedNodes = [...this.researchNodes].sort((a, b) => a.y - b.y);
+            
+            // Отрисовываем каждый узел
+            sortedNodes.forEach((node, index) => {
+                console.log(`Рисуем узел ${index + 1}/${sortedNodes.length}: ${node.id} (${node.name})`);
+                this.createNode(node);
             });
             
-            // Затем отрисовываем связи между узлами
-            mainNodes.forEach(node => {
-                if (node.parents && node.parents.length > 0) {
-                    node.parents.forEach(parentId => {
-                        const parentNode = this.drawnNodes[parentId];
-                        const childNode = this.drawnNodes[node.id];
-                        
-                        if (parentNode && childNode) {
-                            this.drawConnection(parentNode, childNode);
-                        }
-                    });
-                }
-            });
-            
-            // Теперь отрисовываем дочерние узлы
-            const subNodes = nodesToShow.filter(node => node.isSubResearch);
-            subNodes.forEach(node => {
-                const nodeElement = this.createNode(node);
-                if (nodeElement) {
-                    this.container.appendChild(nodeElement);
-                    this.drawnNodes[node.id] = nodeElement;
-                    
-                    // Отрисовываем связь с родительским узлом
-                    const parentElement = this.drawnNodes[node.parentResearch];
-                    if (parentElement) {
-                        this.drawSubConnection(parentElement, nodeElement);
-                    }
-                }
-            });
-            
-            console.log("Дерево исследований построено");
+            console.log(`Создано ${Object.keys(this.drawnNodes).length} узлов`);
+            console.log("Построение дерева исследований завершено");
         } catch (error) {
-            console.error("Ошибка при построении дерева исследований:", error);
+            console.error("Ошибка при построении дерева:", error);
         }
     }
     
     /**
-     * Создает узел исследования в дереве
+     * Устанавливает размер контейнера для дерева
+     */
+    setContainerSize() {
+        // Устанавливаем минимальную высоту контейнера (в процентах от viewport height)
+        const heightInVh = this.maxY * 1.5; // По 2vh на каждый % по Y
+        this.container.style.minHeight = `${heightInVh}vh`;
+    }
+    
+    /**
+     * Создает DOM-элемент для узла исследования
      * @param {Object} node - Данные узла исследования
-     * @returns {HTMLElement} - DOM-элемент созданного узла
      */
     createNode(node) {
-        try {
-            // Получаем текущий уровень исследования
-            const currentLevel = gameStorage.getResearchLevel(node.id);
-            
-            // Создаем DOM-элемент для узла
-            const nodeElement = document.createElement('div');
-            nodeElement.className = 'tree-node';
-            nodeElement.id = `node-${node.id}`; // Исправляем формат ID
-            nodeElement.dataset.id = node.id;
-            nodeElement.dataset.stage = node.stage;
-            
-            // Устанавливаем координаты с корректировками для субисследований
-            if (node.isSubResearch) {
-                // Находим родительский узел
-                const parentNode = this.researchNodes.find(n => n.id === node.parentResearch);
-                if (parentNode) {
-                    // Размещаем дочернее исследование рядом с родительским
-                    // Для первого дочернего исследования - слева от родителя, для остальных - справа
-                    const parentEl = document.getElementById(`node-${parentNode.id}`);
-                    if (parentEl) {
-                        const parentRect = parentEl.getBoundingClientRect();
-                        const parentSubResearch = this.researchNodes.filter(
-                            n => n.isSubResearch && n.parentResearch === parentNode.id
-                        );
-                        const subResearchIndex = parentSubResearch.findIndex(sr => sr.id === node.id);
-                        
-                        // Положение зависит от индекса дочернего исследования
-                        const offsetX = subResearchIndex % 2 === 0 ? -15 : 15;
-                        const offsetY = 10 + Math.floor(subResearchIndex / 2) * 10;
-                        
-                        nodeElement.style.left = `${parentNode.x + offsetX}%`;
-                        nodeElement.style.top = `${parentNode.y + offsetY}%`;
-                    } else {
-                        // Если родительский элемент не найден, используем координаты из данных
-                        nodeElement.style.left = `${node.x || 0}%`;
-                        nodeElement.style.top = `${node.y || 0}%`;
-                    }
-                }
-            } else {
-                // Для основных исследований используем заданные координаты
-                nodeElement.style.left = `${node.x}%`;
-                nodeElement.style.top = `${node.y}%`;
-            }
-            
-            // Определяем класс состояния узла
-            let nodeState = 'locked';
-            if (currentLevel > 0) {
-                nodeState = 'researched';
-            } else if (this.isNodeAvailable(node)) {
-                nodeState = 'available';
-            }
-            
-            // Добавляем класс состояния
-            nodeElement.classList.add(nodeState);
-            
-            // Для дочерних исследований добавляем специальный класс
-            if (node.isSubResearch) {
-                nodeElement.classList.add('sub-research');
-            }
-            
-            // Создаем содержимое узла
-            const nodeContent = document.createElement('div');
-            nodeContent.className = 'node-content';
-            
-            // Добавляем название исследования
-            const nodeTitle = document.createElement('div');
-            nodeTitle.className = 'node-title';
-            nodeTitle.textContent = node.name;
-            nodeContent.appendChild(nodeTitle);
-            
-            // Добавляем уровень исследования
-            const nodeLevel = document.createElement('div');
-            nodeLevel.className = 'node-level';
-            nodeLevel.textContent = `Уровень: ${currentLevel}${node.maxLevel > 1 ? `/${node.maxLevel}` : ''}`;
-            nodeContent.appendChild(nodeLevel);
-            
-            // Добавляем стоимость исследования (если не исследовано полностью)
-            if (currentLevel < node.maxLevel) {
-                const nodeCost = document.createElement('div');
-                nodeCost.className = 'node-cost';
-                const cost = this.calculateCost(node, currentLevel);
-                nodeCost.textContent = `Стоимость: ${this.formatNumber(cost)}`;
-                nodeContent.appendChild(nodeCost);
-            }
-            
-            // Если исследование открыто, показываем его эффект
-            if (currentLevel > 0) {
-                const nodeEffect = document.createElement('div');
-                nodeEffect.className = 'node-effect';
-                nodeEffect.textContent = this.formatEffectShort(node, currentLevel);
-                nodeContent.appendChild(nodeEffect);
-            }
-            
-            // Добавляем содержимое в узел
-            nodeElement.appendChild(nodeContent);
-            
-            // Добавляем кнопки управления для доступных исследований
-            if (nodeState === 'available' || (nodeState === 'researched' && currentLevel < node.maxLevel)) {
-                const upgradeButtons = document.createElement('div');
-                upgradeButtons.className = 'node-upgrade-buttons';
-                
-                // Кнопка информации
-                const infoBtn = document.createElement('button');
-                infoBtn.className = 'info-btn';
-                infoBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
-                infoBtn.title = "Информация";
-                infoBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.showResearchInfo(node);
-                });
-                upgradeButtons.appendChild(infoBtn);
-                
-                // Добавляем кнопки улучшения для доступных исследований, которые не достигли максимального уровня
-                if (nodeState === 'available' || currentLevel < node.maxLevel) {
-                    // Если это не субисследование или субисследование еще не исследовано
-                    if (!node.isSubResearch || currentLevel === 0) {
-                        const upgradeBtn = document.createElement('button');
-                        upgradeBtn.className = 'upgrade-btn';
-                        upgradeBtn.textContent = nodeState === 'available' ? 'Исследовать' : 'Улучшить';
-                        upgradeBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            this.handleNodeUpgrade(node, 1);
-                        });
-                        upgradeButtons.appendChild(upgradeBtn);
-                    }
-                }
-                
-                nodeElement.appendChild(upgradeButtons);
-            }
-            
-            // Добавляем обработчик клика для узла
-            nodeElement.addEventListener('click', () => this.handleNodeClick(node));
-            
-            return nodeElement;
-        } catch (error) {
-            console.error(`Ошибка при создании узла ${node?.id}:`, error);
-            return null;
+        // Создаем элемент
+        const nodeElement = document.createElement('div');
+        nodeElement.className = 'tree-node';
+        nodeElement.id = `node-${node.id}`;
+        nodeElement.dataset.stage = node.stage;
+        
+        // Получаем текущий уровень исследования из хранилища
+        const currentLevel = gameStorage.getResearchLevel(node.id);
+        
+        // Проверяем, доступен ли узел для исследования
+        const isAvailable = this.isNodeAvailable(node);
+        
+        // Добавляем классы в зависимости от состояния
+        if (currentLevel > 0) {
+            nodeElement.classList.add('researched');
+            nodeElement.dataset.level = currentLevel;
+        } else if (isAvailable) {
+            nodeElement.classList.add('available');
+        } else {
+            nodeElement.classList.add('locked');
         }
+        
+        // Проверяем, мобильное ли устройство для увеличения расстояния между узлами
+        const isMobile = window.innerWidth <= 480;
+        
+        // Устанавливаем позицию узла, увеличивая расстояние для мобильных устройств
+        if (isMobile) {
+            // Увеличиваем расстояние между узлами на мобильных устройствах
+            nodeElement.style.left = `${node.x * 1.5}%`;
+            nodeElement.style.top = `${node.y * 1.3}%`;
+        } else {
+            // Стандартная позиция для десктопа
+            nodeElement.style.left = `${node.x}%`;
+            nodeElement.style.top = `${node.y}%`;
+        }
+        
+        // Создаем основной контент узла
+        const nodeContent = document.createElement('div');
+        nodeContent.className = 'node-content';
+        
+        // Добавляем содержимое узла
+        nodeContent.innerHTML = `
+            <div class="node-title">${node.name}</div>
+            <div class="node-level">${currentLevel > 0 ? 'Уровень: ' + currentLevel : ''}</div>
+            <div class="node-cost">${this.formatNumber(this.calculateCost(node, currentLevel))}</div>
+            <div class="node-effect">${currentLevel > 0 ? this.formatEffectShort(node, currentLevel) : ''}</div>
+        `;
+        
+        // Создаем контейнер для кнопок улучшения
+        const upgradeButtons = document.createElement('div');
+        upgradeButtons.className = 'node-upgrade-buttons';
+        
+        // Кнопка информации
+        const infoBtn = document.createElement('button');
+        infoBtn.className = 'info-btn';
+        infoBtn.innerHTML = 'ℹ️';
+        infoBtn.title = 'Подробная информация';
+        infoBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.showResearchInfo(node);
+        });
+        
+        // Кнопка +10
+        const upgradeBtn10 = document.createElement('button');
+        upgradeBtn10.className = 'upgrade-btn';
+        upgradeBtn10.textContent = '+10';
+        upgradeBtn10.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.handleNodeUpgrade(node, 10);
+        });
+        
+        // Кнопка +100
+        const upgradeBtn100 = document.createElement('button');
+        upgradeBtn100.className = 'upgrade-btn';
+        upgradeBtn100.textContent = '+100';
+        upgradeBtn100.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.handleNodeUpgrade(node, 100);
+        });
+        
+        // Добавляем кнопки в контейнер
+        upgradeButtons.appendChild(infoBtn);
+        upgradeButtons.appendChild(upgradeBtn10);
+        upgradeButtons.appendChild(upgradeBtn100);
+        
+        // Добавляем контент и кнопки в узел
+        nodeElement.appendChild(nodeContent);
+        nodeElement.appendChild(upgradeButtons);
+        
+        // Добавляем всплывающую подсказку с описанием
+        nodeElement.title = `${node.name} - ${node.description}
+Стоимость: ${this.formatNumber(this.calculateCost(node, currentLevel))}
+${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не исследовано'}
+Макс. уровень: ${node.maxLevel}
+Эффект: ${this.formatEffect(node, currentLevel)}`;
+        
+        // Добавляем обработчик клика для покупки/улучшения
+        nodeElement.addEventListener('click', () => this.handleNodeClick(node));
+        
+        // Добавляем узел в контейнер
+        this.container.appendChild(nodeElement);
+        
+        // Сохраняем ссылку на DOM-элемент для быстрого доступа
+        this.drawnNodes[node.id] = {
+            element: nodeElement,
+            data: node
+        };
     }
     
     /**
@@ -672,170 +620,45 @@ class ResearchTree {
     }
     
     /**
-     * Обновление дерева исследований
+     * Обновляет отображение дерева исследований
      */
     updateTree() {
-        try {
-            console.log("Обновление дерева исследований");
+        // Проходим по всем узлам и обновляем их состояние
+        Object.values(this.drawnNodes).forEach(nodeData => {
+            const node = nodeData.data;
+            const element = nodeData.element;
+            const currentLevel = gameStorage.getResearchLevel(node.id);
+            const isAvailable = this.isNodeAvailable(node);
             
-            // Проходим по всем узлам и обновляем их состояние
-            for (const node of this.researchNodes) {
-                const nodeElement = document.getElementById(`node-${node.id}`);
-                if (!nodeElement) continue;
-                
-                // Получаем текущий уровень исследования
-                const currentLevel = gameStorage.getResearchLevel(node.id);
-                
-                // Определяем новое состояние узла
-                let nodeState = 'locked';
-                if (currentLevel > 0) {
-                    nodeState = 'researched';
-                } else if (this.isNodeAvailable(node)) {
-                    nodeState = 'available';
-                }
-                
-                // Удаляем все классы состояний
-                nodeElement.classList.remove('locked', 'available', 'researched');
-                
-                // Добавляем новый класс состояния
-                nodeElement.classList.add(nodeState);
-                
-                // Обновляем текст уровня
-                const levelElement = nodeElement.querySelector('.node-level');
-                if (levelElement) {
-                    levelElement.textContent = `Уровень: ${currentLevel}${node.maxLevel > 1 ? `/${node.maxLevel}` : ''}`;
-                }
-                
-                // Обновляем текст стоимости
-                const costElement = nodeElement.querySelector('.node-cost');
-                if (costElement && currentLevel < node.maxLevel) {
-                    const cost = this.calculateCost(node, currentLevel);
-                    costElement.textContent = `Стоимость: ${this.formatNumber(cost)}`;
-                }
-                
-                // Обновляем текст эффекта, если исследование открыто
-                const effectElement = nodeElement.querySelector('.node-effect');
-                if (currentLevel > 0) {
-                    if (effectElement) {
-                        effectElement.textContent = this.formatEffectShort(node, currentLevel);
-                    } else {
-                        // Если элемента эффекта нет, но он должен быть, создаем его
-                        const nodeContent = nodeElement.querySelector('.node-content');
-                        if (nodeContent) {
-                            const newEffectElement = document.createElement('div');
-                            newEffectElement.className = 'node-effect';
-                            newEffectElement.textContent = this.formatEffectShort(node, currentLevel);
-                            nodeContent.appendChild(newEffectElement);
-                        }
-                    }
-                } else if (effectElement) {
-                    // Если элемент эффекта есть, но исследование не открыто, удаляем его
-                    effectElement.remove();
-                }
-                
-                // Обновляем кнопки улучшения
-                const upgradeButtons = nodeElement.querySelector('.node-upgrade-buttons');
-                if (nodeState === 'available' || (nodeState === 'researched' && currentLevel < node.maxLevel)) {
-                    // Если кнопок нет, создаем их
-                    if (!upgradeButtons) {
-                        const newUpgradeButtons = document.createElement('div');
-                        newUpgradeButtons.className = 'node-upgrade-buttons';
-                        
-                        // Кнопка информации
-                        const infoBtn = document.createElement('button');
-                        infoBtn.className = 'info-btn';
-                        infoBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
-                        infoBtn.title = "Информация";
-                        infoBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            this.showResearchInfo(node);
-                        });
-                        newUpgradeButtons.appendChild(infoBtn);
-                        
-                        // Добавляем кнопки улучшения для доступных исследований
-                        if (!node.isSubResearch || currentLevel === 0) {
-                            const upgradeBtn = document.createElement('button');
-                            upgradeBtn.className = 'upgrade-btn';
-                            upgradeBtn.textContent = nodeState === 'available' ? 'Исследовать' : 'Улучшить';
-                            upgradeBtn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                this.handleNodeUpgrade(node, 1);
-                            });
-                            newUpgradeButtons.appendChild(upgradeBtn);
-                        }
-                        
-                        nodeElement.appendChild(newUpgradeButtons);
-                    }
-                } else if (upgradeButtons) {
-                    // Если кнопки есть, но они не должны отображаться, удаляем их
-                    upgradeButtons.remove();
-                }
+            // Обновляем классы
+            element.classList.remove('researched', 'available', 'locked');
+            
+            if (currentLevel > 0) {
+                element.classList.add('researched');
+                element.dataset.level = currentLevel;
+                element.querySelector('.node-level').textContent = 'Уровень: ' + currentLevel;
+                element.querySelector('.node-effect').innerHTML = this.formatEffectShort(node, currentLevel);
+            } else if (isAvailable) {
+                element.classList.add('available');
+                element.querySelector('.node-level').textContent = '';
+                element.querySelector('.node-effect').innerHTML = '';
+            } else {
+                element.classList.add('locked');
+                element.querySelector('.node-level').textContent = '';
+                element.querySelector('.node-effect').innerHTML = '';
             }
             
-            // Обновляем связи между узлами
-            this.updateConnections();
+            // Обновляем стоимость
+            const cost = this.calculateCost(node, currentLevel);
+            element.querySelector('.node-cost').textContent = this.formatNumber(cost);
             
-            console.log("Дерево исследований обновлено");
-        } catch (error) {
-            console.error("Ошибка при обновлении дерева:", error);
-        }
-    }
-    
-    /**
-     * Обновляет связи между узлами
-     */
-    updateConnections() {
-        try {
-            // Удаляем все существующие связи
-            const existingConnections = this.container.querySelectorAll('.tree-connection, .sub-research-connection');
-            existingConnections.forEach(conn => conn.remove());
-            
-            // Фильтруем узлы по текущему фильтру стадии
-            const nodesToShow = this.filterStage === 'all' 
-                ? this.researchNodes 
-                : this.researchNodes.filter(node => node.stage === this.filterStage);
-            
-            // Добавляем таймаут, чтобы DOM успел обновиться
-            setTimeout(() => {
-                // Отрисовываем основные связи
-                const mainNodes = nodesToShow.filter(node => !node.isSubResearch);
-                mainNodes.forEach(node => {
-                    if (node.parents && node.parents.length > 0) {
-                        node.parents.forEach(parentId => {
-                            const parentEl = document.getElementById(`node-${parentId}`);
-                            const childEl = document.getElementById(`node-${node.id}`);
-                            
-                            if (parentEl && childEl) {
-                                this.drawConnection(parentEl, childEl);
-                                console.log(`Нарисовано соединение от ${parentId} к ${node.id}`);
-                            } else {
-                                console.warn(`Не удалось найти элементы для соединения: ${parentId} -> ${node.id}`);
-                            }
-                        });
-                    }
-                });
-                
-                // Отрисовываем связи с дочерними исследованиями
-                const subNodes = nodesToShow.filter(node => node.isSubResearch);
-                subNodes.forEach(node => {
-                    if (node.parentResearch) {
-                        const parentEl = document.getElementById(`node-${node.parentResearch}`);
-                        const childEl = document.getElementById(`node-${node.id}`);
-                        
-                        if (parentEl && childEl) {
-                            this.drawSubConnection(parentEl, childEl);
-                            console.log(`Нарисовано соединение от ${node.parentResearch} к дочернему ${node.id}`);
-                        } else {
-                            console.warn(`Не удалось найти элементы для дочернего соединения: ${node.parentResearch} -> ${node.id}`);
-                        }
-                    }
-                });
-                
-                console.log("Соединения между узлами обновлены");
-            }, 100);
-        } catch (error) {
-            console.error("Ошибка при обновлении связей:", error);
-        }
+            // Обновляем подсказку
+            element.title = `${node.name} - ${node.description}
+Стоимость: ${this.formatNumber(cost)}
+${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не исследовано'}
+Макс. уровень: ${node.maxLevel}
+Эффект: ${this.formatEffect(node, currentLevel)}`;
+        });
     }
     
     /**
@@ -879,9 +702,9 @@ class ResearchTree {
     }
     
     /**
-     * Полное форматирование эффекта исследования
+     * Форматирует эффект исследования для отображения в подсказке
      * @param {Object} node - Данные узла исследования
-     * @param {number} level - Уровень исследования
+     * @param {number} level - Текущий уровень исследования
      * @returns {string} - Отформатированное описание эффекта
      */
     formatEffect(node, level) {
@@ -950,41 +773,101 @@ class ResearchTree {
     }
     
     /**
-     * Сокращенное форматирование эффекта для отображения в узле дерева
+     * Форматирует короткое описание эффекта для отображения в узле
      * @param {Object} node - Данные узла исследования
-     * @param {number} level - Уровень исследования
-     * @returns {string} - Сокращенное описание эффекта
+     * @param {number} level - Текущий уровень исследования
+     * @returns {string} - Короткое описание эффекта
      */
     formatEffectShort(node, level) {
-        const effect = this.calculateEffect(node, level);
+        const effectValue = node.effect.value + (node.effectPerLevel * (level - 1));
         
-        // Для дочерних исследований
-        if (node.isSubResearch) {
-            switch (node.effect.type) {
-                case 'click':
-                    return `+${(effect * 100).toFixed(0)}% клик`;
-                case 'passive':
-                    return `+${(effect * 100).toFixed(0)}% доход`;
-                case 'multiplier':
-                    return `+${(effect * 100).toFixed(0)}% множ.`;
-                default:
-                    return '';
-            }
-        }
-        
-        // Для обычных исследований
         switch (node.effect.type) {
             case 'click':
-                return `+${this.formatNumber(effect)} клик`;
+                // Округляем значение до 1 десятичного знака
+                const formattedClickValue = Number.isInteger(effectValue) ? 
+                    effectValue : parseFloat(effectValue.toFixed(1));
+                return `+${this.formatNumber(formattedClickValue)}/клик`;
+            
             case 'passive':
-                return `+${this.formatNumber(effect)} сек.`;
+                // Округляем значение до 1 десятичного знака
+                const formattedPassiveValue = Number.isInteger(effectValue) ? 
+                    effectValue : parseFloat(effectValue.toFixed(1));
+                return `+${this.formatNumber(formattedPassiveValue)}/сек`;
+            
             case 'multiplier':
-                return `+${(effect * level).toFixed(2)}% множ.`;
+                // Округляем значение множителя до десятых
+                const roundedMultiplier = parseFloat((effectValue * level).toFixed(1));
+                return `+${roundedMultiplier}%`;
+            
             default:
                 return '';
         }
     }
-    
+
+    /**
+     * Улучшает исследование на один уровень
+     * @param {string} nodeId - ID узла исследования
+     * @param {number} levels - Количество уровней для улучшения (по умолчанию 1)
+     */
+    upgradeResearch(nodeId, levels = 1) {
+        // Получаем данные узла
+        const node = this.getNodeById(nodeId);
+        if (!node) {
+            console.error(`Узел с ID ${nodeId} не найден`);
+            return false;
+        }
+        
+        // Проверяем, не достигнут ли максимальный уровень
+        const currentLevel = gameStorage.getResearchLevel(nodeId);
+        if (currentLevel >= node.maxLevel) {
+            showNotification(TEXTS.max_level);
+            playSound('error');
+            return false;
+        }
+        
+        // Рассчитываем стоимость для нескольких уровней
+        let totalCost = 0;
+        for (let i = 0; i < levels; i++) {
+            const level = currentLevel + i;
+            if (level >= node.maxLevel) break;
+            totalCost += this.calculateCost(node, level);
+        }
+        
+        // Проверяем, достаточно ли очков
+        if (gameStorage.gameData.points < totalCost) {
+            showNotification(TEXTS.not_enough_points);
+            playSound('error');
+            return false;
+        }
+        
+        // Вычитаем стоимость
+        gameStorage.gameData.points -= totalCost;
+        
+        // Добавляем к счетчику потраченных очков
+        gameStorage.addPointsSpent(totalCost);
+        
+        // Увеличиваем уровень исследования на заданное количество или до максимума
+        const newLevel = Math.min(currentLevel + levels, node.maxLevel);
+        gameStorage.setResearchLevel(nodeId, newLevel);
+        
+        // Обновляем отображение узла
+        this.updateNodeDisplay(nodeId);
+        
+        // Проверяем открытие новых узлов
+        this.updateNodesAvailability();
+        
+        // Обновляем игровые значения
+        updateGameValues();
+        
+        // Сохраняем прогресс
+        gameStorage.save();
+        
+        // Воспроизводим звук улучшения
+        playSound('upgrade');
+        
+        return true;
+    }
+
     /**
      * Показывает подробную информацию об исследовании
      * @param {Object} node - Данные узла исследования
@@ -1039,6 +922,9 @@ class ResearchTree {
             `;
         }
         
+        // Ищем доступные подисследования для этого узла
+        let subresearchHTML = this.generateSubresearchHTML(node, currentLevel);
+        
         // Формируем контент модального окна
         infoModal.innerHTML = `
             <div class="modal-content research-info-content">
@@ -1069,6 +955,7 @@ class ResearchTree {
                             <span><strong>Макс. уровень:</strong> ${node.maxLevel}</span>
                         </div>
                     </div>
+                    ${subresearchHTML}
                 </div>
                 <div class="modal-buttons research-info-buttons">
                     ${currentLevel < node.maxLevel ? `
@@ -1140,6 +1027,164 @@ class ResearchTree {
                 });
             }
         }
+        
+        // Добавляем обработчики для кнопок подисследований
+        const subresearchBtns = infoModal.querySelectorAll('.subresearch-unlock-btn');
+        subresearchBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const subresearchId = btn.getAttribute('data-subresearch-id');
+                this.unlockSubresearch(subresearchId);
+                // Обновляем секцию подисследований
+                const subresearchSection = infoModal.querySelector('.research-info-subresearch');
+                if (subresearchSection) {
+                    subresearchSection.innerHTML = this.generateSubresearchHTML(node, currentLevel);
+                    
+                    // Переподключаем обработчики событий
+                    const newSubresearchBtns = infoModal.querySelectorAll('.subresearch-unlock-btn');
+                    newSubresearchBtns.forEach(newBtn => {
+                        newBtn.addEventListener('click', () => {
+                            const newSubresearchId = newBtn.getAttribute('data-subresearch-id');
+                            this.unlockSubresearch(newSubresearchId);
+                        });
+                    });
+                }
+            });
+        });
+    }
+    
+    /**
+     * Генерирует HTML для отображения подисследований
+     * @param {Object} node - Основное исследование
+     * @param {number} currentLevel - Текущий уровень исследования
+     * @returns {string} - HTML для подисследований
+     */
+    generateSubresearchHTML(node, currentLevel) {
+        // Если подисследования не определены или уровень исследования недостаточен, возвращаем пустую строку
+        if (!SUBRESEARCH || currentLevel === 0) {
+            return '';
+        }
+        
+        // Находим подисследования, связанные с данным узлом
+        const relatedSubresearch = SUBRESEARCH.filter(sub => sub.parentId === node.id);
+        
+        // Если нет связанных подисследований, возвращаем пустую строку
+        if (relatedSubresearch.length === 0) {
+            return '';
+        }
+        
+        // Инициализируем хранилище для подисследований, если оно ещё не создано
+        if (!gameStorage.gameData.unlockedSubresearch) {
+            gameStorage.gameData.unlockedSubresearch = [];
+        }
+        
+        // Генерируем HTML для каждого подисследования
+        let subresearchItems = '';
+        
+        relatedSubresearch.forEach(sub => {
+            // Проверяем, разблокировано ли подисследование
+            const isUnlocked = gameStorage.gameData.unlockedSubresearch.includes(sub.id);
+            // Проверяем, доступно ли подисследование для разблокировки
+            const isAvailable = currentLevel >= sub.requiresLevel;
+            
+            if (isUnlocked) {
+                // Для разблокированных подисследований показываем информацию о бонусе
+                subresearchItems += `
+                    <div class="subresearch-item unlocked">
+                        <h4>${sub.name}</h4>
+                        <p>${sub.description}</p>
+                        <div class="subresearch-effect">
+                            <span class="subresearch-bonus">+${sub.multiplier}% к множителям дохода ${sub.reasonText}</span>
+                        </div>
+                    </div>
+                `;
+            } else if (isAvailable) {
+                // Для доступных, но не разблокированных подисследований показываем кнопку разблокировки
+                subresearchItems += `
+                    <div class="subresearch-item available">
+                        <h4>${sub.name}</h4>
+                        <p>${sub.description}</p>
+                        <div class="subresearch-cost">
+                            <span>${TEXTS.unlock_cost} ${this.formatNumber(sub.cost)}</span>
+                        </div>
+                        <button class="subresearch-unlock-btn" data-subresearch-id="${sub.id}">Разблокировать</button>
+                    </div>
+                `;
+            } else {
+                // Для недоступных подисследований показываем требуемый уровень
+                subresearchItems += `
+                    <div class="subresearch-item locked">
+                        <h4>${sub.name}</h4>
+                        <p>Требуется уровень исследования: ${sub.requiresLevel}</p>
+                    </div>
+                `;
+            }
+        });
+        
+        // Возвращаем полный HTML для секции подисследований
+        return `
+            <div class="research-info-subresearch">
+                <h3>${TEXTS.subresearch}</h3>
+                <div class="subresearch-list">
+                    ${subresearchItems}
+                </div>
+            </div>
+        `;
+    }
+    
+    /**
+     * Разблокирует подисследование
+     * @param {string} subresearchId - ID подисследования
+     */
+    unlockSubresearch(subresearchId) {
+        // Находим подисследование по ID
+        const subresearch = SUBRESEARCH.find(sub => sub.id === subresearchId);
+        
+        if (!subresearch) {
+            console.error(`Подисследование с ID ${subresearchId} не найдено`);
+            return;
+        }
+        
+        // Проверяем, хватает ли игроку очков
+        if (gameStorage.gameData.points < subresearch.cost) {
+            showNotification(TEXTS.not_enough_points);
+            playSound('error');
+            return;
+        }
+        
+        // Проверяем, не разблокировано ли уже это подисследование
+        if (!gameStorage.gameData.unlockedSubresearch) {
+            gameStorage.gameData.unlockedSubresearch = [];
+        }
+        
+        if (gameStorage.gameData.unlockedSubresearch.includes(subresearchId)) {
+            console.log(`Подисследование ${subresearchId} уже разблокировано`);
+            return;
+        }
+        
+        // Снимаем стоимость
+        gameStorage.gameData.points -= subresearch.cost;
+        gameStorage.gameData.pointsSpent += subresearch.cost;
+        
+        // Добавляем подисследование в список разблокированных
+        gameStorage.gameData.unlockedSubresearch.push(subresearchId);
+        
+        // Применяем множитель подисследования
+        if (!gameStorage.gameData.subresearchMultiplier) {
+            gameStorage.gameData.subresearchMultiplier = 0;
+        }
+        gameStorage.gameData.subresearchMultiplier += subresearch.multiplier / 100;
+        
+        // Обновляем игровые значения
+        updateGameValues();
+        
+        // Показываем уведомление
+        showNotification(`${TEXTS.subresearch_unlock} ${subresearch.name}`);
+        
+        // Воспроизводим звук
+        playSound('unlock');
+        
+        // Сохраняем прогресс
+        gameStorage.save();
     }
     
     /**
@@ -1162,21 +1207,6 @@ class ResearchTree {
     formatEffectFull(node, level) {
         const effect = this.calculateEffect(node, level);
         
-        // Для дочерних исследований описываем эффект по-другому
-        if (node.isSubResearch) {
-            switch (node.effect.type) {
-                case 'click':
-                    return `+${(effect * 100).toFixed(0)}% к силе клика основного исследования`;
-                case 'passive':
-                    return `+${(effect * 100).toFixed(0)}% к пассивному доходу основного исследования`;
-                case 'multiplier':
-                    return `+${(effect * 100).toFixed(0)}% к множителям дохода основного исследования`;
-                default:
-                    return '';
-            }
-        }
-        
-        // Для обычных исследований используем стандартное форматирование
         switch (node.effect.type) {
             case 'click':
                 return `+${this.formatNumber(effect)} к силе клика`;
@@ -1227,120 +1257,6 @@ class ResearchTree {
             showNotification(`${TEXTS.not_enough_points} Не хватает ${this.formatNumber(missingPoints)} очков.`);
             playSound('error');
         }
-    }
-
-    /**
-     * Отрисовывает соединение между родительским и дочерним узлами
-     * @param {HTMLElement} parentElement - DOM-элемент родительского узла
-     * @param {HTMLElement} childElement - DOM-элемент дочернего узла
-     */
-    drawConnection(parentElement, childElement) {
-        try {
-            // Получаем идентификаторы узлов для атрибутов data-*
-            const parentId = parentElement.dataset.id;
-            const childId = childElement.dataset.id;
-            
-            // Создаем элемент соединения
-            const connection = document.createElement('div');
-            connection.className = 'tree-connection';
-            connection.dataset.from = parentId;
-            connection.dataset.to = childId;
-            
-            // Получаем позиции и размеры узлов
-            const parentRect = parentElement.getBoundingClientRect();
-            const childRect = childElement.getBoundingClientRect();
-            const containerRect = this.container.getBoundingClientRect();
-            
-            // Вычисляем центры узлов относительно контейнера
-            const parentX = parentRect.left - containerRect.left + parentRect.width / 2;
-            const parentY = parentRect.top - containerRect.top + parentRect.height / 2;
-            const childX = childRect.left - containerRect.left + childRect.width / 2;
-            const childY = childRect.top - containerRect.top + childRect.height / 2;
-            
-            // Вычисляем длину и угол соединения
-            const dx = childX - parentX;
-            const dy = childY - parentY;
-            const length = Math.sqrt(dx * dx + dy * dy);
-            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-            
-            // Определяем, разблокировано ли дочернее исследование
-            const childLevel = gameStorage.getResearchLevel(childId);
-            if (childLevel > 0) {
-                connection.classList.add('active');
-            }
-            
-            // Устанавливаем стили соединения
-            connection.style.width = `${length}px`;
-            connection.style.left = `${parentX}px`;
-            connection.style.top = `${parentY}px`;
-            connection.style.transform = `rotate(${angle}deg)`;
-            
-            // Добавляем соединение в контейнер
-            this.container.appendChild(connection);
-        } catch (error) {
-            console.error("Ошибка при создании соединения:", error);
-        }
-    }
-
-    /**
-     * Отрисовывает соединение между дочерним и родительским исследованиями
-     * @param {HTMLElement} parentElement - DOM-элемент родительского узла
-     * @param {HTMLElement} childElement - DOM-элемент дочернего узла
-     */
-    drawSubConnection(parentElement, childElement) {
-        try {
-            const parentId = parentElement.dataset.id;
-            const childId = childElement.dataset.id;
-            
-            // Получаем размеры и позиции элементов
-            const parentRect = parentElement.getBoundingClientRect();
-            const childRect = childElement.getBoundingClientRect();
-            const containerRect = this.container.getBoundingClientRect();
-            
-            // Вычисляем позиции относительно контейнера
-            const parentX = parentRect.left - containerRect.left + parentRect.width / 2;
-            const parentY = parentRect.top - containerRect.top + parentRect.height / 2;
-            const childX = childRect.left - containerRect.left + childRect.width / 2;
-            const childY = childRect.top - containerRect.top + childRect.height / 2;
-            
-            // Вычисляем длину и угол линии
-            const dx = childX - parentX;
-            const dy = childY - parentY;
-            const length = Math.sqrt(dx * dx + dy * dy);
-            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-            
-            // Создаем DOM-элемент для соединения
-            const connection = document.createElement('div');
-            connection.className = 'sub-research-connection';
-            connection.dataset.from = parentId;
-            connection.dataset.to = childId;
-            
-            // Определяем, открыто ли дочернее исследование
-            const childLevel = gameStorage.getResearchLevel(childId);
-            if (childLevel > 0) {
-                connection.classList.add('active');
-            }
-            
-            // Применяем стили для позиционирования и поворота
-            connection.style.width = `${length}px`;
-            connection.style.left = `${parentX}px`;
-            connection.style.top = `${parentY}px`;
-            connection.style.transform = `rotate(${angle}deg)`;
-            
-            // Добавляем соединение в контейнер
-            this.container.appendChild(connection);
-        } catch (error) {
-            console.error("Ошибка при отрисовке соединения:", error);
-        }
-    }
-
-    /**
-     * Устанавливает размер контейнера для дерева
-     */
-    setContainerSize() {
-        // Устанавливаем минимальную высоту контейнера (в процентах от viewport height)
-        const heightInVh = this.maxY * 1.5; // По 1.5vh на каждый % по Y
-        this.container.style.minHeight = `${heightInVh}vh`;
     }
 }
 

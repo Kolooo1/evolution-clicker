@@ -212,31 +212,33 @@ class GameStorage {
     }
     
     /**
-     * Сбрасывает весь игровой прогресс
+     * Сбрасывает весь прогресс игры
      */
     resetProgress() {
-        // Сохраняем только настройки
-        const options = {...this.gameData.options};
-        
-        // Сбрасываем все остальные данные
-        this.gameData = {...this.defaultData};
-        
-        // Устанавливаем новое время начала сеанса
-        this.gameData.sessionStartTime = Date.now();
-        
-        // Сбрасываем общее время игры
-        this.gameData.totalPlayTime = 0;
-        
-        // Восстанавливаем настройки
-        this.gameData.options = options;
-        
-        // Обновляем время последнего сохранения
-        this.lastSessionTime = Date.now();
-        
-        // Сохраняем сброшенный прогресс
+        this.gameData = {
+            points: 0,
+            totalPoints: 0,
+            clickPower: 2.5,
+            passiveIncome: 1.0,
+            clickMultiplier: 1,
+            passiveMultiplier: 1,
+            totalClicks: 0,
+            research: {},
+            pointsSpent: 0,
+            unlockedAchievements: [],
+            unlockedSubresearch: [],
+            subresearchMultiplier: 0,
+            options: {
+                theme: "dark",
+                language: "ru",
+                soundEnabled: true
+            },
+            sessionStartTime: Date.now(),
+            totalPlayTime: 0
+        };
         this.save();
-        
-        console.log('Прогресс сброшен'); // Для отладки
+        this.lastSessionTime = Date.now();
+        console.log("Прогресс сброшен");
     }
 }
 
