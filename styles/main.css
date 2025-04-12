@@ -5,6 +5,7 @@
     --text-color: #333;
     --panel-bg: #fff;
     --button-bg: #4caf50;
+    --button-bg-rgb: 76, 175, 80;
     --button-hover: #45a049;
     --button-text: white;
     --tree-line-color: #888;
@@ -33,6 +34,7 @@
     --text-color: #eee;
     --panel-bg: #333;
     --button-bg: #2d6a30;
+    --button-bg-rgb: 45, 106, 48;
     --button-hover: #1e4b20;
     --button-text: #eee;
     --tree-line-color: #666;
@@ -120,6 +122,7 @@ body {
 .theme-toggle:hover, .language-toggle:hover, .reset-button:hover, .sound-toggle:hover, .achievements-button:hover {
     transform: scale(1.1);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    background-color: var(--button-hover);
 }
 
 /* Адаптивность для шапки на мобильных устройствах */
@@ -1691,8 +1694,8 @@ body:not(.dark-theme) .footer-copyright {
 /* Стили для кнопки бургер-меню и мобильного меню */
 .mobile-menu-toggle {
     display: none;
-    background: none;
-    border: none;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--button-bg);
     cursor: pointer;
     width: 40px;
     height: 40px;
@@ -1700,6 +1703,7 @@ body:not(.dark-theme) .footer-copyright {
     z-index: 1000;
     border-radius: 5px;
     position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .burger-line {
@@ -1761,22 +1765,30 @@ body:not(.dark-theme) .footer-copyright {
     color: var(--text-color);
     text-align: left;
     transition: all 0.2s ease;
-    border-radius: 0;
+    border-radius: 6px;
 }
 
 .mobile-menu-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(var(--button-bg-rgb), 0.1);
 }
 
 .mobile-icon {
     margin-right: 15px;
     font-size: 1.2rem;
-    width: 24px;
-    text-align: center;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--button-bg);
+    color: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .mobile-item-text {
     font-size: 1rem;
+    font-weight: 500;
 }
 
 .mobile-menu-separator {

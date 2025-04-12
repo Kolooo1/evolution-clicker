@@ -60,25 +60,25 @@ const RESEARCH_TREE = [
         name: "Большой взрыв",
         description: "Грандиозное событие, положившее начало расширению Вселенной примерно 13,8 миллиардов лет назад. В этот момент всё вещество и энергия были сконцентрированы в бесконечно малой точке, которая внезапно начала расширяться, создав пространство, время и фундаментальные силы природы.",
         baseCost: 10,
-        costMultiplier: 1.1,
+        costMultiplier: 1.2,
         maxLevel: 10,
         effect: { type: "click", value: 2.5 },
-        effectPerLevel: 1.2,
+        effectPerLevel: 1.5,
         x: 50, 
         y: 5,
         stage: "cosmos",
         parents: [],
-        requiredLevel: 0
+        requiredLevel: 1
     },
     {
         id: "hydrogen",
         name: "Водород",
         description: "Простейший и самый распространённый элемент во Вселенной, составляющий около 75% её барионной массы. Образовался в течение первых трех минут после Большого взрыва и стал строительным блоком для формирования звёзд и галактик. Один протон, один электрон — и вот он, первый элемент таблицы Менделеева.",
         baseCost: 50,
-        costMultiplier: 1.3,
+        costMultiplier: 1.4,
         maxLevel: 50,
         effect: { type: "passive", value: 1.7 },
-        effectPerLevel: 0.8,
+        effectPerLevel: 1.0,
         x: 50,
         y: 15,
         stage: "cosmos",
@@ -90,10 +90,10 @@ const RESEARCH_TREE = [
         name: "Расширение вселенной",
         description: "Фундаментальный космологический процесс, при котором метрика пространства-времени увеличивается со временем. Открытие расширения Вселенной, сделанное Эдвином Хабблом в 1929 году, перевернуло наше понимание космоса. С каждой секундой галактики отдаляются друг от друга, а пространство между ними растягивается, словно поверхность надувающегося воздушного шара.",
         baseCost: 75,
-        costMultiplier: 1.2,
+        costMultiplier: 1.3,
         maxLevel: 20,
         effect: { type: "multiplier", value: 0.15 },
-        effectPerLevel: 0.08,
+        effectPerLevel: 0.1,
         x: 75,
         y: 15,
         stage: "cosmos",
@@ -104,82 +104,82 @@ const RESEARCH_TREE = [
         id: "helium",
         name: "Гелий",
         description: "Второй элемент периодической таблицы и второй по распространённости во Вселенной после водорода. Назван в честь греческого бога солнца Гелиоса, так как был впервые обнаружен при наблюдении за солнечным затмением. Гелий является единственным элементом на Земле, который впервые был обнаружен вне планеты — на Солнце, по его спектральным линиям.",
-        baseCost: 200,
-        costMultiplier: 1.3,
+        baseCost: 300,
+        costMultiplier: 1.45,
         maxLevel: 40,
         effect: { type: "passive", value: 2.0 },
-        effectPerLevel: 1.2,
+        effectPerLevel: 1.5,
         x: 30,
         y: 25,
         stage: "cosmos",
         parents: ["hydrogen"],
-        requiredLevel: 3
+        requiredLevel: 1
     },
     {
         id: "stars",
         name: "Звёзды",
         description: "Массивные светящиеся небесные тела, состоящие из плазмы, удерживаемой силой собственной гравитации. Внутри звёзд под действием экстремальных температур и давления происходят термоядерные реакции, превращающие водород в гелий и высвобождающие колоссальное количество энергии. Современная астрофизика насчитывает более 100 миллиардов звёзд только в нашей галактике — Млечном Пути.",
-        baseCost: 500,
-        costMultiplier: 1.4,
+        baseCost: 800,
+        costMultiplier: 1.5,
         maxLevel: 100,
         effect: { type: "passive", value: 4.0 },
-        effectPerLevel: 2.0,
+        effectPerLevel: 2.5,
         x: 70,
         y: 25,
         stage: "cosmos",
         parents: ["hydrogen", "expansion"],
-        requiredLevel: 3
+        requiredLevel: 1
     },
     {
         id: "cosmic_dust",
         name: "Космическая пыль",
         description: "Мельчайшие частицы материи в межзвёздном пространстве.",
-        baseCost: 250,
-        costMultiplier: 1.3,
+        baseCost: 400,
+        costMultiplier: 1.4,
         maxLevel: 60,
         effect: { type: "passive", value: 2.5 },
-        effectPerLevel: 1.5,
+        effectPerLevel: 1.8,
         x: 25,
         y: 35,
         stage: "cosmos",
         parents: ["helium"],
-        requiredLevel: 4
+        requiredLevel: 1
     },
     {
         id: "galaxies",
         name: "Галактики",
         description: "Гигантские скопления звёзд, газа и пыли.",
-        baseCost: 800,
-        costMultiplier: 1.5,
+        baseCost: 1200,
+        costMultiplier: 1.6,
         maxLevel: 25,
         effect: { type: "multiplier", value: 0.25 },
-        effectPerLevel: 0.12,
+        effectPerLevel: 0.15,
         x: 85,
         y: 35,
         stage: "cosmos",
         parents: ["stars", "expansion"],
-        requiredLevel: 4
+        requiredLevel: 1
     },
     {
         id: "heavyelements",
         name: "Тяжёлые элементы",
         description: "Элементы, создаваемые внутри звёзд.",
-        baseCost: 1000,
-        costMultiplier: 1.4,
+        baseCost: 1500,
+        costMultiplier: 1.5,
         maxLevel: 30,
         effect: { type: "passive", value: 8 },
-        effectPerLevel: 3.5,
+        effectPerLevel: 4.0,
         x: 50,
         y: 35,
         stage: "cosmos",
         parents: ["helium", "stars"],
-        requiredLevel: 5
+        requiredLevel: 1
     },
     {
         id: "starlight",
         name: "Звёздный свет",
         description: "Энергия, излучаемая звёздами в виде электромагнитных волн.",
-        baseCost: 1500,
+        baseCost: 2500,
         costMultiplier: 1.4,
         maxLevel: 80,
         effect: { type: "passive", value: 6 },
@@ -188,37 +188,37 @@ const RESEARCH_TREE = [
         y: 45,
         stage: "cosmos",
         parents: ["cosmic_dust"],
-        requiredLevel: 5
+        requiredLevel: 1
     },
     {
         id: "blackholes",
         name: "Чёрные дыры",
         description: "Области пространства-времени с экстремальным гравитационным притяжением.",
-        baseCost: 2000,
+        baseCost: 3500,
         costMultiplier: 1.6,
         maxLevel: 15,
         effect: { type: "multiplier", value: 0.35 },
-        effectPerLevel: 0.17,
+        effectPerLevel: 0.18,
         x: 80,
         y: 45,
         stage: "cosmos",
         parents: ["galaxies", "heavyelements"],
-        requiredLevel: 3
+        requiredLevel: 1
     },
     {
         id: "solarsystem",
         name: "Солнечная система",
-        description: "Звезда и окружающие её планеты.",
+        description: "Планетная система, включающая Солнце и объекты, вращающиеся вокруг него.",
         baseCost: 5000,
         costMultiplier: 1.5,
-        maxLevel: 120,
-        effect: { type: "passive", value: 12 },
-        effectPerLevel: 6.0,
+        maxLevel: 50,
+        effect: { type: "passive", value: 18 },
+        effectPerLevel: 7.0,
         x: 50,
         y: 45,
         stage: "cosmos",
-        parents: ["heavyelements"],
-        requiredLevel: 5
+        parents: ["heavyelements", "stars"],
+        requiredLevel: 1
     },
     {
         id: "asteroid_belt",
@@ -233,7 +233,7 @@ const RESEARCH_TREE = [
         y: 55,
         stage: "cosmos",
         parents: ["solarsystem"],
-        requiredLevel: 5
+        requiredLevel: 1
     },
     {
         id: "terrestrialplanets",
@@ -248,7 +248,7 @@ const RESEARCH_TREE = [
         y: 55,
         stage: "cosmos",
         parents: ["solarsystem"],
-        requiredLevel: 8
+        requiredLevel: 1
     },
     {
         id: "comet",
@@ -263,22 +263,22 @@ const RESEARCH_TREE = [
         y: 65,
         stage: "cosmos",
         parents: ["terrestrialplanets"],
-        requiredLevel: 10
+        requiredLevel: 1
     },
     {
         id: "earth",
         name: "Земля",
-        description: "Единственная известная планета, на которой существует жизнь.",
-        baseCost: 25000,
+        description: "Третья от Солнца планета, единственное известное космическое тело, населённое живыми организмами.",
+        baseCost: 10000,
         costMultiplier: 1.6,
-        maxLevel: 1,
-        effect: { type: "multiplier", value: 0.7 },
-        effectPerLevel: 0,
+        maxLevel: 60,
+        effect: { type: "passive", value: 25 },
+        effectPerLevel: 10,
         x: 50,
-        y: 65,
+        y: 60,
         stage: "cosmos",
-        parents: ["terrestrialplanets"],
-        requiredLevel: 15
+        parents: ["solarsystem"],
+        requiredLevel: 1
     },
     
     // ЖИЗНЬ
@@ -287,10 +287,10 @@ const RESEARCH_TREE = [
         name: "Вода",
         description: "Основа всей жизни на Земле.",
         baseCost: 50000,
-        costMultiplier: 1.4,
+        costMultiplier: 1.5,
         maxLevel: 150,
         effect: { type: "passive", value: 40 },
-        effectPerLevel: 18,
+        effectPerLevel: 25,
         x: 50,
         y: 75,
         stage: "life",
@@ -302,15 +302,15 @@ const RESEARCH_TREE = [
         name: "Аминокислоты",
         description: "Органические соединения, строительные блоки белков.",
         baseCost: 75000,
-        costMultiplier: 1.5,
+        costMultiplier: 1.6,
         maxLevel: 100,
         effect: { type: "passive", value: 50 },
-        effectPerLevel: 25,
+        effectPerLevel: 35,
         x: 30,
         y: 85,
         stage: "life",
         parents: ["water"],
-        requiredLevel: 5
+        requiredLevel: 1
     },
     {
         id: "protein",
@@ -325,7 +325,7 @@ const RESEARCH_TREE = [
         y: 85,
         stage: "life",
         parents: ["water"],
-        requiredLevel: 10
+        requiredLevel: 1
     },
     {
         id: "rna",
@@ -340,13 +340,13 @@ const RESEARCH_TREE = [
         y: 95,
         stage: "life",
         parents: ["amino_acids", "protein"],
-        requiredLevel: 15
+        requiredLevel: 1
     },
     {
         id: "dna",
         name: "ДНК",
         description: "Дезоксирибонуклеиновая кислота, носитель генетической информации.",
-        baseCost: 250000,
+        baseCost: 500000,
         costMultiplier: 1.7,
         maxLevel: 50,
         effect: { type: "multiplier", value: 0.45 },
@@ -355,13 +355,13 @@ const RESEARCH_TREE = [
         y: 105,
         stage: "life",
         parents: ["rna"],
-        requiredLevel: 20
+        requiredLevel: 1
     },
     {
         id: "cell",
         name: "Клетка",
         description: "Основная структурная и функциональная единица всех живых организмов.",
-        baseCost: 500000,
+        baseCost: 1000000,
         costMultiplier: 1.7,
         maxLevel: 200,
         effect: { type: "passive", value: 170 },
@@ -370,13 +370,13 @@ const RESEARCH_TREE = [
         y: 105,
         stage: "life",
         parents: ["rna"],
-        requiredLevel: 25
+        requiredLevel: 1
     },
     {
         id: "bacteria",
         name: "Бактерии",
         description: "Одноклеточные микроорганизмы.",
-        baseCost: 750000,
+        baseCost: 1500000,
         costMultiplier: 1.6,
         maxLevel: 250,
         effect: { type: "passive", value: 250 },
@@ -385,13 +385,13 @@ const RESEARCH_TREE = [
         y: 115,
         stage: "life",
         parents: ["cell"],
-        requiredLevel: 30
+        requiredLevel: 1
     },
     {
         id: "multicellular",
         name: "Многоклеточные",
         description: "Организмы, состоящие из множества клеток.",
-        baseCost: 1000000,
+        baseCost: 2000000,
         costMultiplier: 1.6,
         maxLevel: 180,
         effect: { type: "passive", value: 350 },
@@ -400,7 +400,7 @@ const RESEARCH_TREE = [
         y: 115,
         stage: "life",
         parents: ["cell", "dna"],
-        requiredLevel: 35
+        requiredLevel: 1
     },
     {
         id: "photosynthesis",
@@ -415,7 +415,7 @@ const RESEARCH_TREE = [
         y: 115,
         stage: "life",
         parents: ["cell"],
-        requiredLevel: 20
+        requiredLevel: 1
     },
     {
         id: "plants",
@@ -430,7 +430,7 @@ const RESEARCH_TREE = [
         y: 125,
         stage: "life",
         parents: ["multicellular", "photosynthesis"],
-        requiredLevel: 40
+        requiredLevel: 1
     },
     {
         id: "invertebrates",
@@ -445,7 +445,7 @@ const RESEARCH_TREE = [
         y: 125,
         stage: "life",
         parents: ["multicellular"],
-        requiredLevel: 50
+        requiredLevel: 1
     },
     {
         id: "vertebrates",
@@ -460,7 +460,7 @@ const RESEARCH_TREE = [
         y: 125,
         stage: "life",
         parents: ["multicellular"],
-        requiredLevel: 60
+        requiredLevel: 1
     },
     {
         id: "reptiles",
@@ -475,7 +475,7 @@ const RESEARCH_TREE = [
         y: 135,
         stage: "life",
         parents: ["vertebrates"],
-        requiredLevel: 50
+        requiredLevel: 1
     },
     {
         id: "mammals",
@@ -490,13 +490,13 @@ const RESEARCH_TREE = [
         y: 135,
         stage: "life",
         parents: ["vertebrates"],
-        requiredLevel: 80
+        requiredLevel: 1
     },
     {
         id: "primates",
         name: "Приматы",
         description: "Отряд плацентарных млекопитающих, включающий обезьян и людей.",
-        baseCost: 15000000,
+        baseCost: 25000000,
         costMultiplier: 1.7,
         maxLevel: 120,
         effect: { type: "passive", value: 1000 },
@@ -505,13 +505,13 @@ const RESEARCH_TREE = [
         y: 145,
         stage: "life",
         parents: ["mammals"],
-        requiredLevel: 100
+        requiredLevel: 1
     },
     {
         id: "hominids",
         name: "Гоминиды",
         description: "Семейство приматов, включающее людей и их вымерших родственников.",
-        baseCost: 25000000,
+        baseCost: 50000000,
         costMultiplier: 1.8,
         maxLevel: 50,
         effect: { type: "multiplier", value: 0.5 },
@@ -520,7 +520,7 @@ const RESEARCH_TREE = [
         y: 155,
         stage: "life",
         parents: ["primates"],
-        requiredLevel: 100
+        requiredLevel: 1
     },
     
     // ИНТЕЛЛЕКТ
@@ -537,7 +537,7 @@ const RESEARCH_TREE = [
         y: 165,
         stage: "intellect",
         parents: ["hominids"],
-        requiredLevel: 50
+        requiredLevel: 1
     },
     {
         id: "tools",
@@ -597,7 +597,7 @@ const RESEARCH_TREE = [
         y: 185,
         stage: "intellect",
         parents: ["tools", "language"],
-        requiredLevel: 20
+        requiredLevel: 1
     },
     {
         id: "cities",
@@ -612,7 +612,7 @@ const RESEARCH_TREE = [
         y: 185,
         stage: "intellect",
         parents: ["language", "fire"],
-        requiredLevel: 30
+        requiredLevel: 1
     },
     {
         id: "writing",
@@ -627,7 +627,7 @@ const RESEARCH_TREE = [
         y: 195,
         stage: "intellect",
         parents: ["cities"],
-        requiredLevel: 50
+        requiredLevel: 1
     },
     {
         id: "mathematics",
@@ -642,7 +642,7 @@ const RESEARCH_TREE = [
         y: 205,
         stage: "intellect",
         parents: ["writing"],
-        requiredLevel: 30
+        requiredLevel: 1
     },
     {
         id: "philosophy",
@@ -658,7 +658,7 @@ const RESEARCH_TREE = [
         y: 205,
         stage: "intellect",
         parents: ["writing"],
-        requiredLevel: 40
+        requiredLevel: 1
     },
     {
         id: "science",
@@ -673,7 +673,7 @@ const RESEARCH_TREE = [
         y: 215,
         stage: "intellect",
         parents: ["mathematics", "philosophy"],
-        requiredLevel: 60
+        requiredLevel: 1
     },
     {
         id: "industrial_age",
@@ -688,7 +688,7 @@ const RESEARCH_TREE = [
         y: 225,
         stage: "intellect",
         parents: ["science"],
-        requiredLevel: 80
+        requiredLevel: 1
     },
     {
         id: "electricity",
@@ -703,7 +703,7 @@ const RESEARCH_TREE = [
         y: 225,
         stage: "intellect",
         parents: ["science"],
-        requiredLevel: 100
+        requiredLevel: 1
     },
     {
         id: "computer",
@@ -718,7 +718,7 @@ const RESEARCH_TREE = [
         y: 235,
         stage: "intellect",
         parents: ["electricity"],
-        requiredLevel: 50
+        requiredLevel: 1
     },
     {
         id: "internet",
@@ -733,7 +733,7 @@ const RESEARCH_TREE = [
         y: 245,
         stage: "intellect",
         parents: ["computer"],
-        requiredLevel: 100
+        requiredLevel: 1
     },
     {
         id: "ai",
@@ -748,7 +748,7 @@ const RESEARCH_TREE = [
         y: 245,
         stage: "intellect",
         parents: ["computer"],
-        requiredLevel: 150
+        requiredLevel: 1
     },
     {
         id: "singularity",
@@ -763,7 +763,22 @@ const RESEARCH_TREE = [
         y: 255,
         stage: "intellect",
         parents: ["internet", "ai"],
-        requiredLevel: 200
+        requiredLevel: 1
+    },
+    {
+        id: "nebulae",
+        name: "Туманности",
+        description: "Облака пыли, газа и плазмы в межзвёздном пространстве.",
+        baseCost: 4000,
+        costMultiplier: 1.5,
+        maxLevel: 40,
+        effect: { type: "passive", value: 12 },
+        effectPerLevel: 5.0,
+        x: 30,
+        y: 45,
+        stage: "cosmos",
+        parents: ["heavyelements", "cosmic_dust"],
+        requiredLevel: 1
     }
 ];
 

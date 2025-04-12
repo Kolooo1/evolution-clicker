@@ -604,10 +604,10 @@ function animateValue(element) {
  */
 function updateGameValues() {
     // Базовое значение силы клика
-    let baseClickPower = 2; // Увеличено с 1
+    let baseClickPower = 2.5; // Увеличено с 2
     
     // Базовое значение пассивного дохода
-    let basePassiveIncome = 0.5; // Добавлен стартовый пассивный доход
+    let basePassiveIncome = 1.0; // Увеличено с 0.5
     
     // Сбрасываем множители до 1
     let clickMultiplier = gameStorage.gameData.clickMultiplier;
@@ -647,9 +647,9 @@ function updateGameValues() {
         }
     }
     
-    // Применяем множители
-    gameStorage.gameData.clickPower = baseClickPower * clickMultiplier;
-    gameStorage.gameData.passiveIncome = basePassiveIncome * passiveMultiplier;
+    // Применяем множители с дополнительным бонусным коэффициентом
+    gameStorage.gameData.clickPower = baseClickPower * clickMultiplier * 1.2; // Добавлен множитель 1.2
+    gameStorage.gameData.passiveIncome = basePassiveIncome * passiveMultiplier * 1.3; // Добавлен множитель 1.3
     
     // Округляем значения до 2 знаков после запятой для лучшего отображения
     gameStorage.gameData.clickPower = Math.round(gameStorage.gameData.clickPower * 100) / 100;
