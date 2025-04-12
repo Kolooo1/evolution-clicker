@@ -1086,242 +1086,194 @@ body:not(.dark-theme) .tree-node.available {
 }
 
 .upgrade-btn {
-    border: none;
-    background-color: #2d6a30;
-    color: white;
-    border-radius: 4px;
-    padding: 2px 4px;
+    padding: 3px 6px;
     font-size: 0.7rem;
+    background-color: rgba(0, 150, 255, 0.7);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
     cursor: pointer;
+    margin: 0 2px;
     transition: all 0.2s;
 }
 
-.upgrade-btn:hover {
-    background-color: #3e8a40;
+.info-btn {
+    padding: 3px 6px;
+    font-size: 0.7rem;
+    background-color: rgba(100, 100, 100, 0.7);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 2px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-btn:hover {
+    background-color: rgba(120, 120, 120, 0.9);
     transform: scale(1.1);
 }
 
-/* Стили для кнопок улучшения в светлой теме */
-body:not(.dark-theme) .node-upgrade-buttons {
-    background-color: rgba(225, 245, 254, 0.9);
-    border: 1px solid #03a9f4;
-    box-shadow: 0 3px 8px rgba(3, 169, 244, 0.4);
-    border-radius: 20px;
-    padding: 4px 8px;
-}
-
-body:not(.dark-theme) .upgrade-btn {
-    background-color: #039be5;
+.dark-theme .info-btn {
+    background-color: rgba(70, 70, 70, 0.7);
     color: white;
-    border-radius: 12px;
-    font-weight: 600;
-    padding: 3px 6px;
-    transition: all 0.2s ease;
 }
 
-body:not(.dark-theme) .upgrade-btn:hover {
-    background-color: #0288d1;
+.dark-theme .info-btn:hover {
+    background-color: rgba(90, 90, 90, 0.9);
+}
+
+/* Стили для модального окна с информацией о исследовании */
+.research-info-modal .modal-content {
+    max-width: 450px;
+    width: 90%;
+}
+
+.research-info-header {
+    background-color: var(--button-bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.research-info-body {
+    padding: 15px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.research-info-description {
+    margin-bottom: 15px;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.research-info-parents {
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.dark-theme .research-info-parents {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.research-info-current, .research-info-next-level {
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.research-info-current {
+    background-color: rgba(0, 120, 255, 0.1);
+}
+
+.dark-theme .research-info-current {
+    background-color: rgba(0, 120, 255, 0.2);
+}
+
+.research-info-next-level {
+    background-color: rgba(0, 200, 100, 0.1);
+}
+
+.dark-theme .research-info-next-level {
+    background-color: rgba(0, 200, 100, 0.2);
+}
+
+.research-info-current h3, .research-info-next-level h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.research-info-effect {
+    font-size: 0.95rem;
+    margin-top: 8px;
+}
+
+.research-info-cost {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+}
+
+.research-info-stats {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+}
+
+.dark-theme .research-info-stats {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.research-info-stat {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.research-info-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding-top: 0;
+}
+
+.research-upgrade-btn {
+    padding: 8px 15px;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: bold;
+}
+
+.research-upgrade-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 2px 4px rgba(3, 169, 244, 0.4);
+    box-shadow: 0 0 10px rgba(0, 120, 255, 0.5);
 }
 
-/* Улучшаем внешний вид для разных состояний узла */
-.tree-node.researched .node-upgrade-buttons {
-    border: 1px solid rgba(75, 230, 255, 0.4);
-}
-
-.tree-node.researched .upgrade-btn {
-    background-color: #2a85a0;
-}
-
-.tree-node.researched .upgrade-btn:hover {
-    background-color: #3aa8c5;
-}
-
-/* Стили для светлой темы - исследованные узлы */
-body:not(.dark-theme) .tree-node.researched .node-upgrade-buttons {
-    border: 1px solid rgba(3, 169, 244, 0.4);
-    background-color: rgba(225, 245, 254, 0.95);
-}
-
-body:not(.dark-theme) .tree-node.researched .upgrade-btn {
-    background-color: #0288d1;
-}
-
-body:not(.dark-theme) .tree-node.researched .upgrade-btn:hover {
-    background-color: #0277bd;
-}
-
-.tree-node.locked .node-upgrade-buttons {
-    display: none; /* Скрываем кнопки для заблокированных узлов */
-}
-
-/* Адаптивность для кнопок улучшения */
+/* Адаптация для мобильных устройств */
 @media (max-width: 768px) {
-    h1 {
-        font-size: 1.6rem;
+    .research-info-modal .modal-content {
+        width: 95%;
+        max-height: 85vh;
     }
     
-    .header-controls button {
-        font-size: 1.4rem;
-        margin-left: 10px;
+    .research-info-body {
+        max-height: 65vh;
     }
     
-    .main-button {
-        width: 150px;
-        height: 150px;
-        font-size: 1.2rem;
-    }
-    
-    .stat {
-        padding: 8px 10px;
-        min-width: 100px;
-    }
-    
-    .stat-label {
-        font-size: 0.9rem;
-        margin-bottom: 6px;
-    }
-    
-    .stat-value {
+    .research-info-header h2 {
         font-size: 1.3rem;
     }
     
-    .tree-container {
-        padding: 10px;
-    }
-    
-    .node-upgrade-buttons {
-        padding: 2px 4px;
-    }
-    
-    .upgrade-btn {
-        padding: 1px 3px;
-        font-size: 0.65rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .game-container {
-        padding: 10px;
-    }
-    
-    header {
-        flex-direction: column;
-        gap: 10px;
-        padding: 12px;
-    }
-    
-    .stats-panel {
-        padding: 15px 10px;
-    }
-    
-    .stat {
-        min-width: 80px;
-        padding: 6px 8px;
-    }
-    
-    .stat-label {
-        font-size: 0.8rem;
-    }
-    
-    .stat-value {
-        font-size: 1.1rem;
-    }
-    
-    .main-button {
-        width: 120px;
-        height: 120px;
+    .research-info-current h3, .research-info-next-level h3 {
         font-size: 1rem;
     }
     
-    .achievements-list {
-        grid-template-columns: 1fr;
+    .research-info-buttons {
+        flex-wrap: wrap;
     }
-    
-    /* Скрываем управление масштабом на мобильных устройствах */
-    .tree-zoom-controls {
-        display: none;
-    }
-    
-    /* Оптимизируем отображение узлов исследований на мобильных устройствах */
-    .tree-node {
-        width: 110px; 
-        height: 110px;
-        padding: 5px;
-        font-size: 0.85em;
-        margin: 15px; /* Добавляем внешние отступы между узлами */
-        box-shadow: 0 0 15px rgba(0, 120, 255, 0.5); /* Усиливаем свечение для лучшей видимости */
-    }
-    
-    /* Настраиваем контейнер дерева для мобильных устройств */
-    .research-tree {
-        padding: 15px 25px;
-        min-height: 3200px; /* Увеличиваем высоту с 2600px до 3200px для большего пространства */
-        transform-origin: top center !important; /* Фиксируем точку трансформации */
-        margin-bottom: 30px; /* Добавляем отступ снизу */
-    }
-    
-    /* Настраиваем размер текста внутри узлов */
-    .tree-node .node-title {
-        font-size: 0.65rem;
-        margin-bottom: 3px;
-        font-weight: bold; /* Делаем заголовок жирным для лучшей читаемости */
-    }
-    
-    .tree-node .node-effect {
-        font-size: 0.7rem;
-        margin-top: 2px;
-    }
-    
-    .tree-node .node-cost {
-        font-size: 0.65rem;
-        margin-top: 2px;
-    }
-    
-    .tree-node .node-level {
-        font-size: 0.65rem;
-    }
-    
-    /* Улучшаем отображение дерева исследований */
-    .tree-container {
-        overflow-x: auto; /* Добавляем горизонтальную прокрутку при необходимости */
-        margin-top: 10px;
-        -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
-    }
-    
-    /* Кнопки улучшения для узлов */
-    .node-upgrade-buttons {
-        margin-top: 4px;
-    }
-    
-    .upgrade-btn {
+}
+
+/* Стили для мобильной версии кнопки информации */
+@media (max-width: 480px) {
+    .info-btn {
         padding: 2px 5px;
         font-size: 0.65rem;
-        margin: 0 1px;
     }
     
-    /* Улучшаем навигацию по дереву на мобильных устройствах */
-    .tree-navigation {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background-color: var(--bg-color);
-        padding: 5px 0;
-        margin-bottom: 10px;
-    }
-    
-    .tree-nav-tabs {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-    
-    .tree-nav-tab {
-        padding: 5px 0;
-        font-size: 0.85rem;
-        flex: 1;
-        text-align: center;
+    .node-upgrade-buttons {
+        gap: 3px;
     }
 }
 

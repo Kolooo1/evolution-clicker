@@ -438,6 +438,16 @@ class ResearchTree {
         const upgradeButtons = document.createElement('div');
         upgradeButtons.className = 'node-upgrade-buttons';
         
+        // Кнопка информации
+        const infoBtn = document.createElement('button');
+        infoBtn.className = 'info-btn';
+        infoBtn.innerHTML = 'ℹ️';
+        infoBtn.title = 'Подробная информация';
+        infoBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.showResearchInfo(node);
+        });
+        
         // Кнопка +10
         const upgradeBtn10 = document.createElement('button');
         upgradeBtn10.className = 'upgrade-btn';
@@ -457,6 +467,7 @@ class ResearchTree {
         });
         
         // Добавляем кнопки в контейнер
+        upgradeButtons.appendChild(infoBtn);
         upgradeButtons.appendChild(upgradeBtn10);
         upgradeButtons.appendChild(upgradeBtn100);
         
@@ -855,6 +866,235 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
         playSound('upgrade');
         
         return true;
+    }
+
+    /**
+     * Показывает подробную информацию об исследовании
+     * @param {Object} node - Данные узла исследования
+     */
+    showResearchInfo(node) {
+        // Получаем текущий уровень исследования
+        const currentLevel = gameStorage.getResearchLevel(node.id);
+        
+        // Создаем модальное окно для отображения информации
+        const infoModal = document.createElement('div');
+        infoModal.className = 'modal research-info-modal';
+        infoModal.id = 'research-info-modal';
+        
+        // Вычисляем эффекты для текущего и следующего уровня
+        const currentEffect = this.calculateEffect(node, currentLevel);
+        const nextEffect = currentLevel < node.maxLevel 
+            ? this.calculateEffect(node, currentLevel + 1) 
+            : null;
+        
+        // Вычисляем стоимость следующего уровня
+        const nextLevelCost = currentLevel < node.maxLevel 
+            ? this.calculateCost(node, currentLevel) 
+            : null;
+            
+        // Создаем HTML для текущего и следующего уровня
+        let nextLevelHTML = '';
+        if (nextEffect !== null) {
+            nextLevelHTML = `
+                <div class="research-info-next-level">
+                    <h3>Следующий уровень ${currentLevel + 1}/${node.maxLevel}</h3>
+                    <div class="research-info-cost">
+                        <span>Стоимость: ${this.formatNumber(nextLevelCost)}</span>
+                    </div>
+                    <div class="research-info-effect">
+                        <span>${this.formatEffectFull(node, currentLevel + 1)}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Определяем родительские исследования и их требуемый уровень
+        let parentsHTML = '';
+        if (node.parents && node.parents.length > 0) {
+            const parentsList = node.parents.map(parentId => {
+                const parentNode = this.researchNodes.find(n => n.id === parentId);
+                return `${parentNode ? parentNode.name : parentId} (${node.requiredLevel})`;
+            }).join(', ');
+            parentsHTML = `
+                <div class="research-info-parents">
+                    <span><strong>Требуется:</strong> ${parentsList}</span>
+                </div>
+            `;
+        }
+        
+        // Формируем контент модального окна
+        infoModal.innerHTML = `
+            <div class="modal-content research-info-content">
+                <div class="modal-header research-info-header">
+                    <h2>${node.name}</h2>
+                    <button id="close-research-info" class="close-modal">&times;</button>
+                </div>
+                <div class="research-info-body">
+                    <div class="research-info-description">
+                        <p>${node.description}</p>
+                    </div>
+                    ${parentsHTML}
+                    <div class="research-info-current">
+                        <h3>Текущий уровень: ${currentLevel}/${node.maxLevel}</h3>
+                        <div class="research-info-effect">
+                            <span>${currentLevel > 0 ? this.formatEffectFull(node, currentLevel) : 'Не исследовано'}</span>
+                        </div>
+                    </div>
+                    ${nextLevelHTML}
+                    <div class="research-info-stats">
+                        <div class="research-info-stat">
+                            <span><strong>Базовая стоимость:</strong> ${this.formatNumber(node.baseCost)}</span>
+                        </div>
+                        <div class="research-info-stat">
+                            <span><strong>Множитель стоимости:</strong> ${node.costMultiplier}x</span>
+                        </div>
+                        <div class="research-info-stat">
+                            <span><strong>Макс. уровень:</strong> ${node.maxLevel}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-buttons research-info-buttons">
+                    ${currentLevel < node.maxLevel ? `
+                        <button id="research-upgrade-1" class="research-upgrade-btn">+1</button>
+                        <button id="research-upgrade-10" class="research-upgrade-btn">+10</button>
+                        <button id="research-upgrade-max" class="research-upgrade-btn">МАКС</button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+        
+        // Добавляем модальное окно в DOM
+        document.body.appendChild(infoModal);
+        
+        // Удаляем существующее модальное окно при открытии нового
+        const existingModal = document.getElementById('research-info-modal');
+        if (existingModal && existingModal !== infoModal) {
+            existingModal.remove();
+        }
+        
+        // Показываем модальное окно
+        setTimeout(() => {
+            infoModal.classList.remove('hidden');
+        }, 10);
+        
+        // Добавляем обработчики событий для кнопок
+        const closeBtn = infoModal.querySelector('#close-research-info');
+        closeBtn.addEventListener('click', () => {
+            infoModal.classList.add('hidden');
+            setTimeout(() => {
+                infoModal.remove();
+            }, 300);
+        });
+        
+        // Закрытие по клику вне модального окна
+        infoModal.addEventListener('click', (e) => {
+            if (e.target === infoModal) {
+                infoModal.classList.add('hidden');
+                setTimeout(() => {
+                    infoModal.remove();
+                }, 300);
+            }
+        });
+        
+        // Добавляем обработчики для кнопок улучшения, если они есть
+        if (currentLevel < node.maxLevel) {
+            const upgrade1Btn = infoModal.querySelector('#research-upgrade-1');
+            const upgrade10Btn = infoModal.querySelector('#research-upgrade-10');
+            const upgradeMaxBtn = infoModal.querySelector('#research-upgrade-max');
+            
+            if (upgrade1Btn) {
+                upgrade1Btn.addEventListener('click', () => {
+                    this.handleNodeUpgrade(node, 1);
+                    infoModal.remove();
+                });
+            }
+            
+            if (upgrade10Btn) {
+                upgrade10Btn.addEventListener('click', () => {
+                    this.handleNodeUpgrade(node, 10);
+                    infoModal.remove();
+                });
+            }
+            
+            if (upgradeMaxBtn) {
+                upgradeMaxBtn.addEventListener('click', () => {
+                    this.handleNodeUpgradeMax(node);
+                    infoModal.remove();
+                });
+            }
+        }
+    }
+    
+    /**
+     * Рассчитывает эффект исследования для заданного уровня
+     * @param {Object} node - Данные узла исследования
+     * @param {number} level - Уровень исследования
+     * @returns {number} - Значение эффекта
+     */
+    calculateEffect(node, level) {
+        if (level <= 0) return 0;
+        return node.effect.value + node.effectPerLevel * (level - 1);
+    }
+    
+    /**
+     * Полное форматирование эффекта исследования
+     * @param {Object} node - Данные узла исследования
+     * @param {number} level - Уровень исследования
+     * @returns {string} - Отформатированное описание эффекта
+     */
+    formatEffectFull(node, level) {
+        const effect = this.calculateEffect(node, level);
+        
+        switch (node.effect.type) {
+            case 'click':
+                return `+${this.formatNumber(effect)} к силе клика`;
+            case 'passive':
+                return `+${this.formatNumber(effect)} к пассивному доходу в секунду`;
+            case 'multiplier':
+                return `+${(effect * level).toFixed(2)}% к множителям дохода`;
+            default:
+                return '';
+        }
+    }
+    
+    /**
+     * Улучшает исследование на максимально возможное количество уровней
+     * @param {Object} node - Данные узла исследования
+     */
+    handleNodeUpgradeMax(node) {
+        const currentLevel = gameStorage.getResearchLevel(node.id);
+        const maxPossibleLevels = node.maxLevel - currentLevel;
+        
+        if (maxPossibleLevels <= 0) {
+            showNotification(TEXTS.max_level);
+            return;
+        }
+        
+        // Находим максимальное количество уровней, которое можем купить
+        let affordableLevels = 0;
+        let totalCost = 0;
+        let points = gameStorage.gameData.points;
+        
+        for (let i = 0; i < maxPossibleLevels; i++) {
+            const cost = this.calculateCost(node, currentLevel + i);
+            if (points >= cost) {
+                points -= cost;
+                totalCost += cost;
+                affordableLevels++;
+            } else {
+                break;
+            }
+        }
+        
+        if (affordableLevels > 0) {
+            this.handleNodeUpgrade(node, affordableLevels);
+        } else {
+            // Вычисляем стоимость следующего уровня
+            const nextLevelCost = this.calculateCost(node, currentLevel);
+            const missingPoints = nextLevelCost - gameStorage.gameData.points;
+            showNotification(`${TEXTS.not_enough_points} Не хватает ${this.formatNumber(missingPoints)} очков.`);
+            playSound('error');
+        }
     }
 }
 
