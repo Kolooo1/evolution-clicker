@@ -119,6 +119,18 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.theme-toggle svg, .language-toggle svg, .reset-button svg, .sound-toggle svg, .achievements-button svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+    stroke-width: 2;
+    transition: all 0.2s;
+}
+
+.theme-toggle:hover svg, .language-toggle:hover svg, .reset-button:hover svg, .sound-toggle:hover svg, .achievements-button:hover svg {
+    transform: scale(1.1);
+}
+
 .theme-toggle:hover, .language-toggle:hover, .reset-button:hover, .sound-toggle:hover, .achievements-button:hover {
     transform: scale(1.1);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
@@ -212,8 +224,24 @@ body {
 }
 
 .stat-icon {
-    margin-left: 5px;
-    font-size: 1.2rem;
+    margin-left: 8px;
+    font-size: 1.1rem;
+    opacity: 0.8;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--text-color);
+    stroke-width: 2;
+}
+
+.dark-theme .stat-icon svg {
+    stroke: white;
 }
 
 /* Адаптивность для панели статистики */
@@ -426,25 +454,30 @@ body {
 .main-button {
     width: 200px;
     height: 200px;
-    border-radius: 50%;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    font-size: 1.3rem;
-    font-weight: bold;
+    background: linear-gradient(135deg, var(--button-bg), var(--button-hover));
     border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
     cursor: pointer;
-    transition: transform 0.1s, background-color 0.3s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    line-height: 1.2;
+    transition: all 0.2s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    text-align: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.main-button .evolution-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
 }
 
 .main-button:hover {
-    background-color: var(--button-hover);
+    transform: scale(1.05);
 }
 
 .main-button:active {
@@ -1775,8 +1808,8 @@ body:not(.dark-theme) .footer-copyright {
 .mobile-icon {
     margin-right: 15px;
     font-size: 1.2rem;
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1784,6 +1817,13 @@ body:not(.dark-theme) .footer-copyright {
     color: white;
     border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: white;
+    stroke-width: 2;
 }
 
 .mobile-item-text {
