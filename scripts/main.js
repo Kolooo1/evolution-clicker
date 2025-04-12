@@ -613,7 +613,10 @@ function updateGameValues() {
     let clickMultiplier = gameStorage.gameData.clickMultiplier;
     let passiveMultiplier = gameStorage.gameData.passiveMultiplier;
     
-    // Проходим по всем исследованиям
+    // Мапы для хранения бонусов от дочерних исследований по родительским ID
+    const parentMultipliers = {};
+    
+    // Сначала проходим по всем дочерним исследованиям, чтобы собрать их эффекты
     for (const researchId in gameStorage.gameData.research) {
         // Получаем уровень исследования
         const level = gameStorage.gameData.research[researchId];
@@ -624,8 +627,41 @@ function updateGameValues() {
             const research = RESEARCH_TREE.find(item => item.id === researchId);
             if (!research) continue;
             
-            // Рассчитываем эффект исследования
-            const effectValue = research.effect.value + (research.effectPerLevel * (level - 1));
+            // Если это дочернее исследование, добавляем его эффект в соответствующую категорию
+            if (research.isSubResearch && research.parentResearch) {
+                // Если это первое дочернее исследование для данного родителя, инициализируем множитель
+                if (!parentMultipliers[research.parentResearch]) {
+                    parentMultipliers[research.parentResearch] = 1.0;
+                }
+                
+                // Рассчитываем эффект дочернего исследования
+                const effectValue = research.effect.value;
+                
+                // Увеличиваем множитель родительского исследования
+                parentMultipliers[research.parentResearch] += effectValue;
+            }
+        }
+    }
+    
+    // Теперь проходим по всем основным исследованиям
+    for (const researchId in gameStorage.gameData.research) {
+        // Получаем уровень исследования
+        const level = gameStorage.gameData.research[researchId];
+        
+        // Проверяем, что уровень больше 0
+        if (level > 0) {
+            // Ищем данные исследования
+            const research = RESEARCH_TREE.find(item => item.id === researchId);
+            if (!research) continue;
+            
+            // Пропускаем дочерние исследования, т.к. мы их уже обработали выше
+            if (research.isSubResearch) continue;
+            
+            // Получаем множитель для данного исследования от его дочерних исследований
+            const subResearchMultiplier = parentMultipliers[researchId] || 1.0;
+            
+            // Рассчитываем эффект исследования с учетом множителя от дочерних исследований
+            let effectValue = (research.effect.value + (research.effectPerLevel * (level - 1))) * subResearchMultiplier;
             
             // Применяем эффект в зависимости от типа
             switch (research.effect.type) {

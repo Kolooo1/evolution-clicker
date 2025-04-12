@@ -43,7 +43,7 @@ const TEXTS = {
  * description: краткое описание
  * baseCost: начальная стоимость
  * costMultiplier: множитель для повышения стоимости с каждым уровнем
- * maxLevel: максимальный уровень исследования
+ * maxLevel: максимальный уровень исследования (1 для одноразовых)
  * effect: {type, value} - тип и базовое значение эффекта
  *   - type: тип эффекта (click, passive, multiplier)
  *   - value: исходное значение эффекта
@@ -52,6 +52,9 @@ const TEXTS = {
  * stage: стадия эволюции (cosmos, life, intellect)
  * parents: [ids] - идентификаторы родительских исследований, необходимых для открытия
  * requiredLevel: минимальный уровень родительских исследований
+ * subResearch: [] - дочерние исследования (для основных исследований)
+ * isSubResearch: boolean - флаг, указывающий, что исследование является дочерним (для дочерних)
+ * parentResearch: string - ссылка на родительское исследование (для дочерних)
  */
 const RESEARCH_TREE = [
     // КОСМОС
@@ -68,7 +71,35 @@ const RESEARCH_TREE = [
         y: 5,
         stage: "cosmos",
         parents: [],
-        requiredLevel: 1
+        requiredLevel: 1,
+        subResearch: [
+            {
+                id: "bigbang_aftermath",
+                name: "Последствия Большого взрыва",
+                description: "Первые микросекунды после Большого взрыва, когда формировались фундаментальные силы природы.",
+                baseCost: 25,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "multiplier", value: 0.1 },
+                effectPerLevel: 0,
+                stage: "cosmos",
+                isSubResearch: true,
+                parentResearch: "bigbang"
+            },
+            {
+                id: "cosmic_inflation",
+                name: "Космическая инфляция",
+                description: "Стремительное расширение вселенной в первые мгновения её существования.",
+                baseCost: 40,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "click", value: 1.2 },
+                effectPerLevel: 0,
+                stage: "cosmos",
+                isSubResearch: true,
+                parentResearch: "bigbang"
+            }
+        ]
     },
     {
         id: "hydrogen",
@@ -128,7 +159,35 @@ const RESEARCH_TREE = [
         y: 25,
         stage: "cosmos",
         parents: ["hydrogen", "expansion"],
-        requiredLevel: 1
+        requiredLevel: 1,
+        subResearch: [
+            {
+                id: "redgiant",
+                name: "Красный гигант",
+                description: "Звезда на поздней стадии эволюции, когда она исчерпала запасы водорода в ядре и значительно увеличилась в размерах.",
+                baseCost: 1200,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "passive", value: 0.3 },
+                effectPerLevel: 0,
+                stage: "cosmos",
+                isSubResearch: true,
+                parentResearch: "stars"
+            },
+            {
+                id: "whitedwarf",
+                name: "Белый карлик",
+                description: "Остаток звезды средней массы, потерявшей свои внешние слои и сжавшейся до размеров Земли при сохранении значительной части массы.",
+                baseCost: 1500,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "passive", value: 0.4 },
+                effectPerLevel: 0,
+                stage: "cosmos",
+                isSubResearch: true,
+                parentResearch: "stars"
+            }
+        ]
     },
     {
         id: "cosmic_dust",
@@ -375,17 +434,45 @@ const RESEARCH_TREE = [
     {
         id: "bacteria",
         name: "Бактерии",
-        description: "Одноклеточные микроорганизмы.",
-        baseCost: 1500000,
+        description: "Одноклеточные микроорганизмы без ядра, одни из первых форм жизни на Земле.",
+        baseCost: 5000,
         costMultiplier: 1.3,
-        maxLevel: 250,
-        effect: { type: "passive", value: 250 },
-        effectPerLevel: 100,
-        x: 30,
-        y: 115,
+        maxLevel: 100,
+        effect: { type: "passive", value: 15 },
+        effectPerLevel: 5.0,
+        x: 15,
+        y: 65,
         stage: "life",
-        parents: ["cell"],
-        requiredLevel: 1
+        parents: ["simple_cell"],
+        requiredLevel: 1,
+        subResearch: [
+            {
+                id: "cyanobacteria",
+                name: "Цианобактерии",
+                description: "Фотосинтезирующие бактерии, первые организмы, начавшие производить кислород на Земле.",
+                baseCost: 7000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "multiplier", value: 0.2 },
+                effectPerLevel: 0,
+                stage: "life",
+                isSubResearch: true,
+                parentResearch: "bacteria"
+            },
+            {
+                id: "extremophiles",
+                name: "Экстремофилы",
+                description: "Бактерии, способные выживать в экстремальных условиях, таких как высокая температура, кислотность или соленость.",
+                baseCost: 8000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "passive", value: 4.0 },
+                effectPerLevel: 0,
+                stage: "life",
+                isSubResearch: true,
+                parentResearch: "bacteria"
+            }
+        ]
     },
     {
         id: "multicellular",
@@ -981,5 +1068,188 @@ const ACHIEVEMENTS = [
         icon: "🌱",
         requirement: { type: "research", id: "first_cell", value: 25 },
         reward: { type: "passive_multi", value: 0.2 }
+    },
+    {
+        id: "fish",
+        name: "Рыбы",
+        description: "Хордовые водные позвоночные животные.",
+        baseCost: 25000,
+        costMultiplier: 1.4,
+        maxLevel: 50,
+        effect: { type: "click", value: 50 },
+        effectPerLevel: 10,
+        x: 40,
+        y: 85,
+        stage: "life",
+        parents: ["multicellular"],
+        requiredLevel: 1,
+        subResearch: [
+            {
+                id: "sharks",
+                name: "Акулы",
+                description: "Древнейшие представители хрящевых рыб, появившиеся более 400 миллионов лет назад и практически не изменившиеся с тех пор.",
+                baseCost: 30000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "click", value: 0.15 },
+                effectPerLevel: 0,
+                stage: "life",
+                isSubResearch: true,
+                parentResearch: "fish"
+            },
+            {
+                id: "rays",
+                name: "Скаты",
+                description: "Хрящевые рыбы, родственные акулам, с уплощенным телом и грудными плавниками, образующими характерный диск.",
+                baseCost: 32000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "click", value: 0.15 },
+                effectPerLevel: 0,
+                stage: "life",
+                isSubResearch: true,
+                parentResearch: "fish"
+            },
+            {
+                id: "tuna",
+                name: "Тунцы",
+                description: "Быстрые океанические хищники, способные поддерживать температуру тела выше окружающей среды.",
+                baseCost: 35000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "passive", value: 5.0 },
+                effectPerLevel: 0,
+                stage: "life",
+                isSubResearch: true,
+                parentResearch: "fish"
+            }
+        ]
+    },
+    {
+        id: "humans",
+        name: "Человек разумный",
+        description: "Вид приматов семейства гоминидов, единственный современный представитель рода Homo.",
+        baseCost: 500000,
+        costMultiplier: 1.5,
+        maxLevel: 25,
+        effect: { type: "multiplier", value: 1.0 },
+        effectPerLevel: 0.5,
+        x: 50,
+        y: 125,
+        stage: "intellect",
+        parents: ["primates"],
+        requiredLevel: 1
+    },
+    {
+        id: "stone_age",
+        name: "Каменный век",
+        description: "Древнейший период в развитии человечества, характеризующийся использованием каменных орудий труда.",
+        baseCost: 800000,
+        costMultiplier: 1.5,
+        maxLevel: 20,
+        effect: { type: "click", value: 250 },
+        effectPerLevel: 50,
+        x: 30,
+        y: 135,
+        stage: "intellect",
+        parents: ["humans"],
+        requiredLevel: 1,
+        subResearch: [
+            {
+                id: "fire_control",
+                name: "Контроль огня",
+                description: "Овладение способностью поддерживать и использовать огонь для приготовления пищи, обогрева и защиты.",
+                baseCost: 850000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "multiplier", value: 0.3 },
+                effectPerLevel: 0,
+                stage: "intellect",
+                isSubResearch: true,
+                parentResearch: "stone_age"
+            },
+            {
+                id: "stone_tools",
+                name: "Каменные орудия",
+                description: "Создание и совершенствование орудий из камня для охоты и обработки материалов.",
+                baseCost: 900000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "click", value: 50 },
+                effectPerLevel: 0,
+                stage: "intellect",
+                isSubResearch: true,
+                parentResearch: "stone_age"
+            },
+            {
+                id: "cave_paintings",
+                name: "Пещерная живопись",
+                description: "Первые изображения животных и сцен охоты на стенах пещер, свидетельствующие о развитии абстрактного мышления.",
+                baseCost: 950000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "passive", value: 30 },
+                effectPerLevel: 0,
+                stage: "intellect",
+                isSubResearch: true,
+                parentResearch: "stone_age"
+            }
+        ]
+    },
+    {
+        id: "bronze_age",
+        name: "Бронзовый век",
+        description: "Период в истории человечества, характеризующийся ведущей ролью изделий из бронзы.",
+        baseCost: 1200000,
+        costMultiplier: 1.5,
+        maxLevel: 20,
+        effect: { type: "passive", value: 500 },
+        effectPerLevel: 100,
+        x: 70,
+        y: 135,
+        stage: "intellect",
+        parents: ["humans"],
+        requiredLevel: 1,
+        subResearch: [
+            {
+                id: "bronze_metallurgy",
+                name: "Бронзовая металлургия",
+                description: "Открытие способа получения бронзы путем соединения меди с оловом или мышьяком.",
+                baseCost: 1300000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "passive", value: 100 },
+                effectPerLevel: 0,
+                stage: "intellect",
+                isSubResearch: true,
+                parentResearch: "bronze_age"
+            },
+            {
+                id: "agriculture",
+                name: "Земледелие",
+                description: "Развитие систематического возделывания растений и одомашнивания животных.",
+                baseCost: 1350000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "multiplier", value: 0.4 },
+                effectPerLevel: 0,
+                stage: "intellect",
+                isSubResearch: true,
+                parentResearch: "bronze_age"
+            },
+            {
+                id: "writing",
+                name: "Письменность",
+                description: "Создание символических систем для записи информации и знаний.",
+                baseCost: 1400000,
+                costMultiplier: 1.0,
+                maxLevel: 1,
+                effect: { type: "click", value: 80 },
+                effectPerLevel: 0,
+                stage: "intellect",
+                isSubResearch: true,
+                parentResearch: "bronze_age"
+            }
+        ]
     }
 ]; 
