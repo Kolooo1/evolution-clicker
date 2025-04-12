@@ -35,11 +35,35 @@ const totalProgressDisplay = document.getElementById('total-progress');
 let gameUpdateInterval;
 let footerStatsInterval;
 
+// Модальное окно для отображения оффлайн-прогресса
+const offlineProgressModal = document.createElement('div');
+offlineProgressModal.id = 'offline-progress-modal';
+offlineProgressModal.className = 'modal hidden';
+offlineProgressModal.innerHTML = `
+    <div class="modal-content">
+        <h2>Оффлайн-прогресс</h2>
+        <p id="offline-progress-message">Пока вас не было, вы заработали:</p>
+        <div class="offline-progress-amount">
+            <span id="offline-points-amount">0</span>
+            <span class="stat-icon">🧬</span>
+        </div>
+        <div class="modal-buttons">
+            <button id="collect-offline-progress">Забрать</button>
+        </div>
+    </div>
+`;
+document.body.appendChild(offlineProgressModal);
+const collectOfflineButton = document.getElementById('collect-offline-progress');
+const offlinePointsAmount = document.getElementById('offline-points-amount');
+
 /**
  * Инициализация игры
  */
 function initGame() {
     console.log('Инициализация игры...');
+    
+    // Проверяем оффлайн-прогресс
+    checkOfflineProgress();
     
     // Применяем сохраненную тему
     applyTheme(gameStorage.gameData.options.theme);
@@ -610,6 +634,53 @@ function handleLanguageToggle() {
     // Перезагружаем страницу для применения нового языка
     // В реальном приложении здесь бы шла логика смены языка без перезагрузки
     location.reload();
+}
+
+/**
+ * Проверяет и начисляет оффлайн-прогресс
+ */
+function checkOfflineProgress() {
+    const lastLogout = gameStorage.gameData.lastLogout;
+    
+    // Если это первый запуск или нет пассивного дохода, пропускаем
+    if (!lastLogout || gameStorage.gameData.passiveIncome <= 0) {
+        return;
+    }
+    
+    const now = Date.now();
+    const offlineTime = now - lastLogout; // Время в миллисекундах
+    
+    // Только если прошло более 20 секунд
+    if (offlineTime < 20000) {
+        return;
+    }
+    
+    // Рассчитываем заработанные очки (с ограничением на 24 часа)
+    const maxOfflineSeconds = 24 * 60 * 60; // 24 часа в секундах
+    const offlineSeconds = Math.min(offlineTime / 1000, maxOfflineSeconds);
+    const earnedPoints = Math.floor(gameStorage.gameData.passiveIncome * offlineSeconds);
+    
+    if (earnedPoints > 0) {
+        // Показываем модальное окно с оффлайн-прогрессом
+        offlinePointsAmount.textContent = formatNumber(earnedPoints);
+        offlineProgressModal.classList.remove('hidden');
+        
+        // Добавляем обработчик для кнопки
+        collectOfflineButton.onclick = () => {
+            // Начисляем очки
+            gameStorage.gameData.points += earnedPoints;
+            gameStorage.gameData.totalPoints += earnedPoints;
+            
+            // Скрываем модальное окно
+            offlineProgressModal.classList.add('hidden');
+            
+            // Обновляем отображение очков
+            updateStats();
+            
+            // Удаляем обработчик событий
+            collectOfflineButton.onclick = null;
+        };
+    }
 }
 
 // Инициализация игры при полной загрузке DOM

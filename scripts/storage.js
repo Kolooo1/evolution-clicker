@@ -25,6 +25,7 @@ class GameStorage {
             clickMultiplier: 1, // Множитель для клика
             passiveMultiplier: 1, // Множитель для пассивного дохода
             lastSave: Date.now(), // Время последнего сохранения
+            lastLogout: null, // Время последнего выхода из игры
             research: {}, // Прогресс исследований (id: level)
             unlockedAchievements: [], // Список разблокированных достижений (массив id)
             achievements: {}, // Разблокированные достижения (id: true) - для обратной совместимости
@@ -144,6 +145,8 @@ class GameStorage {
         
         // Также сохраняем при закрытии страницы
         window.addEventListener('beforeunload', () => {
+            // Сохраняем время выхода для механики оффлайн-прогресса
+            this.gameData.lastLogout = Date.now();
             this.save();
         });
     }
