@@ -1114,7 +1114,7 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                 subresearchItems += `
                     <div class="subresearch-item locked">
                         <h4>${sub.name}</h4>
-                        <p>Требуется уровень исследования: ${sub.requiresLevel}</p>
+                        <p>Недоступно</p>
                     </div>
                 `;
             }
