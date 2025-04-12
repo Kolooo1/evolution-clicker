@@ -1083,8 +1083,8 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
         relatedSubresearch.forEach(sub => {
             // Проверяем, разблокировано ли подисследование
             const isUnlocked = gameStorage.gameData.unlockedSubresearch.includes(sub.id);
-            // Проверяем, доступно ли подисследование для разблокировки
-            const isAvailable = currentLevel >= sub.requiresLevel;
+            // Всегда устанавливаем доступность в true, убирая проверку уровня
+            const isAvailable = true;
             
             if (isUnlocked) {
                 // Для разблокированных подисследований показываем информацию о бонусе
@@ -1110,7 +1110,7 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                     </div>
                 `;
             } else {
-                // Для недоступных подисследований показываем требуемый уровень
+                // Для недоступных подисследований показываем требуемый уровень (этот блок теперь не будет использоваться)
                 subresearchItems += `
                     <div class="subresearch-item locked">
                         <h4>${sub.name}</h4>
