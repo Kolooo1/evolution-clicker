@@ -2352,6 +2352,424 @@ body:not(.dark-theme) .footer-copyright {
 .subresearch-item[data-type="light"]::before {
     content: '💡' !important;
 }
+.subresearch-item[data-type="hydroelectric"]::before {
+    content: '💧' !important;
+}
+
+.subresearch-item[data-type="biomass"]::before {
+    content: '🌱' !important;
+}
+
+.subresearch-item[data-type="battery"]::before {
+    content: '🔋' !important;
+}
+
+/* Технологии */
+.subresearch-item[data-type="robotics"]::before {
+    content: '🤖' !important;
+}
+
+.subresearch-item[data-type="computer"]::before {
+    content: '💻' !important;
+}
+
+.subresearch-item[data-type="ai"]::before {
+    content: '🧠' !important;
+}
+
+.subresearch-item[data-type="network"]::before {
+    content: '🌐' !important;
+}
+
+.subresearch-item[data-type="communication"]::before {
+    content: '📡' !important;
+}
+
+.subresearch-item[data-type="quantum_computing"]::before {
+    content: '🔢' !important;
+}
+
+.subresearch-item[data-type="vr"]::before {
+    content: '🥽' !important;
+}
+
+.subresearch-item[data-type="cybernetics"]::before {
+    content: '👁' !important;
+}
+
+.subresearch-item[data-type="interface"]::before {
+    content: '🖥' !important;
+}
+
+.subresearch-item[data-type="algorithm"]::before {
+    content: '🧮' !important;
+}
+
+.subresearch-item[data-type="encryption"]::before {
+    content: '🔒' !important;
+}
+
+.subresearch-item[data-type="semiconductor"]::before {
+    content: '💎' !important;
+}
+
+.subresearch-item[data-type="nanotech"]::before {
+    content: '🔬' !important;
+}
+
+/* Космос и исследования */
+.subresearch-item[data-type="space"]::before {
+    content: '🚀' !important;
+}
+
+.subresearch-item[data-type="spacecraft"]::before {
+    content: '🛸' !important;
+}
+
+.subresearch-item[data-type="satellite"]::before {
+    content: '🛰' !important;
+}
+
+.subresearch-item[data-type="spacestation"]::before {
+    content: '🏠' !important;
+}
+
+.subresearch-item[data-type="colonization"]::before {
+    content: '🏙' !important;
+}
+
+.subresearch-item[data-type="terraform"]::before {
+    content: '🌍' !important;
+}
+
+.subresearch-item[data-type="propulsion"]::before {
+    content: '🔥' !important;
+}
+
+.subresearch-item[data-type="asteroid_mining"]::before {
+    content: '⛏️' !important;
+}
+
+/* Медицина и здоровье */
+.subresearch-item[data-type="medicine"]::before {
+    content: '🩺' !important;
+}
+
+.subresearch-item[data-type="vaccine"]::before {
+    content: '💉' !important;
+}
+
+.subresearch-item[data-type="surgery"]::before {
+    content: '🔪' !important;
+}
+
+.subresearch-item[data-type="biotech"]::before {
+    content: '🧬' !important;
+}
+
+.subresearch-item[data-type="organ"]::before {
+    content: '❤️' !important;
+}
+
+.subresearch-item[data-type="neurology"]::before {
+    content: '🧠' !important;
+}
+
+.subresearch-item[data-type="immunology"]::before {
+    content: '🛡' !important;
+}
+
+.subresearch-item[data-type="longevity"]::before {
+    content: '⏳' !important;
+}
+
+.subresearch-item[data-type="diagnostic"]::before {
+    content: '🔍' !important;
+}
+
+.subresearch-item[data-type="therapy"]::before {
+    content: '💊' !important;
+}
+
+/* Материалы и производство */
+.subresearch-item[data-type="material"]::before {
+    content: '🧰' !important;
+}
+
+.subresearch-item[data-type="composite"]::before {
+    content: '🧩' !important;
+}
+
+.subresearch-item[data-type="metal"]::before {
+    content: '🔨' !important;
+}
+
+.subresearch-item[data-type="ceramic"]::before {
+    content: '🏺' !important;
+}
+
+.subresearch-item[data-type="alloy"]::before {
+    content: '⚔️' !important;
+}
+
+.subresearch-item[data-type="polymer"]::before {
+    content: '📎' !important;
+}
+
+.subresearch-item[data-type="graphene"]::before {
+    content: '📄' !important;
+}
+
+.subresearch-item[data-type="manufacturing"]::before {
+    content: '🏭' !important;
+}
+
+.subresearch-item[data-type="metallurgy"]::before {
+    content: '🔥' !important;
+}
+
+.subresearch-item[data-type="textile"]::before {
+    content: '🧵' !important;
+}
+.subresearch-item[data-type="cell"]::before {
+    content: '🦠' !important;
+}
+
+.subresearch-item[data-type="virus"]::before {
+    content: '🦠' !important;
+}
+
+.subresearch-item[data-type="bacteria"]::before {
+    content: '🧫' !important;
+}
+
+.subresearch-item[data-type="microbiology"]::before {
+    content: '🔍' !important;
+}
+
+.subresearch-item[data-type="genetics"]::before {
+    content: '👥' !important;
+}
+
+.subresearch-item[data-type="protein"]::before {
+    content: '🥩' !important;
+}
+
+.subresearch-item[data-type="evolution"]::before {
+    content: '🐒' !important;
+}
+
+.subresearch-item[data-type="ecosystem"]::before {
+    content: '🌳' !important;
+}
+
+/* Физика и смежные науки */
+.subresearch-item[data-type="physics"]::before {
+    content: '⚛️' !important;
+}
+
+.subresearch-item[data-type="quantum"]::before {
+    content: '🌀' !important;
+}
+
+.subresearch-item[data-type="relativity"]::before {
+    content: '🌠' !important;
+}
+
+.subresearch-item[data-type="mechanics"]::before {
+    content: '⚙️' !important;
+}
+
+.subresearch-item[data-type="electromagnetism"]::before {
+    content: '🧲' !important;
+}
+
+.subresearch-item[data-type="optics"]::before {
+    content: '👁' !important;
+}
+
+.subresearch-item[data-type="thermodynamics"]::before {
+    content: '🌡' !important;
+}
+
+.subresearch-item[data-type="string_theory"]::before {
+    content: '🎻' !important;
+}
+
+.subresearch-item[data-type="particle"]::before {
+    content: '✨' !important;
+}
+
+.subresearch-item[data-type="gravity"]::before {
+    content: '🪨' !important;
+}
+
+.subresearch-item[data-type="superconductivity"]::before {
+    content: '⚡️' !important;
+}
+
+/* Химия */
+.subresearch-item[data-type="chemistry"]::before {
+    content: '⚗️' !important;
+}
+
+.subresearch-item[data-type="organic"]::before {
+    content: '🍃' !important;
+}
+
+.subresearch-item[data-type="inorganic"]::before {
+    content: '🧪' !important;
+}
+
+.subresearch-item[data-type="polymer"]::before {
+    content: '📎' !important;
+}
+
+.subresearch-item[data-type="catalyst"]::before {
+    content: '⚡️' !important;
+}
+
+.subresearch-item[data-type="reaction"]::before {
+    content: '💥' !important;
+}
+
+.subresearch-item[data-type="element"]::before {
+    content: '🔢' !important;
+}
+
+.subresearch-item[data-type="molecular"]::before {
+    content: '🧪' !important;
+}
+
+/* Астрономия и космические науки */
+.subresearch-item[data-type="astronomy"]::before {
+    content: '🔭' !important;
+}
+
+.subresearch-item[data-type="star"]::before {
+    content: '⭐️' !important;
+}
+
+.subresearch-item[data-type="planet"]::before {
+    content: '🪐' !important;
+}
+
+.subresearch-item[data-type="galaxy"]::before {
+    content: '🌌' !important;
+}
+
+.subresearch-item[data-type="cosmic"]::before {
+    content: '☄️' !important;
+}
+
+.subresearch-item[data-type="nebula"]::before {
+    content: '🌫' !important;
+}
+
+.subresearch-item[data-type="blackhole"]::before {
+    content: '⚫️' !important;
+}
+
+.subresearch-item[data-type="pulsar"]::before {
+    content: '💫' !important;
+}
+
+.subresearch-item[data-type="moon"]::before {
+    content: '🌙' !important;
+}
+
+.subresearch-item[data-type="asteroid"]::before {
+    content: '☄️' !important;
+}
+
+.subresearch-item[data-type="comet"]::before {
+    content: '💫' !important;
+}
+
+/* Энергия */
+.subresearch-item[data-type="energy"]::before {
+    content: '⚡️' !important;
+}
+
+.subresearch-item[data-type="solar"]::before {
+    content: '☀️' !important;
+}
+
+.subresearch-item[data-type="wind"]::before {
+    content: '💨' !important;
+}
+
+.subresearch-item[data-type="nuclear"]::before {
+    content: '☢️' !important;
+}
+
+.subresearch-item[data-type="fusion"]::before {
+    content: '🌟' !important;
+}
+
+.subresearch-item[data-type="geothermal"]::before {
+    content: '♨️' !important;
+}
+.subresearch-item[data-type="insect"]::before {
+    content: '🐝' !important;
+}
+
+.subresearch-item[data-type="mammal"]::before {
+    content: '🐘' !important;
+}
+
+.subresearch-item[data-type="bird"]::before {
+    content: '🦅' !important;
+}
+
+.subresearch-item[data-type="fish"]::before {
+    content: '🐟' !important;
+}
+
+.subresearch-item[data-type="reptile"]::before {
+    content: '🦎' !important;
+}
+
+.subresearch-item[data-type="amphibian"]::before {
+    content: '🐸' !important;
+}
+
+/* Фантастические и продвинутые технологии */
+.subresearch-item[data-type="alien"]::before {
+    content: '👽' !important;
+}
+
+.subresearch-item[data-type="cyborg"]::before {
+    content: '🤖' !important;
+}
+
+.subresearch-item[data-type="antimatter"]::before {
+    content: '💫' !important;
+}
+
+.subresearch-item[data-type="dyson_sphere"]::before {
+    content: '☀️' !important;
+}
+
+.subresearch-item[data-type="ftl"]::before {
+    content: '⚡️' !important;
+}
+
+.subresearch-item[data-type="cryogenics"]::before {
+    content: '❄️' !important;
+}
+
+.subresearch-item[data-type="augmentation"]::before {
+    content: '💪' !important;
+}
+
+.subresearch-item[data-type="hologram"]::before {
+    content: '👻' !important;
+}
+
+.subresearch-item[data-type="cloud"]::before {
+    content: '☁️' !important;
+}
 
 /* Стандартные иконки для состояний подисследований */
 .subresearch-item.unlocked::before {
