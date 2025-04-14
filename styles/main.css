@@ -3294,7 +3294,6 @@ body:not(.dark-theme) .footer-copyright {
     transition: all 0.2s;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     z-index: 1000;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
