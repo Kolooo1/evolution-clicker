@@ -1203,7 +1203,7 @@ body:not(.dark-theme) .tree-node.available {
     padding: 8px 12px;
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 6px;
-    font-size: 0.9rem;
+        font-size: 0.9rem;
 }
 
 .dark-theme .research-info-parents {
@@ -1245,7 +1245,7 @@ body:not(.dark-theme) .tree-node.available {
 
 .research-info-stats {
     margin-top: 20px;
-    padding: 10px;
+        padding: 10px;
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 6px;
 }
@@ -1262,7 +1262,7 @@ body:not(.dark-theme) .tree-node.available {
 .research-info-buttons {
     display: flex;
     justify-content: center;
-    gap: 10px;
+        gap: 10px;
     padding-top: 0;
 }
 

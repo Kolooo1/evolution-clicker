@@ -1127,7 +1127,7 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
      */
     generateSubresearchHTML(node, currentLevel) {
         // Если подисследований нет, возвращаем пустую строку
-        if (!SUBRESEARCH) {
+        if (!SUBRESEARCH || currentLevel <= 0) {
             return '';
         }
         
