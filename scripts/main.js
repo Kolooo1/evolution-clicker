@@ -271,6 +271,20 @@ function setupEventListeners() {
     
     // Настройка сенсорных жестов для масштабирования и перемещения
     setupTouchGestures();
+    
+    // Обработчик для автоматической прокачки подисследований
+    document.addEventListener('click', (event) => {
+        if (event.target.classList.contains('auto-subresearch-btn')) {
+            const parentId = event.target.getAttribute('data-parentid');
+            if (parentId && researchTree) {
+                const unlocked = researchTree.unlockCheapestSubresearch(parentId);
+                if (!unlocked) {
+                    showNotification('Нет доступных подисследований, которые можно разблокировать');
+                    playSound('error');
+                }
+            }
+        }
+    });
 }
 
 /**
@@ -630,7 +644,7 @@ function updateGameValues() {
             // Применяем эффект в зависимости от типа
             switch (research.effect.type) {
                 case "click":
-                    baseClickPower += effectValue * 1;
+                    baseClickPower += effectValue * 50000; // Увеличен множитель для эффектов клика с 10000 до 50000
                     break;
                     
                 case "passive":
