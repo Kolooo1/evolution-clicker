@@ -995,7 +995,7 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                         <button id="research-upgrade-1" class="research-upgrade-btn">+1</button>
                         <button id="research-upgrade-10" class="research-upgrade-btn">+10</button>
                         <button id="research-upgrade-max" class="research-upgrade-btn">МАКС</button>
-                    ` : ''}
+                    ` : '<div class="max-level-notice">Достигнут максимальный уровень</div>'}
                 </div>
             </div>
         `;
@@ -1112,9 +1112,42 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                     document.removeEventListener('keydown', handleKeyDown);
                 }, 300);
             }
+            
+            // Добавляем клавиатурные сокращения для кнопок апгрейда
+            if (currentLevel < node.maxLevel) {
+                if (e.key === '1' || e.key === 'NumPad1') {
+                    this.handleNodeUpgrade(node, 1);
+                    const updatedInfo = this.showResearchInfo(node);
+                    if (existingModal) existingModal.remove();
+                } else if (e.key === '2' || e.key === 'NumPad2') {
+                    this.handleNodeUpgrade(node, 10);
+                    const updatedInfo = this.showResearchInfo(node);
+                    if (existingModal) existingModal.remove();
+                } else if (e.key === '3' || e.key === 'NumPad3' || e.key === 'm' || e.key === 'M') {
+                    this.handleNodeUpgradeMax(node);
+                    const updatedInfo = this.showResearchInfo(node);
+                    if (existingModal) existingModal.remove();
+                }
+            }
         };
         
         document.addEventListener('keydown', handleKeyDown);
+        
+        // Убедимся, что кнопки видны даже при прокрутке контента
+        const buttonArea = infoModal.querySelector('.research-info-buttons');
+        if (buttonArea) {
+            const container = infoModal.querySelector('.modal-content');
+            const body = infoModal.querySelector('.research-info-body');
+            
+            // Регулируем максимальную высоту тела с учетом кнопок
+            if (body && container) {
+                const containerHeight = container.offsetHeight;
+                const buttonAreaHeight = buttonArea.offsetHeight;
+                const headerHeight = infoModal.querySelector('.research-info-header').offsetHeight;
+                
+                body.style.maxHeight = `calc(${containerHeight}px - ${headerHeight + buttonAreaHeight + 30}px)`;
+            }
+        }
         
         return infoModal;
     }
