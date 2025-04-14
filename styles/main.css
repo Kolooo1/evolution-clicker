@@ -1164,14 +1164,23 @@ body:not(.dark-theme) .tree-node.available {
 
 /* Стили для модального окна с информацией о исследовании */
 .research-info-modal .modal-content {
-    max-width: 580px; /* Увеличиваем максимальную ширину */
+    max-width: 600px; /* Немного увеличиваем максимальную ширину */
     width: 95%;
+}
+
+.research-info-header {
+    background-color: var(--button-bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 15px 20px;
+    border-radius: 12px 12px 0 0;
 }
 
 .research-info-body {
     padding: 22px; /* Увеличиваем внутренние отступы */
-    max-height: 70vh; /* Увеличиваем максимальную высоту */
-    line-height: 1.5; /* Увеличиваем межстрочный интервал */
+    max-height: 75vh; /* Увеличиваем максимальную высоту */
+    overflow-y: auto;
 }
 
 .research-info-description {
@@ -1947,10 +1956,7 @@ body:not(.dark-theme) .footer-copyright {
 }
 
 .subresearch-list {
-    display: flex;
-    flex-direction: column;
-    gap: 18px; /* Увеличиваем расстояние между элементами */
-    max-height: 300px;
+    max-height: 400px; /* Увеличиваем максимальную высоту для подисследований */
     overflow-y: auto;
     padding-right: 10px;
 }
@@ -1977,9 +1983,9 @@ body:not(.dark-theme) .footer-copyright {
 }
 
 .subresearch-item p {
-    font-size: 13px;
+    font-size: 14px; /* Увеличиваем размер шрифта для лучшей читаемости */
     margin: 0 0 12px 0;
-    line-height: 1.4;
+    line-height: 1.5;
     color: #555;
 }
 
@@ -2053,13 +2059,13 @@ body:not(.dark-theme) .footer-copyright {
 
 .subresearch-unlock-btn {
     display: inline-block;
-    padding: 8px 15px;
+    padding: 10px 18px;
     background: #2196f3;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 15px;
     transition: all 0.2s ease;
 }
 
