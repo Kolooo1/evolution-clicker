@@ -1962,15 +1962,86 @@ body:not(.dark-theme) .footer-copyright {
 }
 
 .subresearch-item {
-    padding: 18px 18px 18px 60px; /* Добавляем отступ слева для иконки */
+    padding: 18px 18px 18px 60px;
     border-radius: 8px;
     background: rgba(230, 230, 230, 0.15);
     transition: all 0.3s ease;
-    position: relative; /* Для позиционирования иконки */
+    position: relative;
+    margin-bottom: 15px; /* Добавляем отступ между элементами */
 }
 
+.subresearch-item:last-child {
+    margin-bottom: 0; /* Убираем отступ у последнего элемента */
+}
+
+/* Базовый набор иконок по контексту исследований */
+.subresearch-item.physics::before { content: '⚛️'; } /* Физика */
+.subresearch-item.chemistry::before { content: '🧪'; } /* Химия */
+.subresearch-item.biology::before { content: '🧬'; } /* Биология */
+.subresearch-item.cosmos::before { content: '🌌'; } /* Космология */
+.subresearch-item.tech::before { content: '🔧'; } /* Технологии */
+.subresearch-item.energy::before { content: '⚡'; } /* Энергетика */
+.subresearch-item.nuclear::before { content: '☢️'; } /* Ядерная физика */
+.subresearch-item.quantum::before { content: '🔮'; } /* Квантовая механика */
+.subresearch-item.evolution::before { content: '🦖'; } /* Эволюция */
+.subresearch-item.mathematics::before { content: '🧮'; } /* Математика */
+.subresearch-item.astronomy::before { content: '🔭'; } /* Астрономия */
+.subresearch-item.geology::before { content: '🏔️'; } /* Геология */
+.subresearch-item.computer::before { content: '💻'; } /* Компьютерные науки */
+.subresearch-item.genetics::before { content: '🧪'; } /* Генетика */
+.subresearch-item.medicine::before { content: '💊'; } /* Медицина */
+.subresearch-item.psychology::before { content: '🧠'; } /* Психология */
+.subresearch-item.ai::before { content: '🤖'; } /* Искусственный интеллект */
+.subresearch-item.robotics::before { content: '🦾'; } /* Робототехника */
+.subresearch-item.society::before { content: '👥'; } /* Общество */
+.subresearch-item.materials::before { content: '🔩'; } /* Материаловедение */
+.subresearch-item.nano::before { content: '🔍'; } /* Нанотехнологии */
+.subresearch-item.environment::before { content: '🌍'; } /* Экология */
+.subresearch-item.agriculture::before { content: '🌱'; } /* Сельское хозяйство */
+.subresearch-item.space::before { content: '🚀'; } /* Космические исследования */
+
+/* Специфичные иконки для конкретных исследований */
+.subresearch-item.rna-world::before { content: '🧬'; } /* Мир РНК */
+.subresearch-item.helium-fusion::before { content: '🔥'; } /* Термоядерный синтез гелия */
+.subresearch-item.helium-superfluid::before { content: '❄️'; } /* Сверхтекучесть гелия */
+.subresearch-item.splicing::before { content: '✂️'; } /* Сплайсинг */
+.subresearch-item.dna::before { content: '🧬'; } /* ДНК */
+.subresearch-item.protein::before { content: '🥚'; } /* Белки */
+.subresearch-item.cell::before { content: '🦠'; } /* Клетки */
+.subresearch-item.photosynthesis::before { content: '🌿'; } /* Фотосинтез */
+.subresearch-item.multicellular::before { content: '🧫'; } /* Многоклеточные организмы */
+.subresearch-item.brain::before { content: '🧠'; } /* Мозг */
+.subresearch-item.consciousness::before { content: '💭'; } /* Сознание */
+.subresearch-item.tool-use::before { content: '🔨'; } /* Использование инструментов */
+.subresearch-item.language::before { content: '🗣️'; } /* Язык */
+.subresearch-item.writing::before { content: '✍️'; } /* Письменность */
+.subresearch-item.agriculture::before { content: '🌾'; } /* Земледелие */
+.subresearch-item.metallurgy::before { content: '⚒️'; } /* Металлургия */
+.subresearch-item.wheel::before { content: '🛞'; } /* Колесо */
+.subresearch-item.steam-engine::before { content: '🚂'; } /* Паровой двигатель */
+.subresearch-item.electricity::before { content: '💡'; } /* Электричество */
+.subresearch-item.nuclear-energy::before { content: '☢️'; } /* Атомная энергия */
+.subresearch-item.computer::before { content: '🖥️'; } /* Компьютер */
+.subresearch-item.internet::before { content: '🌐'; } /* Интернет */
+.subresearch-item.space-travel::before { content: '🛰️'; } /* Космические полеты */
+.subresearch-item.quantum-computing::before { content: '💻'; } /* Квантовые вычисления */
+.subresearch-item.fusion-energy::before { content: '🌟'; } /* Термоядерная энергия */
+.subresearch-item.nanotechnology::before { content: '🔬'; } /* Нанотехнологии */
+.subresearch-item.genetic-engineering::before { content: '🧬'; } /* Генная инженерия */
+.subresearch-item.artificial-intelligence::before { content: '🤖'; } /* Искусственный интеллект */
+.subresearch-item.virtual-reality::before { content: '👓'; } /* Виртуальная реальность */
+
+/* Сохраняем статусные иконки, но делаем их показываться только если нет контекстной иконки */
+.subresearch-item:not([class*="physics"]):not([class*="chemistry"]):not([class*="biology"]):not([class*="cosmos"]):not([class*="tech"]):not([class*="energy"]):not([class*="nuclear"]):not([class*="quantum"]):not([class*="evolution"]):not([class*="mathematics"]):not([class*="astronomy"]):not([class*="geology"]):not([class*="computer"]):not([class*="genetics"]):not([class*="medicine"]):not([class*="psychology"]):not([class*="ai"]):not([class*="robotics"]):not([class*="society"]):not([class*="materials"]):not([class*="nano"]):not([class*="environment"]):not([class*="agriculture"]):not([class*="space"]):not([class*="rna-world"]):not([class*="helium-fusion"]):not([class*="helium-superfluid"]):not([class*="splicing"]):not([class*="dna"]):not([class*="protein"]):not([class*="cell"]):not([class*="photosynthesis"]):not([class*="multicellular"]):not([class*="brain"]):not([class*="consciousness"]):not([class*="tool-use"]):not([class*="language"]):not([class*="writing"]):not([class*="agriculture"]):not([class*="metallurgy"]):not([class*="wheel"]):not([class*="steam-engine"]):not([class*="electricity"]):not([class*="nuclear-energy"]):not([class*="computer"]):not([class*="internet"]):not([class*="space-travel"]):not([class*="quantum-computing"]):not([class*="fusion-energy"]):not([class*="nanotechnology"]):not([class*="genetic-engineering"]):not([class*="artificial-intelligence"]):not([class*="virtual-reality"])::before {
+    content: '🔬'; /* Базовая иконка для исследований без специальной категории */
+}
+
+.subresearch-item.unlocked:not([class*="physics"]):not([class*="chemistry"]):not([class*="biology"]):not([class*="cosmos"]):not([class*="tech"]):not([class*="energy"]):not([class*="nuclear"]):not([class*="quantum"]):not([class*="evolution"]):not([class*="mathematics"]):not([class*="astronomy"]):not([class*="geology"]):not([class*="computer"]):not([class*="genetics"]):not([class*="medicine"]):not([class*="psychology"]):not([class*="ai"]):not([class*="robotics"]):not([class*="society"]):not([class*="materials"]):not([class*="nano"]):not([class*="environment"]):not([class*="agriculture"]):not([class*="space"]):not([class*="rna-world"]):not([class*="helium-fusion"]):not([class*="helium-superfluid"]):not([class*="splicing"]):not([class*="dna"]):not([class*="protein"]):not([class*="cell"]):not([class*="photosynthesis"]):not([class*="multicellular"]):not([class*="brain"]):not([class*="consciousness"]):not([class*="tool-use"]):not([class*="language"]):not([class*="writing"]):not([class*="agriculture"]):not([class*="metallurgy"]):not([class*="wheel"]):not([class*="steam-engine"]):not([class*="electricity"]):not([class*="nuclear-energy"]):not([class*="computer"]):not([class*="internet"]):not([class*="space-travel"]):not([class*="quantum-computing"]):not([class*="fusion-energy"]):not([class*="nanotechnology"]):not([class*="genetic-engineering"]):not([class*="artificial-intelligence"]):not([class*="virtual-reality"])::before {
+    content: '✅';
+}
+
+/* Улучшенный фон за иконками */
 .subresearch-item::before {
-    content: '🔬';
     font-size: 24px;
     position: absolute;
     left: 15px;
@@ -1982,341 +2053,9 @@ body:not(.dark-theme) .footer-copyright {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.subresearch-item.unlocked::before {
-    content: '✅';
-    background: rgba(76, 175, 80, 0.2);
-}
-
-.subresearch-item.available::before {
-    content: '🔓';
-    background: rgba(33, 150, 243, 0.2);
-}
-
-.subresearch-item.locked::before {
-    content: '🔒';
-    background: rgba(158, 158, 158, 0.2);
-}
-
-.subresearch-item.available.can-afford::before {
-    content: '💰';
-    background: rgba(255, 193, 7, 0.2);
-}
-
-.subresearch-item.available.cannot-afford::before {
-    content: '⏳';
-    background: rgba(233, 30, 99, 0.15);
-}
-
-/* Улучшения для иконок подисследований на темной теме */
-.dark-theme .subresearch-item::before {
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.dark-theme .subresearch-item.unlocked::before {
-    background: rgba(76, 175, 80, 0.15);
-}
-
-.dark-theme .subresearch-item.available::before {
-    background: rgba(33, 150, 243, 0.15);
-}
-
-.dark-theme .subresearch-item.locked::before {
-    background: rgba(158, 158, 158, 0.15);
-}
-
-.dark-theme .subresearch-item.available.can-afford::before {
-    background: rgba(255, 193, 7, 0.15);
-}
-
-.dark-theme .subresearch-item.available.cannot-afford::before {
-    background: rgba(233, 30, 99, 0.1);
-}
-
-/* Улучшенный дизайн полосы прокрутки */
-.research-info-body::-webkit-scrollbar {
-    width: 8px;
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-.research-info-body::-webkit-scrollbar-thumb {
-    background-color: var(--button-bg);
-    border-radius: 10px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-}
-
-.research-info-body::-webkit-scrollbar-thumb:hover {
-    background-color: var(--button-hover);
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-}
-
-.research-info-body::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-}
-
-.subresearch-list::-webkit-scrollbar {
-    width: 8px;
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-.subresearch-list::-webkit-scrollbar-thumb {
-    background-color: var(--button-bg);
-    border-radius: 10px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-}
-
-.subresearch-list::-webkit-scrollbar-thumb:hover {
-    background-color: var(--button-hover);
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-}
-
-.subresearch-list::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-}
-
-/* Дополнительные стили для подисследований */
-.subresearch-counter {
-    font-size: 0.85rem;
-    color: #7a7a7a;
-    font-weight: normal;
-    margin-left: 5px;
-}
-
-.dark-theme .subresearch-counter {
-    color: #aaa;
-}
-
-.subresearch-summary {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-.unlocked-count {
-    color: #388e3c;
-    display: flex;
-    align-items: center;
-}
-
-.unlocked-count::before {
-    content: '✅';
-    margin-right: 5px;
-    font-size: 1rem;
-}
-
-.available-count {
-    color: #1976d2;
-    display: flex;
-    align-items: center;
-}
-
-.available-count::before {
-    content: '🔓';
-    margin-right: 5px;
-    font-size: 1rem;
-}
-
-.subresearch-item.can-afford .subresearch-unlock-btn {
-    background: #2196f3;
-}
-
-.subresearch-item.cannot-afford .subresearch-unlock-btn {
-    background: #90a4ae;
-    opacity: 0.8;
-    cursor: not-allowed;
-}
-
-.subresearch-item.cannot-afford .subresearch-cost {
-    color: #e57373;
-}
-
-.dark-theme .subresearch-item.cannot-afford .subresearch-cost {
-    color: #ef9a9a;
-}
-
-/* Улучшения для мобильных */
-@media (max-width: 480px) {
-    .subresearch-summary {
-        flex-direction: column;
-        gap: 5px;
-    }
-}
-
-/* Восстановление и улучшение стилей для подисследований */
-.dark-theme .subresearch-item {
-    background: rgba(50, 50, 80, 0.2);
-}
-
-.subresearch-item h4 {
-    font-size: 15px;
-    margin: 0 0 8px 0;
-    color: #333;
-}
-
-.dark-theme .subresearch-item h4 {
-    color: #e0e0e0;
-}
-
-.subresearch-item p {
-    font-size: 14px; /* Увеличиваем размер шрифта для лучшей читаемости */
-    margin: 0 0 12px 0;
-    line-height: 1.5;
-    color: #555;
-}
-
-.dark-theme .subresearch-item p {
-    color: #aaa;
-}
-
-.subresearch-item.unlocked {
-    background: rgba(100, 200, 100, 0.15);
-    border-left: 3px solid #4caf50;
-}
-
-.dark-theme .subresearch-item.unlocked {
-    background: rgba(50, 150, 50, 0.2);
-    border-left: 3px solid #388e3c;
-}
-
-.subresearch-item.available {
-    background: rgba(100, 150, 230, 0.15);
-    border-left: 3px solid #2196f3;
-}
-
-.dark-theme .subresearch-item.available {
-    background: rgba(50, 100, 180, 0.2);
-    border-left: 3px solid #1976d2;
-}
-
-.subresearch-item.locked {
-    background: rgba(150, 150, 150, 0.15);
-    border-left: 3px solid #9e9e9e;
-    opacity: 0.7;
-}
-
-.dark-theme .subresearch-item.locked {
-    background: rgba(80, 80, 80, 0.2);
-    border-left: 3px solid #616161;
-}
-
-.subresearch-effect {
-    font-size: 13px;
-    margin-top: 8px;
-    padding: 6px 10px;
-    background: rgba(100, 200, 100, 0.2);
-    border-radius: 4px;
-    display: inline-block;
-}
-
-.dark-theme .subresearch-effect {
-    background: rgba(50, 150, 50, 0.25);
-}
-
-.subresearch-bonus {
-    color: #2e7d32;
-    font-weight: 500;
-}
-
-.dark-theme .subresearch-bonus {
-    color: #81c784;
-}
-
-.subresearch-cost {
-    font-size: 13px;
-    margin-top: 8px;
-    margin-bottom: 10px;
-    color: #555;
-    display: flex;
-    align-items: center;
-}
-
-.subresearch-cost::before {
-    content: '💎';
-    margin-right: 5px;
-    font-size: 16px;
-}
-
-.dark-theme .subresearch-cost {
-    color: #bbb;
-}
-
-.subresearch-unlock-btn {
-    display: inline-block;
-    padding: 10px 18px;
-    background: #2196f3;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.subresearch-unlock-btn:hover {
-    background: #1976d2;
-    transform: translateY(-2px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-}
-
-.subresearch-unlock-btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.dark-theme .subresearch-unlock-btn {
-    background: #1976d2;
-}
-
-.dark-theme .subresearch-unlock-btn:hover {
-    background: #1565c0;
-}
-
-@media (max-width: 768px) {
-    .subresearch-list {
-        max-height: 250px;
-    }
-    
-    .subresearch-item {
-        padding: 12px 12px 12px 50px;
-    }
-    
-    .subresearch-item::before {
-        left: 12px;
-        width: 28px;
-        height: 28px;
-        font-size: 20px;
-    }
-    
-    .subresearch-item h4 {
-        font-size: 14px;
-    }
-    
-    .subresearch-item p {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .subresearch-list {
-        max-height: 200px;
-    }
-    
-    .subresearch-unlock-btn {
-        width: 100%;
-        padding: 10px;
-    }
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), inset 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
 /* Индикатор доступных подисследований */
