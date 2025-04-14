@@ -658,6 +658,21 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
 ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не исследовано'}
 Макс. уровень: ${node.maxLevel}
 Эффект: ${this.formatEffect(node, currentLevel)}`;
+
+            // Проверяем наличие доступных подисследований
+            element.classList.remove('has-subresearch');
+            if (currentLevel > 0 && SUBRESEARCH) {
+                const relatedSubresearch = SUBRESEARCH.filter(sub => sub.parentId === node.id);
+                if (relatedSubresearch.length > 0) {
+                    // Проверяем, есть ли неразблокированные подисследования
+                    const unlockedIds = gameStorage.gameData.unlockedSubresearch || [];
+                    const hasUnlockedSubresearch = relatedSubresearch.some(sub => !unlockedIds.includes(sub.id));
+                    
+                    if (hasUnlockedSubresearch) {
+                        element.classList.add('has-subresearch');
+                    }
+                }
+            }
         });
     }
     
