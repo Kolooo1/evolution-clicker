@@ -1120,220 +1120,312 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
     }
     
     /**
-     * Генерирует HTML-код для секции подисследований
-     * @param {Object} node - Данные узла исследования
-     * @param {number} currentLevel - Текущий уровень исследования
-     * @returns {string} - HTML-код секции подисследований
+     * Генерирует HTML для отображения подисследований узла
+     * @param {string} nodeId - ID узла исследования
+     * @returns {string} - HTML для модального окна подисследований
      */
-    generateSubresearchHTML(node, currentLevel) {
-        // Если подисследований нет, возвращаем пустую строку
-        if (!SUBRESEARCH || currentLevel <= 0) {
-            return '';
+    generateSubresearchHTML(nodeId) {
+        if (!nodeId) return '';
+        
+        // Получаем основной узел исследования
+        const mainNode = RESEARCH.find(r => r.id === nodeId);
+        if (!mainNode) return '';
+        
+        // Проверяем, открыто ли основное исследование
+        const currentLevel = gameStorage.gameData.researchLevels[nodeId] || 0;
+        if (currentLevel === 0) {
+            return '<div class="modal-message">Разблокируйте основное исследование, чтобы открыть подисследования.</div>';
         }
         
-        // Находим все подисследования для данного узла
-        const relatedSubresearch = SUBRESEARCH.filter(sub => sub.parentId === node.id);
+        // Получаем все подисследования для данного узла
+        const nodeSubresearch = SUBRESEARCH.filter(sr => sr.parentId === nodeId);
         
-        if (relatedSubresearch.length === 0) {
-            return '';
+        if (nodeSubresearch.length === 0) {
+            return '<div class="modal-message">Для этого исследования нет доступных подисследований.</div>';
         }
         
-        // Сортируем подисследования по разблокированным и затем по стоимости
+        // Получаем список разблокированных подисследований
         const unlockedIds = gameStorage.gameData.unlockedSubresearch || [];
         
-        const sortedSubresearch = [...relatedSubresearch].sort((a, b) => {
-            const aUnlocked = unlockedIds.includes(a.id);
-            const bUnlocked = unlockedIds.includes(b.id);
+        // Фильтруем доступные подисследования
+        const availableSubresearch = nodeSubresearch.filter(sr => 
+            !unlockedIds.includes(sr.id) && this.canUnlockSubresearch(sr.id)
+        );
+        
+        // Расчет стоимости всех доступных подисследований
+        const totalCost = availableSubresearch.reduce((sum, sr) => sum + sr.cost, 0);
+        
+        // Сортируем подисследования по стоимости для определения самого дешевого
+        const cheapest = availableSubresearch.length > 0 ? 
+            [...availableSubresearch].sort((a, b) => a.cost - b.cost)[0] : null;
+        
+        // Построение HTML для модального окна
+        let html = `
+            <div class="subresearch-modal-content">
+                <div class="subresearch-header">
+                    <h3>${mainNode.name}: Подисследования</h3>
+                    <div class="subresearch-stats">
+                        <div>Открыто: ${unlockedIds.filter(id => nodeSubresearch.some(sr => sr.id === id)).length} из ${nodeSubresearch.length}</div>
+                        <div>Доступно очков: ${this.formatNumber(gameStorage.gameData.researchPoints)}</div>
+                    </div>
+                </div>`;
+        
+        // Добавляем кнопки действий, если есть доступные подисследования
+        if (availableSubresearch.length > 0) {
+            const canAffordAll = totalCost <= gameStorage.gameData.researchPoints;
+            const canAffordCheapest = cheapest && cheapest.cost <= gameStorage.gameData.researchPoints;
             
-            if (aUnlocked !== bUnlocked) {
-                return aUnlocked ? -1 : 1;
+            html += `
+                <div class="subresearch-actions">
+                    <button class="cheapest-subresearch-btn" data-node-id="${nodeId}" ${canAffordCheapest ? '' : 'disabled'}>
+                        Изучить самое дешевое (${cheapest ? this.formatNumber(cheapest.cost) : '0'})
+                    </button>
+                    <button class="all-subresearch-btn" data-node-id="${nodeId}" ${canAffordAll ? '' : 'disabled'}>
+                        Изучить все (${this.formatNumber(totalCost)})
+                    </button>
+                </div>`;
+        }
+        
+        html += '<div class="subresearch-list">';
+        
+        // Группируем подисследования по типам
+        const groupedByType = {};
+        nodeSubresearch.forEach(sr => {
+            const type = sr.type || getSubresearchType(sr.id);
+            if (!groupedByType[type]) {
+                groupedByType[type] = [];
             }
-            
-            return a.cost - b.cost;
+            groupedByType[type].push(sr);
         });
         
-        // Подсчет разблокированных и доступных подисследований
-        const unlockedCount = sortedSubresearch.filter(sub => unlockedIds.includes(sub.id)).length;
-        const availableCount = sortedSubresearch.length - unlockedCount;
-        
-        // Строим HTML для каждого подисследования
-        let subresearchItems = '';
-        
-        sortedSubresearch.forEach(sub => {
-            const isUnlocked = unlockedIds.includes(sub.id);
-            const subType = getSubresearchType(sub.id);
+        // Определяем порядок отображения типов (сначала открытые, потом доступные, затем остальные)
+        const orderedTypes = Object.keys(groupedByType).sort((a, b) => {
+            const aHasUnlocked = groupedByType[a].some(sr => unlockedIds.includes(sr.id));
+            const bHasUnlocked = groupedByType[b].some(sr => unlockedIds.includes(sr.id));
             
-            if (isUnlocked) {
-                // Для разблокированных подисследований показываем информацию о бонусе
-                subresearchItems += `
-                    <div class="subresearch-item unlocked" data-type="${subType}">
-                        <h4>${sub.name}</h4>
-                        <p>${sub.description}</p>
-                        <div class="subresearch-effect">
-                            <span class="subresearch-bonus">+${sub.multiplier}% к множителям дохода ${sub.reasonText}</span>
-                        </div>
-                    </div>
-                `;
-            } else {
-                // Для доступных подисследований показываем кнопку разблокировки
-                const canAfford = gameStorage.gameData.points >= sub.cost;
-                const affordClass = canAfford ? 'can-afford' : 'cannot-afford';
+            if (aHasUnlocked && !bHasUnlocked) return -1;
+            if (!aHasUnlocked && bHasUnlocked) return 1;
+            
+            const aHasAvailable = groupedByType[a].some(sr => 
+                !unlockedIds.includes(sr.id) && this.canUnlockSubresearch(sr.id)
+            );
+            const bHasAvailable = groupedByType[b].some(sr => 
+                !unlockedIds.includes(sr.id) && this.canUnlockSubresearch(sr.id)
+            );
+            
+            if (aHasAvailable && !bHasAvailable) return -1;
+            if (!aHasAvailable && bHasAvailable) return 1;
+            
+            return 0;
+        });
+        
+        // Генерируем HTML для каждой группы подисследований
+        orderedTypes.forEach(type => {
+            const typeItems = groupedByType[type];
+            
+            // Получаем название типа подисследования
+            let typeLabel = this.getTypeLabel(type);
+            
+            // Проверяем, есть ли доступные подисследования в этом типе
+            const availableInType = typeItems.filter(sr => 
+                !unlockedIds.includes(sr.id) && this.canUnlockSubresearch(sr.id)
+            );
+            
+            // Вычисляем суммарную стоимость всех доступных подисследований этого типа
+            const typeCost = availableInType.reduce((sum, sr) => sum + sr.cost, 0);
+            const canAffordType = typeCost <= gameStorage.gameData.researchPoints;
+            
+            // Строим заголовок группы с кнопкой разблокировки всех подисследований типа
+            html += `<div class="subresearch-group">
+                <div class="subresearch-type-header">
+                    <h4 class="subresearch-type">${typeLabel}</h4>
+                    ${availableInType.length > 0 ? `
+                        <button class="unlock-type-btn" data-type="${type}" data-node-id="${nodeId}" ${canAffordType ? '' : 'disabled'}>
+                            Изучить все (${this.formatNumber(typeCost)})
+                        </button>
+                    ` : ''}
+                </div>
+                <div class="subresearch-items">`;
+            
+            // Генерируем HTML для каждого подисследования в группе
+            typeItems.forEach(sr => {
+                const isUnlocked = unlockedIds.includes(sr.id);
+                const canUnlock = this.canUnlockSubresearch(sr.id);
+                const canAfford = gameStorage.gameData.researchPoints >= sr.cost;
+                const reasonText = sr.reasonText || '';
                 
-                subresearchItems += `
-                    <div class="subresearch-item available ${affordClass}" data-type="${subType}">
-                        <h4>${sub.name}</h4>
-                        <p>${sub.description}</p>
-                        <div class="subresearch-cost">Стоимость разблокировки: ${this.formatNumber(sub.cost)}</div>
-                        <div class="subresearch-effect">
-                            <span class="subresearch-bonus">+${sub.multiplier}% к множителям дохода ${sub.reasonText}</span>
+                html += `
+                    <div class="subresearch-item ${isUnlocked ? 'unlocked' : ''} ${!isUnlocked && canUnlock ? 'available' : ''}" data-type="${type}">
+                        <div class="subresearch-info">
+                            <div class="subresearch-name">${sr.name}</div>
+                            <div class="subresearch-description">${sr.description}</div>
+                            ${!isUnlocked ? `<div class="subresearch-cost">Стоимость: ${this.formatNumber(sr.cost)}</div>` : ''}
+                            ${!isUnlocked && reasonText ? `<div class="subresearch-reason">${reasonText}</div>` : ''}
+                            ${isUnlocked ? `<div class="subresearch-bonus">+${sr.multiplier}% к множителям дохода</div>` : ''}
                         </div>
-                        <button class="subresearch-unlock-btn" data-subresearch-id="${sub.id}">Разблокировать</button>
-                    </div>
-                `;
-            }
+                        ${!isUnlocked ? `
+                            <button class="unlock-subresearch-btn" 
+                                data-id="${sr.id}" 
+                                ${canUnlock && canAfford ? '' : 'disabled'}>
+                                ${canUnlock ? (canAfford ? 'Изучить' : 'Недостаточно очков') : 'Недоступно'}
+                            </button>
+                        ` : '<div class="subresearch-unlocked">Изучено</div>'}
+                    </div>`;
+            });
+            
+            html += `</div></div>`;
         });
         
-        // Возвращаем полный HTML для секции подисследований с информацией о количестве
-        return `
-            <div class="research-info-subresearch">
-                <h3>${TEXTS.subresearch} <span class="subresearch-counter">(${unlockedCount}/${sortedSubresearch.length})</span></h3>
-                <div class="subresearch-summary">
-                    ${unlockedCount > 0 ? `<span class="unlocked-count">Разблокировано: ${unlockedCount}</span>` : ''}
-                    ${availableCount > 0 ? `<span class="available-count">Доступно: ${availableCount}</span>` : ''}
-                </div>
-                <div class="subresearch-list">
-                    ${subresearchItems}
-                </div>
-            </div>
-        `;
+        html += '</div></div>';
+        return html;
     }
     
     /**
-     * Разблокирует подисследование
-     * @param {string} subresearchId - ID подисследования
+     * Возвращает локализованную метку для типа подисследования
+     * @param {string} type - Тип подисследования
+     * @returns {string} - Локализованная метка
      */
-    unlockSubresearch(subresearchId) {
-        // Находим подисследование по ID
-        const subresearch = SUBRESEARCH.find(sub => sub.id === subresearchId);
+    getTypeLabel(type) {
+        switch(type) {
+            case 'biology': return 'Биология';
+            case 'physics': return 'Физика';
+            case 'astronomy': return 'Астрономия';
+            case 'quantum': return 'Квантовая физика';
+            case 'energy': return 'Энергетика';
+            case 'fusion': return 'Термоядерный синтез';
+            case 'nuclear': return 'Ядерная физика';
+            case 'robotics': return 'Робототехника';
+            case 'computer': return 'Компьютерные науки';
+            case 'ai': return 'Искусственный интеллект';
+            case 'space': return 'Космонавтика';
+            case 'medicine': return 'Медицина';
+            case 'evolution': return 'Эволюция';
+            case 'biotech': return 'Биотехнологии';
+            case 'nanotech': return 'Нанотехнологии';
+            case 'material': return 'Материаловедение';
+            case 'environment': return 'Экология';
+            case 'social': return 'Социальные науки';
+            case 'philosophy': return 'Философия';
+            case 'mathematics': return 'Математика';
+            case 'chemistry': return 'Химия';
+            default: return type.charAt(0).toUpperCase() + type.slice(1);
+        }
+    }
+    
+    /**
+     * Добавляет обработчики событий для модального окна подисследований
+     */
+    setupSubresearchModalListeners() {
+        // Обработчик для кнопок разблокировки отдельных подисследований
+        document.body.addEventListener('click', (e) => {
+            if (e.target.classList.contains('unlock-subresearch-btn')) {
+                const subresearchId = e.target.dataset.id;
+                if (subresearchId && this.unlockSubresearch(subresearchId)) {
+                    // Обновляем содержимое модального окна
+                    const modalContent = document.querySelector('.subresearch-modal .modal-content');
+                    const nodeId = document.querySelector('.subresearch-modal').dataset.nodeId;
+                    if (modalContent && nodeId) {
+                        modalContent.innerHTML = this.generateSubresearchHTML(nodeId);
+                    }
+                    
+                    // Обновляем дерево исследований
+                    this.updateTree();
+                }
+            }
+            
+            // Обработчик для кнопки разблокировки самого дешевого подисследования
+            if (e.target.classList.contains('cheapest-subresearch-btn')) {
+                const nodeId = e.target.dataset.nodeId;
+                if (nodeId && this.unlockCheapestSubresearch(nodeId)) {
+                    // Обновляем содержимое модального окна
+                    const modalContent = document.querySelector('.subresearch-modal .modal-content');
+                    if (modalContent) {
+                        modalContent.innerHTML = this.generateSubresearchHTML(nodeId);
+                    }
+                    
+                    // Обновляем дерево исследований
+                    this.updateTree();
+                }
+            }
+            
+            // Обработчик для кнопки разблокировки всех подисследований
+            if (e.target.classList.contains('all-subresearch-btn')) {
+                const nodeId = e.target.dataset.nodeId;
+                if (nodeId && this.unlockAllSubresearch(nodeId)) {
+                    // Обновляем содержимое модального окна
+                    const modalContent = document.querySelector('.subresearch-modal .modal-content');
+                    if (modalContent) {
+                        modalContent.innerHTML = this.generateSubresearchHTML(nodeId);
+                    }
+                    
+                    // Обновляем дерево исследований
+                    this.updateTree();
+                }
+            }
+            
+            // Обработчик для кнопки разблокировки всех подисследований определенного типа
+            if (e.target.classList.contains('unlock-type-btn')) {
+                const nodeId = e.target.dataset.nodeId;
+                const type = e.target.dataset.type;
+                
+                if (nodeId && type && this.unlockTypeSubresearch(nodeId, type)) {
+                    // Обновляем содержимое модального окна
+                    const modalContent = document.querySelector('.subresearch-modal .modal-content');
+                    if (modalContent) {
+                        modalContent.innerHTML = this.generateSubresearchHTML(nodeId);
+                    }
+                    
+                    // Обновляем дерево исследований
+                    this.updateTree();
+                }
+            }
+        });
+    }
+    
+    /**
+     * Разблокирует все подисследования определенного типа для узла
+     * @param {string} nodeId - ID узла исследования
+     * @param {string} type - Тип подисследования
+     * @returns {boolean} - Успешно ли разблокированы подисследования
+     */
+    unlockTypeSubresearch(nodeId, type) {
+        // Получаем все подисследования для данного узла
+        const nodeSubresearch = SUBRESEARCH.filter(sr => sr.parentId === nodeId);
         
-        if (!subresearch) {
-            console.error(`Подисследование с ID ${subresearchId} не найдено`);
-            return;
+        // Получаем список разблокированных подисследований
+        const unlockedIds = gameStorage.gameData.unlockedSubresearch || [];
+        
+        // Фильтруем доступные подисследования указанного типа
+        const availableTypeSubresearch = nodeSubresearch.filter(sr => 
+            !unlockedIds.includes(sr.id) && 
+            this.canUnlockSubresearch(sr.id) && 
+            (sr.type === type || getSubresearchType(sr.id) === type)
+        );
+        
+        if (availableTypeSubresearch.length === 0) {
+            return false;
         }
         
-        // Проверяем, хватает ли игроку очков
-        if (gameStorage.gameData.points < subresearch.cost) {
+        // Рассчитываем общую стоимость
+        const totalCost = availableTypeSubresearch.reduce((sum, sr) => sum + sr.cost, 0);
+        
+        // Проверяем, хватает ли очков
+        if (gameStorage.gameData.researchPoints < totalCost) {
             showNotification(TEXTS.not_enough_points);
             playSound('error');
-            return;
+            return false;
         }
         
-        // Проверяем, не разблокировано ли уже это подисследование
-        if (!gameStorage.gameData.unlockedSubresearch) {
-            gameStorage.gameData.unlockedSubresearch = [];
-        }
-        
-        if (gameStorage.gameData.unlockedSubresearch.includes(subresearchId)) {
-            console.log(`Подисследование ${subresearchId} уже разблокировано`);
-            return;
-        }
-        
-        // Снимаем стоимость
-        gameStorage.gameData.points -= subresearch.cost;
-        gameStorage.gameData.pointsSpent += subresearch.cost;
-        
-        // Добавляем подисследование в список разблокированных
-        gameStorage.gameData.unlockedSubresearch.push(subresearchId);
-        
-        // Применяем множитель подисследования
-        if (!gameStorage.gameData.subresearchMultiplier) {
-            gameStorage.gameData.subresearchMultiplier = 0;
-        }
-        gameStorage.gameData.subresearchMultiplier += subresearch.multiplier / 100;
-        
-        // Обновляем игровые значения
-        updateGameValues();
-        
-        // Показываем уведомление
-        showNotification(`${TEXTS.subresearch_unlock} ${subresearch.name}`);
-        
-        // Воспроизводим звук
-        playSound('unlock');
-        
-        // Сохраняем прогресс
-        gameStorage.save();
-    }
-    
-    /**
-     * Рассчитывает эффект исследования для заданного уровня
-     * @param {Object} node - Данные узла исследования
-     * @param {number} level - Уровень исследования
-     * @returns {number} - Значение эффекта
-     */
-    calculateEffect(node, level) {
-        if (level <= 0) return 0;
-        return node.effect.value + node.effectPerLevel * (level - 1);
-    }
-    
-    /**
-     * Полное форматирование эффекта исследования
-     * @param {Object} node - Данные узла исследования
-     * @param {number} level - Уровень исследования
-     * @returns {string} - Отформатированное описание эффекта
-     */
-    formatEffectFull(node, level) {
-        const effect = this.calculateEffect(node, level);
-        
-        switch (node.effect.type) {
-            case 'click':
-                return `+${this.formatNumber(effect)} к силе клика`;
-            case 'passive':
-                return `+${this.formatNumber(effect)} к пассивному доходу в секунду`;
-            case 'multiplier':
-                return `+${(effect * level).toFixed(2)}% к множителям дохода`;
-            default:
-                return '';
-        }
-    }
-    
-    /**
-     * Улучшает исследование на максимально возможное количество уровней
-     * @param {Object} node - Данные узла исследования
-     */
-    handleNodeUpgradeMax(node) {
-        const currentLevel = gameStorage.getResearchLevel(node.id);
-        const maxPossibleLevels = node.maxLevel - currentLevel;
-        
-        if (maxPossibleLevels <= 0) {
-            showNotification(TEXTS.max_level);
-            return;
-        }
-        
-        // Находим максимальное количество уровней, которое можем купить
-        let affordableLevels = 0;
-        let totalCost = 0;
-        let points = gameStorage.gameData.points;
-        
-        for (let i = 0; i < maxPossibleLevels; i++) {
-            const cost = this.calculateCost(node, currentLevel + i);
-            if (points >= cost) {
-                points -= cost;
-                totalCost += cost;
-                affordableLevels++;
-            } else {
-                break;
+        // Разблокируем все подисследования этого типа
+        let unlocked = 0;
+        availableTypeSubresearch.forEach(sr => {
+            if (this.unlockSubresearch(sr.id)) {
+                unlocked++;
             }
-        }
+        });
         
-        if (affordableLevels > 0) {
-            this.handleNodeUpgrade(node, affordableLevels);
-        } else {
-            // Вычисляем стоимость следующего уровня
-            const nextLevelCost = this.calculateCost(node, currentLevel);
-            const missingPoints = nextLevelCost - gameStorage.gameData.points;
-            showNotification(`${TEXTS.not_enough_points} Не хватает ${this.formatNumber(missingPoints)} очков.`);
-            playSound('error');
-        }
+        // Если хотя бы одно подисследование было разблокировано, считаем операцию успешной
+        return unlocked > 0;
     }
 }
 
