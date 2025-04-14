@@ -604,10 +604,10 @@ function animateValue(element) {
  */
 function updateGameValues() {
     // Базовое значение силы клика
-    let baseClickPower = 100.0; // Увеличено с 2.5
+    let baseClickPower = 1.0;
     
     // Базовое значение пассивного дохода
-    let basePassiveIncome = 1.0; // Увеличено с 0.5
+    let basePassiveIncome = 0;
     
     // Сбрасываем множители до 1
     let clickMultiplier = gameStorage.gameData.clickMultiplier;
@@ -630,7 +630,7 @@ function updateGameValues() {
             // Применяем эффект в зависимости от типа
             switch (research.effect.type) {
                 case "click":
-                    baseClickPower += effectValue * 1.5; // Увеличен множитель для эффектов клика
+                    baseClickPower += effectValue * 50000; // Увеличен множитель для эффектов клика с 10000 до 50000
                     break;
                     
                 case "passive":
