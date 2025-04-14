@@ -26,6 +26,13 @@
     --lang-toggle-bg: #3eb8d7;
     --lang-toggle-color: white;
     --top-controls-bg: #333;
+    
+    /* Переменные для скроллбаров */
+    --scrollbar-width: 12px;
+    --scrollbar-track: rgba(0, 0, 0, 0.05);
+    --scrollbar-thumb: rgba(76, 175, 80, 0.6);
+    --scrollbar-thumb-hover: rgba(76, 175, 80, 0.8);
+    --scrollbar-border-radius: 8px;
 }
 
 /* Темная тема */
@@ -55,6 +62,44 @@
     --lang-toggle-bg: #3eb8d7;
     --lang-toggle-color: white;
     --top-controls-bg: #2a2a2a;
+    
+    /* Переменные для скроллбаров в темной теме */
+    --scrollbar-track: rgba(0, 0, 0, 0.2);
+    --scrollbar-thumb: rgba(45, 106, 48, 0.7);
+    --scrollbar-thumb-hover: rgba(45, 106, 48, 0.9);
+}
+
+/* Глобальные стили для скроллбаров - для Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Глобальные стили для скроллбаров - для WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    height: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: var(--scrollbar-border-radius);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: var(--scrollbar-border-radius);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
 /* Общие стили */
@@ -500,6 +545,28 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: relative; /* Для позиционирования навигации */
     height: 600px; /* Фиксированная высота для более предсказуемого скролла */
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+.tree-container::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+}
+
+.tree-container::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: var(--scrollbar-border-radius);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+
+.tree-container::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+}
+
+.tree-container::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track);
+    border-radius: var(--scrollbar-border-radius);
 }
 
 .research-tree {
@@ -2825,49 +2892,43 @@ body:not(.dark-theme) .footer-copyright {
 
 /* Улучшенный дизайн полосы прокрутки */
 .research-info-body::-webkit-scrollbar {
-    width: 8px;
-    background-color: rgba(0, 0, 0, 0.05);
+    width: calc(var(--scrollbar-width) - 2px);
 }
 
 .research-info-body::-webkit-scrollbar-thumb {
-    background-color: var(--button-bg);
-    border-radius: 10px;
+    background-color: var(--scrollbar-thumb);
+    border-radius: var(--scrollbar-border-radius);
     border: 2px solid transparent;
     background-clip: padding-box;
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
 .research-info-body::-webkit-scrollbar-thumb:hover {
-    background-color: var(--button-hover);
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--scrollbar-thumb-hover);
 }
 
 .research-info-body::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
+    background-color: var(--scrollbar-track);
+    border-radius: var(--scrollbar-border-radius);
 }
 
 .subresearch-list::-webkit-scrollbar {
-    width: 8px;
-    background-color: rgba(0, 0, 0, 0.05);
+    width: calc(var(--scrollbar-width) - 2px);
 }
 
 .subresearch-list::-webkit-scrollbar-thumb {
-    background-color: var(--button-bg);
-    border-radius: 10px;
+    background-color: var(--scrollbar-thumb);
+    border-radius: var(--scrollbar-border-radius);
     border: 2px solid transparent;
     background-clip: padding-box;
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
 .subresearch-list::-webkit-scrollbar-thumb:hover {
-    background-color: var(--button-hover);
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--scrollbar-thumb-hover);
 }
 
 .subresearch-list::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
+    background-color: var(--scrollbar-track);
+    border-radius: var(--scrollbar-border-radius);
 }
 
 /* Стилизация счетчика подисследований */
