@@ -3276,4 +3276,64 @@ body:not(.dark-theme) .footer-copyright {
 .dark-theme .tree-search::placeholder {
     color: rgba(255, 255, 255, 0.6);
 }
+
+/* Мобильная версия кнопки клика */
+.mobile-main-button {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--button-bg), var(--button-hover));
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-main-button .evolution-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.mobile-main-button:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+.mobile-main-button.clicked {
+    transform: translateX(-50%) scale(0.95);
+}
+
+@media (max-width: 768px) {
+    .mobile-main-button {
+        display: flex;
+    }
+    
+    /* Адаптируем основную кнопку */
+    .main-button {
+        width: 160px;
+        height: 160px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mobile-main-button {
+        width: 100px;
+        height: 100px;
+        bottom: 80px;
+    }
+    
+    .main-button {
+        width: 140px;
+        height: 140px;
+    }
+}
   

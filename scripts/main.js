@@ -8,6 +8,7 @@ const UPDATE_INTERVAL = 1000;
 
 // Получаем необходимые DOM-элементы
 const mainButton = document.getElementById('main-button');
+const mobileMainButton = document.getElementById('mobile-main-button');
 const pointsDisplay = document.getElementById('points');
 const perClickDisplay = document.getElementById('per-click');
 const perSecondDisplay = document.getElementById('per-second');
@@ -285,6 +286,11 @@ function setupEventListeners() {
             }
         }
     });
+    
+    // Добавляем обработчик для мобильной кнопки если она существует
+    if (mobileMainButton) {
+        mobileMainButton.addEventListener('click', handleMainButtonClick);
+    }
 }
 
 /**
@@ -522,10 +528,17 @@ function handleMainButtonClick() {
     
     // Анимация кнопки при клике
     mainButton.classList.add('clicked');
+    // Анимация для мобильной кнопки, если она доступна
+    if (mobileMainButton) {
+        mobileMainButton.classList.add('clicked');
+    }
     
     // Удаляем класс анимации после завершения
     setTimeout(() => {
         mainButton.classList.remove('clicked');
+        if (mobileMainButton) {
+            mobileMainButton.classList.remove('clicked');
+        }
     }, 100);
     
     // Воспроизводим звук клика
