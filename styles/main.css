@@ -3388,6 +3388,13 @@ body:not(.dark-theme) .footer-copyright {
     pointer-events: auto;
 }
 
+.desktop-settings-menu.hidden {
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+}
+
 .settings-menu-content {
     padding: 10px;
     display: flex;

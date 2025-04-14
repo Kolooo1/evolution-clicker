@@ -303,13 +303,15 @@ function setupEventListeners() {
     // Добавляем обработчики событий для ПК настроек
     if (settingsToggle) {
         settingsToggle.addEventListener('click', () => {
-            desktopSettingsMenu.classList.toggle('active');
+            desktopSettingsMenu.classList.remove('hidden');
+            desktopSettingsMenu.classList.add('active');
         });
 
         // Закрываем меню при клике вне его
         document.addEventListener('click', (e) => {
             if (!settingsToggle.contains(e.target) && !desktopSettingsMenu.contains(e.target)) {
                 desktopSettingsMenu.classList.remove('active');
+                desktopSettingsMenu.classList.add('hidden');
             }
         });
     }
@@ -331,6 +333,7 @@ function setupEventListeners() {
         desktopReset.addEventListener('click', () => {
             showConfirmModal('Вы уверены, что хотите сбросить весь прогресс?', resetProgress);
             desktopSettingsMenu.classList.remove('active');
+            desktopSettingsMenu.classList.add('hidden');
         });
     }
 }
