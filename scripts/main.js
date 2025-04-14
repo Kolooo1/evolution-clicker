@@ -630,7 +630,7 @@ function updateGameValues() {
             // Применяем эффект в зависимости от типа
             switch (research.effect.type) {
                 case "click":
-                    baseClickPower += effectValue * 50000; // Увеличен множитель для эффектов клика с 10000 до 50000
+                    baseClickPower += effectValue * 1;
                     break;
                     
                 case "passive":
@@ -654,7 +654,7 @@ function updateGameValues() {
     }
     
     // Применяем множители с дополнительным бонусным коэффициентом
-    gameStorage.gameData.clickPower = baseClickPower * clickMultiplier * 2.0; // Увеличен с 1.2 до 2.0
+    gameStorage.gameData.clickPower = baseClickPower * clickMultiplier * 5.0; // Увеличен с 1.2 до 2.0
     gameStorage.gameData.passiveIncome = basePassiveIncome * passiveMultiplier * 1.3; // Добавлен множитель 1.3
     
     // Округляем значения до 2 знаков после запятой для лучшего отображения
