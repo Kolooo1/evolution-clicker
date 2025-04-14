@@ -664,11 +664,18 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
             if (currentLevel > 0 && SUBRESEARCH) {
                 const relatedSubresearch = SUBRESEARCH.filter(sub => sub.parentId === node.id);
                 if (relatedSubresearch.length > 0) {
+                    console.log(`Узел ${node.id} (${node.name}) имеет ${relatedSubresearch.length} подисследований`);
+                    
                     // Проверяем, есть ли неразблокированные подисследования
                     const unlockedIds = gameStorage.gameData.unlockedSubresearch || [];
                     const hasUnlockedSubresearch = relatedSubresearch.some(sub => !unlockedIds.includes(sub.id));
                     
+                    console.log(`Узел ${node.id}: разблокированные подисследования - ${unlockedIds.filter(id => 
+                        relatedSubresearch.some(sub => sub.id === id)).join(', ')}`);
+                    console.log(`Узел ${node.id}: неразблокированные подисследования есть: ${hasUnlockedSubresearch}`);
+                    
                     if (hasUnlockedSubresearch) {
+                        console.log(`Добавлен класс has-subresearch для узла ${node.id}`);
                         element.classList.add('has-subresearch');
                     }
                 }
