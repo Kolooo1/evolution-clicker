@@ -3108,6 +3108,92 @@ body:not(.dark-theme) .footer-copyright {
     background: #1565c0;
 }
 
+/* Кнопка автоматической прокачки самого дешевого подисследования */
+.auto-subresearch-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 15px;
+    width: 100%;
+}
+
+.auto-subresearch-btn:hover {
+    background: #388e3c;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.auto-subresearch-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.auto-subresearch-btn.disabled {
+    background: #90a4ae;
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.dark-theme .auto-subresearch-btn {
+    background: #388e3c;
+}
+
+.dark-theme .auto-subresearch-btn:hover {
+    background: #2e7d32;
+}
+
+.dark-theme .auto-subresearch-btn.disabled {
+    background: #546e7a;
+}
+
+/* Кнопка автоматической прокачки для узлов исследований */
+.node-auto-btn {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: scale(0.8);
+}
+
+.node-auto-btn:hover {
+    background: #388e3c;
+    transform: scale(1.1);
+}
+
+.tree-node.has-subresearch:hover .node-auto-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.dark-theme .node-auto-btn {
+    background: #388e3c;
+}
+
+.dark-theme .node-auto-btn:hover {
+    background: #2e7d32;
+}
+
 /* Состояния кнопки в зависимости от того, может ли игрок позволить себе исследование */
 .subresearch-item.can-afford .subresearch-unlock-btn {
     background: #2196f3;
@@ -3167,215 +3253,4 @@ body:not(.dark-theme) .footer-copyright {
         flex-direction: column;
         gap: 5px;
     }
-}
-
-/* Стили для кнопки быстрой разблокировки подисследований */
-.quick-unlock-btn {
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-    width: 22px;
-    height: 22px;
-    padding: 0;
-    font-size: 12px;
-    background-color: var(--accent-color);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    transition: all 0.2s ease;
-}
-
-.quick-unlock-btn:hover {
-    transform: scale(1.1);
-    background-color: var(--accent-color-hover);
-}
-
-/* Стили для кнопок в модальном окне подисследований */
-.subresearch-modal-content {
-    padding: 15px;
-}
-
-.subresearch-header {
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.subresearch-stats {
-    display: flex;
-    gap: 15px;
-    font-size: 14px;
-    color: var(--text-secondary);
-}
-
-.subresearch-actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.cheapest-subresearch-btn,
-.all-subresearch-btn,
-.unlock-type-btn {
-    padding: 8px 12px;
-    background-color: var(--accent-color);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.2s ease;
-}
-
-.cheapest-subresearch-btn:hover,
-.all-subresearch-btn:hover,
-.unlock-type-btn:hover {
-    background-color: var(--accent-color-hover);
-}
-
-.cheapest-subresearch-btn:disabled,
-.all-subresearch-btn:disabled,
-.unlock-type-btn:disabled {
-    background-color: var(--disabled-color);
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-.subresearch-list {
-    max-height: 65vh;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-.subresearch-group {
-    margin-bottom: 20px;
-}
-
-.subresearch-type-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.subresearch-type {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--accent-color);
-}
-
-.subresearch-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 15px;
-}
-
-.subresearch-item {
-    background-color: var(--panel-bg);
-    border-radius: 6px;
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    transition: all 0.2s ease;
-}
-
-.subresearch-item::before {
-    content: '🔬';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
 } 
-
-.subresearch-item.unlocked {
-    background-color: rgba(var(--success-color-rgb), 0.1);
-    border-color: rgba(var(--success-color-rgb), 0.3);
-}
-
-.subresearch-item.available:not(.unlocked) {
-    background-color: rgba(var(--accent-color-rgb), 0.1);
-    border-color: rgba(var(--accent-color-rgb), 0.3);
-}
-
-.subresearch-info {
-    flex-grow: 1;
-    margin-bottom: 10px;
-}
-
-.subresearch-name {
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 5px;
-    padding-right: 25px;
-}
-
-.subresearch-description {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-    line-height: 1.4;
-}
-
-.subresearch-cost {
-    font-size: 13px;
-    color: var(--accent-color);
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-.subresearch-reason {
-    font-size: 12px;
-    font-style: italic;
-    color: var(--text-tertiary);
-    margin-bottom: 5px;
-}
-
-.subresearch-bonus {
-    font-size: 13px;
-    color: var(--success-color);
-    font-weight: 500;
-}
-
-.unlock-subresearch-btn {
-    padding: 6px 10px;
-    background-color: var(--accent-color);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-    align-self: flex-start;
-    transition: background-color 0.2s ease;
-}
-
-.unlock-subresearch-btn:hover {
-    background-color: var(--accent-color-hover);
-}
-
-.unlock-subresearch-btn:disabled {
-    background-color: var(--disabled-color);
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-.subresearch-unlocked {
-    font-size: 13px;
-    color: var(--success-color);
-    font-weight: 500;
-    background-color: rgba(var(--success-color-rgb), 0.1);
-    padding: 6px 10px;
-    border-radius: 4px;
-    align-self: flex-start;
-}
