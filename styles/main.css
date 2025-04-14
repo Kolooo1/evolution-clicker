@@ -2221,6 +2221,136 @@ body:not(.dark-theme) .footer-copyright {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Увеличиваем z-index для отображения */
+}
+
+/* Приоритеты для типов подисследований - перемещаем ниже и даем более высокий приоритет */
+.subresearch-item[data-type]::before {
+    content: '🔬' !important; /* Базовая иконка по умолчанию */
+}
+
+.subresearch-item[data-type="biology"]::before {
+    content: '🧬' !important;
+}
+
+.subresearch-item[data-type="chemistry"]::before {
+    content: '⚗️' !important;
+}
+
+.subresearch-item[data-type="physics"]::before {
+    content: '⚛️' !important;
+}
+
+.subresearch-item[data-type="astronomy"]::before {
+    content: '🔭' !important;
+}
+
+.subresearch-item[data-type="quantum"]::before {
+    content: '🌀' !important;
+}
+
+.subresearch-item[data-type="energy"]::before {
+    content: '⚡' !important;
+}
+
+.subresearch-item[data-type="fusion"]::before {
+    content: '🌟' !important;
+}
+
+.subresearch-item[data-type="nuclear"]::before {
+    content: '☢️' !important;
+}
+
+.subresearch-item[data-type="robotics"]::before {
+    content: '🤖' !important;
+}
+
+.subresearch-item[data-type="computer"]::before {
+    content: '💻' !important;
+}
+
+.subresearch-item[data-type="ai"]::before {
+    content: '🧠' !important;
+}
+
+.subresearch-item[data-type="space"]::before {
+    content: '🚀' !important;
+}
+
+.subresearch-item[data-type="medicine"]::before {
+    content: '🩺' !important;
+}
+
+.subresearch-item[data-type="evolution"]::before {
+    content: '🧫' !important;
+}
+
+.subresearch-item[data-type="biotech"]::before {
+    content: '🧪' !important;
+}
+
+.subresearch-item[data-type="nanotech"]::before {
+    content: '🔬' !important;
+}
+
+.subresearch-item[data-type="material"]::before {
+    content: '🧰' !important;
+}
+
+.subresearch-item[data-type="environment"]::before {
+    content: '🌍' !important;
+}
+
+.subresearch-item[data-type="social"]::before {
+    content: '👥' !important;
+}
+
+.subresearch-item[data-type="philosophy"]::before {
+    content: '🧘' !important;
+}
+
+.subresearch-item[data-type="mathematics"]::before {
+    content: '🔢' !important;
+}
+
+.subresearch-item[data-type="cosmic"]::before {
+    content: '🌌' !important;
+}
+
+.subresearch-item[data-type="time"]::before {
+    content: '⏳' !important;
+}
+
+.subresearch-item[data-type="particle"]::before {
+    content: '✨' !important;
+}
+
+.subresearch-item[data-type="gravity"]::before {
+    content: '🪨' !important;
+}
+
+.subresearch-item[data-type="water"]::before {
+    content: '💧' !important;
+}
+
+.subresearch-item[data-type="fire"]::before {
+    content: '🔥' !important;
+}
+
+.subresearch-item[data-type="earth"]::before {
+    content: '🌱' !important;
+}
+
+.subresearch-item[data-type="air"]::before {
+    content: '💨' !important;
+}
+
+.subresearch-item[data-type="metal"]::before {
+    content: '⚙️' !important;
+}
+
+.subresearch-item[data-type="light"]::before {
+    content: '💡' !important;
 }
 
 /* Стандартные иконки для состояний подисследований */
