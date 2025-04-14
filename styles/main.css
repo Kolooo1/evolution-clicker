@@ -863,17 +863,17 @@ body:not(.dark-theme) .tree-connection.active {
     top: 0;
     left: 0;
     right: 0;
-    background-color: var(--nav-bg);
-    border-bottom: 1px solid var(--nav-border);
+    background-color: transparent;
+    border-bottom: none;
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 20;
-    backdrop-filter: blur(5px);
     margin-bottom: 15px;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    backdrop-filter: none;
+    box-shadow: none;
 }
 
 .tree-nav-tabs {
@@ -889,10 +889,12 @@ body:not(.dark-theme) .tree-connection.active {
     font-weight: bold;
     font-size: 0.9rem;
     user-select: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
 }
 
 .tree-nav-tab:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 .tree-nav-tab.active {
@@ -912,7 +914,8 @@ body:not(.dark-theme) .tree-connection.active {
     padding: 8px 10px;
     border: 1px solid var(--nav-border);
     border-radius: 5px;
-    background-color: var(--search-bg);
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
     color: var(--text-color);
     transition: all 0.3s;
 }
@@ -3253,4 +3256,24 @@ body:not(.dark-theme) .footer-copyright {
         flex-direction: column;
         gap: 5px;
     }
-} 
+}
+
+.dark-theme .tree-nav-tab {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.dark-theme .tree-nav-tab:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.dark-theme .tree-search {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark-theme .tree-search::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+  
