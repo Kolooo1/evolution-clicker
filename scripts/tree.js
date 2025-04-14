@@ -1120,132 +1120,74 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
     }
     
     /**
-     * Генерирует HTML для отображения подисследований
-     * @param {Object} node - Основное исследование
+     * Генерирует HTML-код для секции подисследований
+     * @param {Object} node - Данные узла исследования
      * @param {number} currentLevel - Текущий уровень исследования
-     * @returns {string} - HTML для подисследований
+     * @returns {string} - HTML-код секции подисследований
      */
     generateSubresearchHTML(node, currentLevel) {
-        // Если подисследования не определены или уровень исследования недостаточен, возвращаем пустую строку
-        if (!SUBRESEARCH || currentLevel === 0) {
+        // Если подисследований нет, возвращаем пустую строку
+        if (!SUBRESEARCH || currentLevel <= 0) {
             return '';
         }
         
-        // Находим подисследования, связанные с данным узлом
+        // Находим все подисследования для данного узла
         const relatedSubresearch = SUBRESEARCH.filter(sub => sub.parentId === node.id);
         
-        // Если нет связанных подисследований, возвращаем пустую строку
         if (relatedSubresearch.length === 0) {
             return '';
         }
         
-        // Инициализируем хранилище для подисследований, если оно ещё не создано
-        if (!gameStorage.gameData.unlockedSubresearch) {
-            gameStorage.gameData.unlockedSubresearch = [];
-        }
-        
-        // Сортируем подисследования: сначала разблокированные, затем доступные
+        // Сортируем подисследования по разблокированным и затем по стоимости
         const unlockedIds = gameStorage.gameData.unlockedSubresearch || [];
+        
         const sortedSubresearch = [...relatedSubresearch].sort((a, b) => {
             const aUnlocked = unlockedIds.includes(a.id);
             const bUnlocked = unlockedIds.includes(b.id);
-            if (aUnlocked && !bUnlocked) return -1;
-            if (!aUnlocked && bUnlocked) return 1;
-            return a.cost - b.cost; // Сортировка по стоимости для не разблокированных
+            
+            if (aUnlocked !== bUnlocked) {
+                return aUnlocked ? -1 : 1;
+            }
+            
+            return a.cost - b.cost;
         });
         
-        // Оцениваем количество разблокированных и доступных подисследований
+        // Подсчет разблокированных и доступных подисследований
         const unlockedCount = sortedSubresearch.filter(sub => unlockedIds.includes(sub.id)).length;
         const availableCount = sortedSubresearch.length - unlockedCount;
         
-        // Генерируем HTML для каждого подисследования
+        // Строим HTML для каждого подисследования
         let subresearchItems = '';
         
         sortedSubresearch.forEach(sub => {
-            // Проверяем, разблокировано ли подисследование
             const isUnlocked = unlockedIds.includes(sub.id);
-            // Всегда устанавливаем доступность в true, убирая проверку уровня
-            const isAvailable = true;
-            
-            // Определяем класс тематики подисследования на основе ID или названия
-            let themeClass = '';
-            
-            // Анализируем ID подисследования для определения тематики
-            if (sub.id.includes('quantum')) themeClass = 'quantum';
-            else if (sub.id.includes('fusion') || sub.id.includes('nuclear')) themeClass = 'nuclear';
-            else if (sub.id.includes('fluid') || sub.id.includes('helium')) themeClass = 'physics';
-            else if (sub.id.includes('rna') || sub.id.includes('dna')) themeClass = 'biology';
-            else if (sub.id.includes('computer') || sub.id.includes('tech')) themeClass = 'tech';
-            else if (sub.id.includes('space') || sub.id.includes('solar') || sub.id.includes('star')) themeClass = 'space';
-            else if (sub.id.includes('energy') || sub.id.includes('power')) themeClass = 'energy';
-            else if (sub.id.includes('evolution') || sub.id.includes('species')) themeClass = 'evolution';
-            else if (sub.id.includes('brain') || sub.id.includes('conscious')) themeClass = 'psychology';
-            else if (sub.id.includes('society') || sub.id.includes('social')) themeClass = 'society';
-            
-            // Также проверяем название подисследования
-            if (!themeClass) {
-                const nameLower = sub.name.toLowerCase();
-                if (nameLower.includes('квант')) themeClass = 'quantum';
-                else if (nameLower.includes('синтез') || nameLower.includes('ядер')) themeClass = 'nuclear';
-                else if (nameLower.includes('текуч') || nameLower.includes('физи')) themeClass = 'physics';
-                else if (nameLower.includes('рнк') || nameLower.includes('днк') || nameLower.includes('ген')) themeClass = 'biology';
-                else if (nameLower.includes('компьютер') || nameLower.includes('вычисл')) themeClass = 'tech';
-                else if (nameLower.includes('косм') || nameLower.includes('галакт') || nameLower.includes('звезд')) themeClass = 'space';
-                else if (nameLower.includes('энерг') || nameLower.includes('мощн')) themeClass = 'energy';
-                else if (nameLower.includes('эволюц') || nameLower.includes('вид')) themeClass = 'evolution';
-                else if (nameLower.includes('мозг') || nameLower.includes('созна')) themeClass = 'psychology';
-                else if (nameLower.includes('общест') || nameLower.includes('социа')) themeClass = 'society';
-            }
-            
-            // По умолчанию, если тематика не определена, используем стадию основного исследования
-            if (!themeClass) {
-                if (node.stage === 'cosmos') themeClass = 'cosmos';
-                else if (node.stage === 'life') themeClass = 'biology';
-                else if (node.stage === 'intellect') themeClass = 'tech';
-            }
-            
-            // Сокращаем описание, если оно слишком длинное
-            const shortDescription = sub.description.length > 150 
-                ? sub.description.substring(0, 150) + '...' 
-                : sub.description;
+            const subType = getSubresearchType(sub.id);
             
             if (isUnlocked) {
                 // Для разблокированных подисследований показываем информацию о бонусе
                 subresearchItems += `
-                    <div class="subresearch-item unlocked ${themeClass}">
+                    <div class="subresearch-item unlocked" data-type="${subType}">
                         <h4>${sub.name}</h4>
-                        <p>${shortDescription}</p>
+                        <p>${sub.description}</p>
                         <div class="subresearch-effect">
                             <span class="subresearch-bonus">+${sub.multiplier}% к множителям дохода ${sub.reasonText}</span>
                         </div>
                     </div>
                 `;
-            } else if (isAvailable) {
-                // Проверяем, может ли игрок позволить себе разблокировать подисследование
+            } else {
+                // Для доступных подисследований показываем кнопку разблокировки
                 const canAfford = gameStorage.gameData.points >= sub.cost;
                 const affordClass = canAfford ? 'can-afford' : 'cannot-afford';
                 
-                // Для доступных, но не разблокированных подисследований показываем кнопку разблокировки
                 subresearchItems += `
-                    <div class="subresearch-item available ${affordClass} ${themeClass}">
+                    <div class="subresearch-item available ${affordClass}" data-type="${subType}">
                         <h4>${sub.name}</h4>
-                        <p>${shortDescription}</p>
-                        <div class="subresearch-cost">
-                            <span>${TEXTS.unlock_cost} ${this.formatNumber(sub.cost)}</span>
-                        </div>
+                        <p>${sub.description}</p>
+                        <div class="subresearch-cost">Стоимость разблокировки: ${this.formatNumber(sub.cost)}</div>
                         <div class="subresearch-effect">
                             <span class="subresearch-bonus">+${sub.multiplier}% к множителям дохода ${sub.reasonText}</span>
                         </div>
                         <button class="subresearch-unlock-btn" data-subresearch-id="${sub.id}">Разблокировать</button>
-                    </div>
-                `;
-            } else {
-                // Для недоступных подисследований показываем заблокированное состояние с условиями разблокировки
-                subresearchItems += `
-                    <div class="subresearch-item locked ${themeClass}">
-                        <h4>${sub.name}</h4>
-                        <p>${shortDescription}</p>
-                        <div class="subresearch-cost">Стоимость разблокировки: ${sub.cost}</div>
                     </div>
                 `;
             }
@@ -1396,4 +1338,154 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
 }
 
 // Глобальная переменная для экземпляра класса
-let researchTree; 
+let researchTree;
+
+// Функция для определения типа подисследования на основе его id
+function getSubresearchType(id) {
+    const idLower = id.toLowerCase();
+    
+    // Типы подисследований на основе ключевых слов в id
+    if (idLower.includes('dna') || idLower.includes('rna') || idLower.includes('cell') || idLower.includes('gene') || idLower.includes('organ')) {
+        return 'biology';
+    } else if (idLower.includes('physics') || idLower.includes('mechanic') || idLower.includes('motion')) {
+        return 'physics';
+    } else if (idLower.includes('star') || idLower.includes('planet') || idLower.includes('galaxy') || idLower.includes('cosmos')) {
+        return 'astronomy';
+    } else if (idLower.includes('quantum') || idLower.includes('string_theory')) {
+        return 'quantum';
+    } else if (idLower.includes('energy') || idLower.includes('power')) {
+        return 'energy';
+    } else if (idLower.includes('fusion')) {
+        return 'fusion';
+    } else if (idLower.includes('nuclear') || idLower.includes('atom')) {
+        return 'nuclear';
+    } else if (idLower.includes('robot')) {
+        return 'robotics';
+    } else if (idLower.includes('computer') || idLower.includes('algorithm')) {
+        return 'computer';
+    } else if (idLower.includes('ai') || idLower.includes('intelligence')) {
+        return 'ai';
+    } else if (idLower.includes('space') || idLower.includes('rocket')) {
+        return 'space';
+    } else if (idLower.includes('medicine') || idLower.includes('treatment') || idLower.includes('heal')) {
+        return 'medicine';
+    } else if (idLower.includes('evolution') || idLower.includes('adapt')) {
+        return 'evolution';
+    } else if (idLower.includes('biotech')) {
+        return 'biotech';
+    } else if (idLower.includes('nano')) {
+        return 'nanotech';
+    } else if (idLower.includes('material')) {
+        return 'material';
+    } else if (idLower.includes('environment') || idLower.includes('climate') || idLower.includes('eco')) {
+        return 'environment';
+    } else if (idLower.includes('social') || idLower.includes('society')) {
+        return 'social';
+    } else if (idLower.includes('philosophy') || idLower.includes('ethics')) {
+        return 'philosophy';
+    } else if (idLower.includes('math')) {
+        return 'mathematics';
+    } else if (idLower.includes('cosmic')) {
+        return 'cosmic';
+    } else if (idLower.includes('time')) {
+        return 'time';
+    } else if (idLower.includes('particle')) {
+        return 'particle';
+    } else if (idLower.includes('gravity')) {
+        return 'gravity';
+    } else if (idLower.includes('water') || idLower.includes('hydro')) {
+        return 'water';
+    } else if (idLower.includes('fire') || idLower.includes('combust')) {
+        return 'fire';
+    } else if (idLower.includes('earth') || idLower.includes('ground') || idLower.includes('soil')) {
+        return 'earth';
+    } else if (idLower.includes('air') || idLower.includes('wind') || idLower.includes('atmosphere')) {
+        return 'air';
+    } else if (idLower.includes('metal') || idLower.includes('alloy')) {
+        return 'metal';
+    } else if (idLower.includes('light') || idLower.includes('optic')) {
+        return 'light';
+    } else if (idLower.includes('chemistry') || idLower.includes('chemical') || idLower.includes('compound')) {
+        return 'chemistry';
+    }
+    
+    // Если не найдено соответствий, возвращаем 'nanotech' как значение по умолчанию
+    return 'nanotech';
+}
+
+/**
+ * Создает HTML-элемент для подисследования
+ * @param {Object} subresearch - Данные подисследования
+ * @param {string} researchId - ID родительского исследования
+ * @returns {HTMLElement} - Созданный элемент
+ */
+function renderSubresearch(subresearch, researchId) {
+    const unlockedIds = gameStorage.gameData.unlockedSubresearch || [];
+    const isUnlocked = unlockedIds.includes(subresearch.id);
+    const state = isUnlocked ? 'unlocked' : 'available';
+    
+    const subresearchDiv = document.createElement('div');
+    subresearchDiv.className = `subresearch-item ${state}`;
+    subresearchDiv.id = `subresearch-${subresearch.id}`;
+    
+    // Добавляем атрибут data-type на основе id подисследования
+    subresearchDiv.setAttribute('data-type', getSubresearchType(subresearch.id));
+    
+    // Добавляем классы для состояний доступности
+    if (state === 'available') {
+        const canAfford = gameStorage.gameData.points >= subresearch.cost;
+        subresearchDiv.classList.add(canAfford ? 'can-afford' : 'cannot-afford');
+    }
+    
+    const title = document.createElement('h4');
+    title.textContent = subresearch.name;
+    subresearchDiv.appendChild(title);
+    
+    const description = document.createElement('p');
+    description.textContent = subresearch.description;
+    subresearchDiv.appendChild(description);
+    
+    // Функция форматирования числа
+    const formatNumber = (number) => {
+        if (number >= 1e6) {
+            return (number / 1e6).toFixed(2) + 'M';
+        } else if (number >= 1e3) {
+            return (number / 1e3).toFixed(2) + 'K';
+        }
+        return number.toFixed(0);
+    };
+    
+    if (isUnlocked) {
+        const effectDiv = document.createElement('div');
+        effectDiv.className = 'subresearch-effect';
+        effectDiv.innerHTML = `
+            <span class="subresearch-bonus">+${subresearch.multiplier}% к множителям дохода ${subresearch.reasonText}</span>
+        `;
+        subresearchDiv.appendChild(effectDiv);
+    } else {
+        const costDiv = document.createElement('div');
+        costDiv.className = 'subresearch-cost';
+        costDiv.textContent = `Стоимость разблокировки: ${formatNumber(subresearch.cost)}`;
+        subresearchDiv.appendChild(costDiv);
+        
+        const effectDiv = document.createElement('div');
+        effectDiv.className = 'subresearch-effect';
+        effectDiv.innerHTML = `
+            <span class="subresearch-bonus">+${subresearch.multiplier}% к множителям дохода ${subresearch.reasonText}</span>
+        `;
+        subresearchDiv.appendChild(effectDiv);
+        
+        const unlockBtn = document.createElement('button');
+        unlockBtn.className = 'subresearch-unlock-btn';
+        unlockBtn.textContent = 'Разблокировать';
+        unlockBtn.dataset.subresearchId = subresearch.id;
+        unlockBtn.addEventListener('click', () => {
+            researchTree.unlockSubresearch(subresearch.id);
+            // Обновляем модальное окно информации об исследовании
+            researchTree.showResearchInfo(RESEARCH_TREE.find(r => r.id === researchId));
+        });
+        subresearchDiv.appendChild(unlockBtn);
+    }
+    
+    return subresearchDiv;
+} 
