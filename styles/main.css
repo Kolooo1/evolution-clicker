@@ -1164,8 +1164,11 @@ body:not(.dark-theme) .tree-node.available {
 
 /* Стили для модального окна с информацией о исследовании */
 .research-info-modal .modal-content {
-    max-width: 450px;
-    width: 90%;
+    max-width: 600px; /* Увеличиваем максимальную ширину для ПК */
+    width: 95%;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
 }
 
 .research-info-header {
@@ -1173,941 +1176,286 @@ body:not(.dark-theme) .tree-node.available {
     position: sticky;
     top: 0;
     z-index: 10;
+    padding: 18px 24px; /* Увеличиваем отступы */
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.research-info-header h2 {
+    margin: 0;
+    font-size: 1.5rem; /* Увеличиваем размер заголовка */
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .research-info-body {
-    padding: 15px;
-    max-height: 60vh;
+    padding: 24px; /* Увеличиваем отступы */
+    max-height: 70vh; /* Увеличиваем высоту */
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--button-bg) transparent;
 }
 
 .research-info-description {
-    margin-bottom: 15px;
-    line-height: 1.5;
-    font-size: 0.95rem;
+    margin-bottom: 24px; /* Увеличиваем отступ снизу */
+    line-height: 1.7; /* Увеличиваем высоту строки */
+    font-size: 1.05rem; /* Немного увеличиваем размер шрифта */
+    color: var(--text-color);
 }
 
 .research-info-parents {
-    margin-bottom: 15px;
-    padding: 8px 12px;
+    margin-bottom: 24px; /* Увеличиваем отступ снизу */
+    padding: 15px 20px; /* Увеличиваем внутренние отступы */
     background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 6px;
-    font-size: 0.9rem;
-}
-
-.dark-theme .research-info-parents {
-    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    font-size: 1rem;
+    border-left: 3px solid var(--button-bg);
+    line-height: 1.5;
 }
 
 .research-info-current, .research-info-next-level {
-    margin-bottom: 15px;
-    padding: 12px;
-    border-radius: 6px;
-}
-
-.research-info-current {
-    background-color: rgba(0, 120, 255, 0.1);
-}
-
-.dark-theme .research-info-current {
-    background-color: rgba(0, 120, 255, 0.2);
-}
-
-.research-info-next-level {
-    background-color: rgba(0, 200, 100, 0.1);
-}
-
-.dark-theme .research-info-next-level {
-    background-color: rgba(0, 200, 100, 0.2);
+    margin-bottom: 24px; /* Увеличиваем отступ снизу */
+    padding: 20px; /* Увеличиваем внутренние отступы */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 }
 
 .research-info-current h3, .research-info-next-level h3 {
     margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.1rem;
+    margin-bottom: 16px; /* Увеличиваем отступ снизу */
+    font-size: 1.2rem; /* Увеличиваем размер заголовка */
+    font-weight: 600;
+    color: var(--text-color);
 }
 
 .research-info-effect {
-    font-size: 0.95rem;
-    margin-top: 8px;
+    font-size: 1.05rem; /* Увеличиваем размер шрифта */
+    margin-top: 14px; /* Увеличиваем отступ сверху */
+    padding: 10px 0; /* Увеличиваем вертикальные отступы */
+    color: var(--text-color);
+    line-height: 1.5;
 }
 
 .research-info-cost {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    color: var(--text-secondary);
+    font-size: 1rem; /* Увеличиваем размер шрифта */
+    margin-bottom: 12px; /* Увеличиваем отступ снизу */
+    color: var(--text-color);
+    opacity: 0.85;
 }
 
 .research-info-stats {
-    margin-top: 20px;
-    padding: 10px;
+    margin-top: 28px; /* Увеличиваем отступ сверху */
+    padding: 18px; /* Увеличиваем внутренние отступы */
     background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 6px;
-}
-
-.dark-theme .research-info-stats {
-    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px; /* Увеличиваем разрыв между элементами сетки */
 }
 
 .research-info-stat {
-    margin-bottom: 5px;
-    font-size: 0.9rem;
+    margin-bottom: 8px; /* Увеличиваем отступ снизу */
+    font-size: 1rem; /* Увеличиваем размер шрифта */
+    padding: 8px 0;
+    line-height: 1.5;
 }
 
 .research-info-buttons {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    padding-top: 0;
+    gap: 18px; /* Увеличиваем разрыв между кнопками */
+    padding: 20px; /* Увеличиваем внутренние отступы */
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 0 0 12px 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .research-upgrade-btn {
-    padding: 8px 15px;
+    padding: 12px 24px; /* Увеличиваем отступы кнопок */
     background-color: var(--button-bg);
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.25s ease;
     font-weight: bold;
-}
-
-.research-upgrade-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(0, 120, 255, 0.5);
-}
-
-/* Адаптация для мобильных устройств */
-@media (max-width: 768px) {
-    .research-info-modal .modal-content {
-        width: 95%;
-        max-height: 85vh;
-    }
-    
-    .research-info-body {
-        max-height: 65vh;
-    }
-    
-    .research-info-header h2 {
-        font-size: 1.3rem;
-    }
-    
-    .research-info-current h3, .research-info-next-level h3 {
-        font-size: 1rem;
-    }
-    
-    .research-info-buttons {
-        flex-wrap: wrap;
-    }
-}
-
-/* Стили для мобильной версии кнопки информации */
-@media (max-width: 480px) {
-    .info-btn {
-        padding: 2px 5px;
-        font-size: 0.65rem;
-    }
-    
-    .node-upgrade-buttons {
-        gap: 3px;
-    }
-}
-
-/* Анимация для обновления значений статистики */
-@keyframes value-update {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-        color: var(--button-bg);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.stat-value.updated {
-    animation: value-update 0.5s ease;
-}
-
-/* Стили для кнопки достижений */
-.achievements-button {
-    background-color: #f1c40f !important;
-    color: white;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 1.2rem;
-}
-
-.achievements-button:hover {
-    transform: scale(1.15);
-    box-shadow: 0 3px 8px rgba(241, 196, 15, 0.5);
-}
-
-/* Стили для модального окна достижений */
-.achievements-modal-content {
-    width: 90%;
-    max-width: 800px;
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 0;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background-color: var(--button-bg);
-    color: white;
-    border-radius: 8px 8px 0 0;
-}
-
-.modal-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-.close-modal {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.8rem;
-    cursor: pointer;
-    padding: 0 5px;
-    line-height: 1;
-}
-
-.close-modal:hover {
-    transform: scale(1.2);
-}
-
-/* Обновленные стили для списка достижений */
-.achievements-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 15px;
-    padding: 20px;
-}
-
-.achievement {
-    background-color: var(--panel-bg);
-    border-radius: 8px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    height: 100%;
-}
-
-.achievement::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--button-bg), transparent);
-}
-
-.achievement.unlocked {
-    border: none;
-    box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
-}
-
-.achievement.unlocked::before {
-    background: linear-gradient(90deg, var(--button-bg), var(--button-bg));
-}
-
-.achievement.locked {
-    opacity: 0.7;
-    filter: grayscale(0.7);
-}
-
-.achievement-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 50%;
-    background-color: rgba(76, 175, 80, 0.1);
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.achievement.unlocked .achievement-icon {
-    background-color: rgba(76, 175, 80, 0.2);
-    color: var(--button-bg);
-}
-
-.achievement-name {
-    font-weight: bold;
-    margin-bottom: 8px;
-    text-align: center;
-    font-size: 1.1rem;
-    color: var(--button-bg);
-}
-
-.achievement-desc {
-    font-size: 0.9rem;
-    text-align: center;
-    margin-bottom: 10px;
-    flex-grow: 1;
-    line-height: 1.4;
-}
-
-.achievement-reward {
-    font-size: 0.85rem;
-    background-color: rgba(76, 175, 80, 0.1);
-    padding: 5px 10px;
-    border-radius: 12px;
-    color: var(--button-bg);
-    margin-top: auto;
-}
-
-/* Адаптивность для модального окна достижений */
-@media (max-width: 768px) {
-    .achievements-list {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        padding: 15px;
-        gap: 10px;
-    }
-    
-    .achievement {
-        padding: 12px;
-    }
-    
-    .achievement-icon {
-        font-size: 1.8rem;
-        margin-bottom: 8px;
-        width: 45px;
-        height: 45px;
-    }
-    
-    .achievement-name {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .achievements-list {
-        grid-template-columns: 1fr;
-    }
-    
-    .achievement-icon {
-        font-size: 1.5rem;
-        width: 40px;
-        height: 40px;
-    }
-}
-
-/* Стили для подвала сайта */
-.game-footer {
-    margin-top: 20px;
-    padding: 25px 15px;
-    background-color: var(--panel-bg);
-    border-top: 2px solid var(--button-bg);
-    color: var(--text-color);
-    font-size: 0.95rem;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.footer-content {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.footer-description h3 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    color: var(--button-bg);
-}
-
-.footer-description p {
-    line-height: 1.5;
-    opacity: 0.9;
-    max-width: 800px;
-}
-
-.footer-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-    justify-content: space-between;
-}
-
-.footer-stat-group {
-    flex: 1;
-    min-width: 250px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.footer-stat {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
-    transition: all 0.3s ease;
-}
-
-.footer-stat:hover {
-    background-color: rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
-}
-
-.footer-stat-label {
-    font-weight: 500;
-    opacity: 0.8;
-}
-
-.footer-stat-value {
-    font-weight: bold;
-    font-family: monospace;
-    letter-spacing: 0.5px;
-    color: var(--button-bg);
-}
-
-.footer-copyright {
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 15px;
-    margin-top: 15px;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-#version-display {
-    margin-left: 10px;
-    padding: 2px 6px;
-    background-color: var(--button-bg);
-    color: white;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-/* Светлая тема для подвала */
-body:not(.dark-theme) .game-footer {
-    border-top-color: #03a9f4;
-    background-color: #f5f5f5;
-}
-
-body:not(.dark-theme) .footer-description h3 {
-    color: #0288d1;
-}
-
-body:not(.dark-theme) .footer-stat {
-    background-color: rgba(3, 169, 244, 0.08);
-}
-
-body:not(.dark-theme) .footer-stat:hover {
-    background-color: rgba(3, 169, 244, 0.15);
-}
-
-body:not(.dark-theme) .footer-stat-value {
-    color: #0288d1;
-}
-
-body:not(.dark-theme) .footer-copyright {
-    border-top-color: rgba(0, 0, 0, 0.08);
-}
-
-/* Адаптивность для подвала */
-@media (max-width: 768px) {
-    .footer-content {
-        gap: 15px;
-    }
-    
-    .footer-stats {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .footer-stat-group {
-        min-width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .game-footer {
-        padding: 15px 10px;
-    }
-    
-    .footer-description h3 {
-        font-size: 1.1rem;
-    }
-    
-    .footer-stat {
-        padding: 6px 8px;
-        font-size: 0.9rem;
-    }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-    /* Средние устройства: немного уменьшаем узлы исследований */
-    .tree-node {
-        width: 130px;
-        height: 130px;
-        padding: 7px;
-    }
-    
-    /* Увеличиваем расстояние между исследованиями */
-    .research-tree {
-        padding: 22px;
-        min-height: 2100px;
-    }
-    
-    /* Уменьшаем масштаб элементов управления зумом */
-    .tree-zoom-controls {
-        right: 15px;
-        bottom: 15px;
-        padding: 3px;
-    }
-    
-    .tree-zoom-controls button {
-        font-size: 1.1rem;
-        padding: 6px;
-    }
-}
-
-/* Стили для окна оффлайн-прогресса */
-.offline-progress-amount {
-    font-size: 2.5rem;
-    margin: 20px 0;
-    text-align: center;
-    color: var(--button-bg);
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.offline-progress-amount .stat-icon {
-    font-size: 2rem;
-    margin-top: 5px;
-}
-
-#collect-offline-progress {
-    background-color: var(--button-bg);
-    color: white;
-    padding: 12px 25px;
-    font-size: 1.1rem;
-    border-radius: 30px;
-}
-
-#collect-offline-progress:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px var(--button-bg);
-}
-
-/* Стили для кнопки бургер-меню и мобильного меню */
-.mobile-menu-toggle {
-    display: none;
-    background-color: var(--panel-bg);
-    border: 1px solid var(--button-bg);
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    padding: 8px;
-    z-index: 1000;
-    border-radius: 5px;
-    position: relative;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.burger-line {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    background-color: var(--text-color);
-    transition: all 0.3s ease-in-out;
-    border-radius: 3px;
-}
-
-.mobile-menu-toggle.active .burger-line:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-}
-
-.mobile-menu-toggle.active .burger-line:nth-child(2) {
-    opacity: 0;
-}
-
-.mobile-menu-toggle.active .burger-line:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-}
-
-.mobile-menu {
-    display: none;
-    position: fixed;
-    top: 60px;
-    right: 0;
-    width: 250px;
-    background-color: var(--bg-color);
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    padding: 15px 0;
-    border-radius: 0 0 0 10px;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-.mobile-menu.active {
-    transform: translateX(0);
-}
-
-.mobile-menu-content {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.mobile-menu-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text-color);
-    text-align: left;
-    transition: all 0.2s ease;
-    border-radius: 6px;
-}
-
-.mobile-menu-item:hover {
-    background-color: rgba(var(--button-bg-rgb), 0.1);
-}
-
-.mobile-icon {
-    margin-right: 15px;
-    font-size: 1.2rem;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--button-bg);
-    color: white;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.mobile-icon svg {
-    width: 18px;
-    height: 18px;
-    stroke: white;
-    stroke-width: 2;
-}
-
-.mobile-item-text {
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.mobile-menu-separator {
-    height: 1px;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin: 8px 0;
-}
-
-/* Медиа-запросы для мобильных устройств */
-@media (max-width: 768px) {
-    .mobile-menu-toggle {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .mobile-menu {
-        display: block;
-    }
-    
-    .header-controls {
-        display: none;
-    }
-    
-    .tree-zoom-controls {
-        display: none;
-    }
-}
-
-/* Переопределение стилей для дерева исследований на мобильных устройствах */
-@media (max-width: 768px) {
-    .tree-container {
-        overflow: hidden;
-        position: relative;
-        touch-action: manipulation;
-    }
-    
-    .research-tree {
-        transform-origin: 0 0;
-        transition: transform 0.05s ease-out;
-    }
-}
-
-/* Добавление стилей для зума и масштабирования на мобильных устройствах */
-.mobile-zoom-controls {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 900;
-    background-color: var(--panel-bg);
-    border-radius: 30px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    padding: 5px;
-}
-
-@media (max-width: 768px) {
-    .mobile-zoom-controls {
-        display: flex;
-    }
-}
-
-.mobile-zoom-btn {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: var(--button-bg);
-    color: white;
-    font-size: 20px;
-    border-radius: 50%;
-    margin: 0 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.mobile-zoom-btn:active {
-    transform: scale(0.95);
-}
-
-/* Дополнительные стили для мобильных устройств */
-@media (max-width: 480px) {
-    .mobile-menu {
-        width: 85%;
-        top: 50px;
-    }
-    
-    .top-controls {
-        padding: 10px 15px;
-        justify-content: space-between;
-    }
-    
-    .game-title h1 {
-        font-size: 1.5rem;
-        margin: 0;
-    }
-    
-    .hidden {
-        display: none;
-    }
+    font-size: 1.05rem; /* Увеличиваем размер шрифта */
+    min-width: 90px; /* Увеличиваем минимальную ширину */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Стили для подисследований */
 .research-info-subresearch {
-    margin-top: 15px;
+    margin-top: 30px; /* Увеличиваем отступ сверху */
     border-top: 1px solid rgba(100, 100, 100, 0.2);
-    padding-top: 15px;
+    padding-top: 24px; /* Увеличиваем отступ сверху */
 }
 
 .research-info-subresearch h3 {
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: 1.25rem; /* Увеличиваем размер заголовка */
+    margin-bottom: 18px; /* Увеличиваем отступ снизу */
     color: #4a8fe7;
+    display: flex;
+    align-items: center;
 }
 
-.dark-theme .research-info-subresearch h3 {
-    color: #7eb6ff;
+.subresearch-summary {
+    display: flex;
+    gap: 18px; /* Увеличиваем разрыв между элементами */
+    margin-bottom: 18px; /* Увеличиваем отступ снизу */
+    font-size: 1rem; /* Увеличиваем размер шрифта */
 }
 
 .subresearch-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    max-height: 300px;
+    gap: 18px; /* Увеличиваем разрыв между элементами списка */
+    max-height: 400px; /* Увеличиваем максимальную высоту */
     overflow-y: auto;
-    padding-right: 10px;
+    padding-right: 15px; /* Увеличиваем отступ справа */
+    scrollbar-width: thin;
+    scrollbar-color: var(--button-bg) transparent;
 }
 
 .subresearch-item {
-    padding: 15px;
-    border-radius: 8px;
+    padding: 20px; /* Увеличиваем внутренние отступы */
+    border-radius: 12px; /* Увеличиваем скругление углов */
     background: rgba(230, 230, 230, 0.15);
     transition: all 0.3s ease;
-}
-
-.dark-theme .subresearch-item {
-    background: rgba(50, 50, 80, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .subresearch-item h4 {
-    font-size: 15px;
-    margin: 0 0 8px 0;
-    color: #333;
-}
-
-.dark-theme .subresearch-item h4 {
-    color: #e0e0e0;
+    font-size: 1.1rem; /* Увеличиваем размер заголовка */
+    margin: 0 0 14px 0; /* Увеличиваем отступ снизу */
+    color: var(--text-color);
 }
 
 .subresearch-item p {
-    font-size: 13px;
-    margin: 0 0 12px 0;
-    line-height: 1.4;
-    color: #555;
-}
-
-.dark-theme .subresearch-item p {
-    color: #aaa;
-}
-
-.subresearch-item.unlocked {
-    background: rgba(100, 200, 100, 0.15);
-    border-left: 3px solid #4caf50;
-}
-
-.dark-theme .subresearch-item.unlocked {
-    background: rgba(50, 150, 50, 0.2);
-    border-left: 3px solid #388e3c;
-}
-
-.subresearch-item.available {
-    background: rgba(100, 150, 230, 0.15);
-    border-left: 3px solid #2196f3;
-}
-
-.dark-theme .subresearch-item.available {
-    background: rgba(50, 100, 180, 0.2);
-    border-left: 3px solid #1976d2;
-}
-
-.subresearch-item.locked {
-    background: rgba(150, 150, 150, 0.15);
-    border-left: 3px solid #9e9e9e;
-    opacity: 0.7;
-}
-
-.dark-theme .subresearch-item.locked {
-    background: rgba(80, 80, 80, 0.2);
-    border-left: 3px solid #616161;
+    font-size: 1rem; /* Увеличиваем размер шрифта */
+    margin: 0 0 18px 0; /* Увеличиваем отступ снизу */
+    line-height: 1.6; /* Увеличиваем высоту строки */
+    color: var(--text-color);
+    opacity: 0.85;
 }
 
 .subresearch-effect {
-    font-size: 13px;
-    margin-top: 8px;
-    padding: 6px 10px;
+    font-size: 1rem; /* Увеличиваем размер шрифта */
+    margin-top: 14px; /* Увеличиваем отступ сверху */
+    padding: 10px 15px; /* Увеличиваем внутренние отступы */
     background: rgba(100, 200, 100, 0.2);
-    border-radius: 4px;
+    border-radius: 8px; /* Увеличиваем скругление углов */
     display: inline-block;
-}
-
-.dark-theme .subresearch-effect {
-    background: rgba(50, 150, 50, 0.25);
-}
-
-.subresearch-bonus {
-    color: #2e7d32;
-    font-weight: 500;
-}
-
-.dark-theme .subresearch-bonus {
-    color: #81c784;
+    line-height: 1.5;
 }
 
 .subresearch-cost {
-    font-size: 13px;
-    margin-top: 8px;
-    margin-bottom: 10px;
-    color: #555;
-}
-
-.dark-theme .subresearch-cost {
-    color: #bbb;
+    font-size: 1rem; /* Увеличиваем размер шрифта */
+    margin-top: 12px; /* Увеличиваем отступ сверху */
+    margin-bottom: 15px; /* Увеличиваем отступ снизу */
+    color: var(--text-color);
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    line-height: 1.5;
 }
 
 .subresearch-unlock-btn {
     display: inline-block;
-    padding: 8px 15px;
+    padding: 12px 24px; /* Увеличиваем внутренние отступы */
     background: #2196f3;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 25px;
     cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s ease;
+    font-size: 1rem; /* Увеличиваем размер шрифта */
+    font-weight: 500;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin-top: 5px; /* Добавляем отступ сверху */
 }
 
-.subresearch-unlock-btn:hover {
-    background: #1976d2;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.dark-theme .subresearch-unlock-btn {
-    background: #1976d2;
-}
-
-.dark-theme .subresearch-unlock-btn:hover {
-    background: #1565c0;
-}
-
+/* Модификации для мобильных устройств */
 @media (max-width: 768px) {
-    .subresearch-list {
-        max-height: 250px;
+    .research-info-modal .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .research-info-body {
+        max-height: 70vh;
+        padding: 18px; /* Адаптируем отступы для мобильных */
+    }
+    
+    .research-info-header {
+        padding: 15px 20px; /* Адаптируем отступы для мобильных */
+    }
+    
+    .research-info-header h2 {
+        font-size: 1.3rem; /* Адаптируем размер заголовка для мобильных */
+    }
+    
+    .research-info-buttons {
+        padding: 15px; /* Уменьшаем отступы для мобильных */
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .research-upgrade-btn {
+        padding: 14px; /* Адаптируем отступы для мобильных */
+        font-size: 1.05rem;
+        flex-grow: 1;
     }
     
     .subresearch-item {
-        padding: 12px;
-    }
-    
-    .subresearch-item h4 {
-        font-size: 14px;
-    }
-    
-    .subresearch-item p {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .subresearch-list {
-        max-height: 200px;
+        padding: 18px; /* Адаптируем отступы для мобильных */
     }
     
     .subresearch-unlock-btn {
         width: 100%;
-        padding: 10px;
+        padding: 14px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .research-info-header {
+        padding: 15px;
+    }
+    
+    .research-info-body {
+        padding: 15px;
+    }
+    
+    .research-info-description, 
+    .research-info-effect,
+    .subresearch-item p {
+        font-size: 0.95rem; /* Немного уменьшаем шрифт для очень маленьких экранов */
+        line-height: 1.5;
+    }
+    
+    .research-info-parents {
+        padding: 12px 15px;
+    }
+    
+    .research-info-current, 
+    .research-info-next-level {
+        padding: 15px;
+    }
+    
+    .research-info-current h3, 
+    .research-info-next-level h3 {
+        font-size: 1.1rem;
+    }
+    
+    .research-upgrade-btn {
+        width: 100%;
+        padding: 16px;
+        font-size: 1.15rem;
     }
 }
 
