@@ -914,6 +914,17 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
             ? this.calculateCost(node, currentLevel) 
             : null;
             
+        // Определяем тип исследования для иконки
+        let typeIcon = '';
+        
+        if (node.effect.type === 'click') {
+            typeIcon = '👆';
+        } else if (node.effect.type === 'passive') {
+            typeIcon = '⏱️';
+        } else if (node.effect.type === 'multiplier') {
+            typeIcon = '✖️';
+        }
+            
         // Создаем HTML для текущего и следующего уровня
         let nextLevelHTML = '';
         if (nextEffect !== null) {
@@ -924,7 +935,7 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                         <span>Стоимость: ${this.formatNumber(nextLevelCost)}</span>
                     </div>
                     <div class="research-info-effect">
-                        <span>${this.formatEffectFull(node, currentLevel + 1)}</span>
+                        <span>${typeIcon} ${this.formatEffectFull(node, currentLevel + 1)}</span>
                     </div>
                 </div>
             `;
@@ -962,7 +973,7 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                     <div class="research-info-current">
                         <h3>Текущий уровень: ${currentLevel}/${node.maxLevel}</h3>
                         <div class="research-info-effect">
-                            <span>${currentLevel > 0 ? this.formatEffectFull(node, currentLevel) : 'Не исследовано'}</span>
+                            <span>${currentLevel > 0 ? `${typeIcon} ${this.formatEffectFull(node, currentLevel)}` : 'Не исследовано'}</span>
                         </div>
                     </div>
                     ${nextLevelHTML}
@@ -1031,21 +1042,33 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
             if (upgrade1Btn) {
                 upgrade1Btn.addEventListener('click', () => {
                     this.handleNodeUpgrade(node, 1);
-                    infoModal.remove();
+                    // Обновляем модальное окно вместо закрытия
+                    const updatedInfo = this.showResearchInfo(node);
+                    if (existingModal) {
+                        existingModal.remove();
+                    }
                 });
             }
             
             if (upgrade10Btn) {
                 upgrade10Btn.addEventListener('click', () => {
                     this.handleNodeUpgrade(node, 10);
-                    infoModal.remove();
+                    // Обновляем модальное окно вместо закрытия
+                    const updatedInfo = this.showResearchInfo(node);
+                    if (existingModal) {
+                        existingModal.remove();
+                    }
                 });
             }
             
             if (upgradeMaxBtn) {
                 upgradeMaxBtn.addEventListener('click', () => {
                     this.handleNodeUpgradeMax(node);
-                    infoModal.remove();
+                    // Обновляем модальное окно вместо закрытия
+                    const updatedInfo = this.showResearchInfo(node);
+                    if (existingModal) {
+                        existingModal.remove();
+                    }
                 });
             }
         }
@@ -1056,6 +1079,7 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
             btn.addEventListener('click', () => {
                 const subresearchId = btn.getAttribute('data-subresearch-id');
                 this.unlockSubresearch(subresearchId);
+                
                 // Обновляем секцию подисследований
                 const subresearchSection = infoModal.querySelector('.research-info-subresearch');
                 if (subresearchSection) {
@@ -1067,11 +1091,32 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                         newBtn.addEventListener('click', () => {
                             const newSubresearchId = newBtn.getAttribute('data-subresearch-id');
                             this.unlockSubresearch(newSubresearchId);
+                            
+                            // Обновляем и модальное окно целиком, поскольку покупка может изменить доход
+                            const updatedModal = this.showResearchInfo(node);
+                            if (existingModal) {
+                                existingModal.remove();
+                            }
                         });
                     });
                 }
             });
         });
+        
+        // Добавляем поддержку клавиатурных сокращений
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                infoModal.classList.add('hidden');
+                setTimeout(() => {
+                    infoModal.remove();
+                    document.removeEventListener('keydown', handleKeyDown);
+                }, 300);
+            }
+        };
+        
+        document.addEventListener('keydown', handleKeyDown);
+        
+        return infoModal;
     }
     
     /**
@@ -1099,34 +1144,60 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
             gameStorage.gameData.unlockedSubresearch = [];
         }
         
+        // Сортируем подисследования: сначала разблокированные, затем доступные
+        const unlockedIds = gameStorage.gameData.unlockedSubresearch || [];
+        const sortedSubresearch = [...relatedSubresearch].sort((a, b) => {
+            const aUnlocked = unlockedIds.includes(a.id);
+            const bUnlocked = unlockedIds.includes(b.id);
+            if (aUnlocked && !bUnlocked) return -1;
+            if (!aUnlocked && bUnlocked) return 1;
+            return a.cost - b.cost; // Сортировка по стоимости для не разблокированных
+        });
+        
+        // Оцениваем количество разблокированных и доступных подисследований
+        const unlockedCount = sortedSubresearch.filter(sub => unlockedIds.includes(sub.id)).length;
+        const availableCount = sortedSubresearch.length - unlockedCount;
+        
         // Генерируем HTML для каждого подисследования
         let subresearchItems = '';
         
-        relatedSubresearch.forEach(sub => {
+        sortedSubresearch.forEach(sub => {
             // Проверяем, разблокировано ли подисследование
-            const isUnlocked = gameStorage.gameData.unlockedSubresearch.includes(sub.id);
+            const isUnlocked = unlockedIds.includes(sub.id);
             // Всегда устанавливаем доступность в true, убирая проверку уровня
             const isAvailable = true;
+            
+            // Сокращаем описание, если оно слишком длинное
+            const shortDescription = sub.description.length > 150 
+                ? sub.description.substring(0, 150) + '...' 
+                : sub.description;
             
             if (isUnlocked) {
                 // Для разблокированных подисследований показываем информацию о бонусе
                 subresearchItems += `
                     <div class="subresearch-item unlocked">
                         <h4>${sub.name}</h4>
-                        <p>${sub.description}</p>
+                        <p>${shortDescription}</p>
                         <div class="subresearch-effect">
                             <span class="subresearch-bonus">+${sub.multiplier}% к множителям дохода ${sub.reasonText}</span>
                         </div>
                     </div>
                 `;
             } else if (isAvailable) {
+                // Вычисляем, хватает ли очков для разблокировки
+                const canAfford = gameStorage.gameData.points >= sub.cost;
+                const affordClass = canAfford ? 'can-afford' : 'cannot-afford';
+                
                 // Для доступных, но не разблокированных подисследований показываем кнопку разблокировки
                 subresearchItems += `
-                    <div class="subresearch-item available">
+                    <div class="subresearch-item available ${affordClass}">
                         <h4>${sub.name}</h4>
-                        <p>${sub.description}</p>
+                        <p>${shortDescription}</p>
                         <div class="subresearch-cost">
                             <span>${TEXTS.unlock_cost} ${this.formatNumber(sub.cost)}</span>
+                        </div>
+                        <div class="subresearch-effect">
+                            <span class="subresearch-bonus">+${sub.multiplier}% к множителям дохода ${sub.reasonText}</span>
                         </div>
                         <button class="subresearch-unlock-btn" data-subresearch-id="${sub.id}">Разблокировать</button>
                     </div>
@@ -1142,10 +1213,14 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
             }
         });
         
-        // Возвращаем полный HTML для секции подисследований
+        // Возвращаем полный HTML для секции подисследований с информацией о количестве
         return `
             <div class="research-info-subresearch">
-                <h3>${TEXTS.subresearch}</h3>
+                <h3>${TEXTS.subresearch} <span class="subresearch-counter">(${unlockedCount}/${sortedSubresearch.length})</span></h3>
+                <div class="subresearch-summary">
+                    ${unlockedCount > 0 ? `<span class="unlocked-count">Разблокировано: ${unlockedCount}</span>` : ''}
+                    ${availableCount > 0 ? `<span class="available-count">Доступно: ${availableCount}</span>` : ''}
+                </div>
                 <div class="subresearch-list">
                     ${subresearchItems}
                 </div>

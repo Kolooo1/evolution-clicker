@@ -2144,4 +2144,73 @@ body:not(.dark-theme) .footer-copyright {
         transform: scale(1);
         opacity: 0.7;
     }
+}
+
+/* Дополнительные стили для подисследований */
+.subresearch-counter {
+    font-size: 0.85rem;
+    color: #7a7a7a;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.dark-theme .subresearch-counter {
+    color: #aaa;
+}
+
+.subresearch-summary {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.unlocked-count {
+    color: #388e3c;
+    display: flex;
+    align-items: center;
+}
+
+.unlocked-count::before {
+    content: '✅';
+    margin-right: 5px;
+    font-size: 1rem;
+}
+
+.available-count {
+    color: #1976d2;
+    display: flex;
+    align-items: center;
+}
+
+.available-count::before {
+    content: '🔓';
+    margin-right: 5px;
+    font-size: 1rem;
+}
+
+.subresearch-item.can-afford .subresearch-unlock-btn {
+    background: #2196f3;
+}
+
+.subresearch-item.cannot-afford .subresearch-unlock-btn {
+    background: #90a4ae;
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.subresearch-item.cannot-afford .subresearch-cost {
+    color: #e57373;
+}
+
+.dark-theme .subresearch-item.cannot-afford .subresearch-cost {
+    color: #ef9a9a;
+}
+
+/* Улучшения для мобильных */
+@media (max-width: 480px) {
+    .subresearch-summary {
+        flex-direction: column;
+        gap: 5px;
+    }
 } 
