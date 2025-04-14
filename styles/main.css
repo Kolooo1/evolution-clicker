@@ -3335,4 +3335,100 @@ body:not(.dark-theme) .footer-copyright {
         height: 140px;
     }
 }
+
+/* Кнопка настроек для ПК */
+.settings-toggle {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+    color: var(--text-color);
+}
+
+.settings-toggle svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s;
+}
+
+.settings-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.settings-toggle:hover svg {
+    transform: rotate(30deg);
+}
+
+/* ПК меню настроек */
+.desktop-settings-menu {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: var(--panel-bg);
+    border-radius: 8px;
+    width: 250px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 0.3s;
+}
+
+.desktop-settings-menu.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.settings-menu-content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.settings-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 5px;
+    color: var(--text-color);
+    transition: background-color 0.2s;
+    gap: 10px;
+    text-align: left;
+}
+
+.settings-menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .settings-menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.settings-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .settings-toggle {
+        display: none;
+    }
+}
   

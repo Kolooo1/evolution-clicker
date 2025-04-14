@@ -79,6 +79,14 @@ document.body.appendChild(offlineProgressModal);
 const collectOfflineButton = document.getElementById('collect-offline-progress');
 const offlinePointsAmount = document.getElementById('offline-points-amount');
 
+// Получаем элементы для ПК настроек
+const settingsToggle = document.getElementById('settings-toggle');
+const desktopSettingsMenu = document.getElementById('desktop-settings-menu');
+const desktopThemeToggle = document.getElementById('desktop-theme-toggle');
+const desktopLanguageToggle = document.getElementById('desktop-language-toggle');
+const desktopSoundToggle = document.getElementById('desktop-sound-toggle');
+const desktopReset = document.getElementById('desktop-reset');
+
 /**
  * Инициализация игры
  */
@@ -290,6 +298,40 @@ function setupEventListeners() {
     // Добавляем обработчик для мобильной кнопки если она существует
     if (mobileMainButton) {
         mobileMainButton.addEventListener('click', handleMainButtonClick);
+    }
+
+    // Добавляем обработчики событий для ПК настроек
+    if (settingsToggle) {
+        settingsToggle.addEventListener('click', () => {
+            desktopSettingsMenu.classList.toggle('active');
+        });
+
+        // Закрываем меню при клике вне его
+        document.addEventListener('click', (e) => {
+            if (!settingsToggle.contains(e.target) && !desktopSettingsMenu.contains(e.target)) {
+                desktopSettingsMenu.classList.remove('active');
+            }
+        });
+    }
+
+    // Обработчики для элементов в меню настроек
+    if (desktopThemeToggle) {
+        desktopThemeToggle.addEventListener('click', toggleTheme);
+    }
+
+    if (desktopLanguageToggle) {
+        desktopLanguageToggle.addEventListener('click', toggleLanguage);
+    }
+
+    if (desktopSoundToggle) {
+        desktopSoundToggle.addEventListener('click', toggleSound);
+    }
+
+    if (desktopReset) {
+        desktopReset.addEventListener('click', () => {
+            showConfirmModal('Вы уверены, что хотите сбросить весь прогресс?', resetProgress);
+            desktopSettingsMenu.classList.remove('active');
+        });
     }
 }
 
