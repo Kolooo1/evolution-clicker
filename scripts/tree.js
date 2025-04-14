@@ -995,7 +995,7 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                         <button id="research-upgrade-1" class="research-upgrade-btn">+1</button>
                         <button id="research-upgrade-10" class="research-upgrade-btn">+10</button>
                         <button id="research-upgrade-max" class="research-upgrade-btn">МАКС</button>
-                    ` : '<div class="max-level-notice">Достигнут максимальный уровень</div>'}
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -1112,42 +1112,9 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                     document.removeEventListener('keydown', handleKeyDown);
                 }, 300);
             }
-            
-            // Добавляем клавиатурные сокращения для кнопок апгрейда
-            if (currentLevel < node.maxLevel) {
-                if (e.key === '1' || e.key === 'NumPad1') {
-                    this.handleNodeUpgrade(node, 1);
-                    const updatedInfo = this.showResearchInfo(node);
-                    if (existingModal) existingModal.remove();
-                } else if (e.key === '2' || e.key === 'NumPad2') {
-                    this.handleNodeUpgrade(node, 10);
-                    const updatedInfo = this.showResearchInfo(node);
-                    if (existingModal) existingModal.remove();
-                } else if (e.key === '3' || e.key === 'NumPad3' || e.key === 'm' || e.key === 'M') {
-                    this.handleNodeUpgradeMax(node);
-                    const updatedInfo = this.showResearchInfo(node);
-                    if (existingModal) existingModal.remove();
-                }
-            }
         };
         
         document.addEventListener('keydown', handleKeyDown);
-        
-        // Убедимся, что кнопки видны даже при прокрутке контента
-        const buttonArea = infoModal.querySelector('.research-info-buttons');
-        if (buttonArea) {
-            const container = infoModal.querySelector('.modal-content');
-            const body = infoModal.querySelector('.research-info-body');
-            
-            // Регулируем максимальную высоту тела с учетом кнопок
-            if (body && container) {
-                const containerHeight = container.offsetHeight;
-                const buttonAreaHeight = buttonArea.offsetHeight;
-                const headerHeight = infoModal.querySelector('.research-info-header').offsetHeight;
-                
-                body.style.maxHeight = `calc(${containerHeight}px - ${headerHeight + buttonAreaHeight + 30}px)`;
-            }
-        }
         
         return infoModal;
     }
@@ -1200,6 +1167,43 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
             // Всегда устанавливаем доступность в true, убирая проверку уровня
             const isAvailable = true;
             
+            // Определяем класс тематики подисследования на основе ID или названия
+            let themeClass = '';
+            
+            // Анализируем ID подисследования для определения тематики
+            if (sub.id.includes('quantum')) themeClass = 'quantum';
+            else if (sub.id.includes('fusion') || sub.id.includes('nuclear')) themeClass = 'nuclear';
+            else if (sub.id.includes('fluid') || sub.id.includes('helium')) themeClass = 'physics';
+            else if (sub.id.includes('rna') || sub.id.includes('dna')) themeClass = 'biology';
+            else if (sub.id.includes('computer') || sub.id.includes('tech')) themeClass = 'tech';
+            else if (sub.id.includes('space') || sub.id.includes('solar') || sub.id.includes('star')) themeClass = 'space';
+            else if (sub.id.includes('energy') || sub.id.includes('power')) themeClass = 'energy';
+            else if (sub.id.includes('evolution') || sub.id.includes('species')) themeClass = 'evolution';
+            else if (sub.id.includes('brain') || sub.id.includes('conscious')) themeClass = 'psychology';
+            else if (sub.id.includes('society') || sub.id.includes('social')) themeClass = 'society';
+            
+            // Также проверяем название подисследования
+            if (!themeClass) {
+                const nameLower = sub.name.toLowerCase();
+                if (nameLower.includes('квант')) themeClass = 'quantum';
+                else if (nameLower.includes('синтез') || nameLower.includes('ядер')) themeClass = 'nuclear';
+                else if (nameLower.includes('текуч') || nameLower.includes('физи')) themeClass = 'physics';
+                else if (nameLower.includes('рнк') || nameLower.includes('днк') || nameLower.includes('ген')) themeClass = 'biology';
+                else if (nameLower.includes('компьютер') || nameLower.includes('вычисл')) themeClass = 'tech';
+                else if (nameLower.includes('косм') || nameLower.includes('галакт') || nameLower.includes('звезд')) themeClass = 'space';
+                else if (nameLower.includes('энерг') || nameLower.includes('мощн')) themeClass = 'energy';
+                else if (nameLower.includes('эволюц') || nameLower.includes('вид')) themeClass = 'evolution';
+                else if (nameLower.includes('мозг') || nameLower.includes('созна')) themeClass = 'psychology';
+                else if (nameLower.includes('общест') || nameLower.includes('социа')) themeClass = 'society';
+            }
+            
+            // По умолчанию, если тематика не определена, используем стадию основного исследования
+            if (!themeClass) {
+                if (node.stage === 'cosmos') themeClass = 'cosmos';
+                else if (node.stage === 'life') themeClass = 'biology';
+                else if (node.stage === 'intellect') themeClass = 'tech';
+            }
+            
             // Сокращаем описание, если оно слишком длинное
             const shortDescription = sub.description.length > 150 
                 ? sub.description.substring(0, 150) + '...' 
@@ -1208,7 +1212,7 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
             if (isUnlocked) {
                 // Для разблокированных подисследований показываем информацию о бонусе
                 subresearchItems += `
-                    <div class="subresearch-item unlocked">
+                    <div class="subresearch-item unlocked ${themeClass}">
                         <h4>${sub.name}</h4>
                         <p>${shortDescription}</p>
                         <div class="subresearch-effect">
@@ -1217,13 +1221,13 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                     </div>
                 `;
             } else if (isAvailable) {
-                // Вычисляем, хватает ли очков для разблокировки
+                // Проверяем, может ли игрок позволить себе разблокировать подисследование
                 const canAfford = gameStorage.gameData.points >= sub.cost;
                 const affordClass = canAfford ? 'can-afford' : 'cannot-afford';
                 
                 // Для доступных, но не разблокированных подисследований показываем кнопку разблокировки
                 subresearchItems += `
-                    <div class="subresearch-item available ${affordClass}">
+                    <div class="subresearch-item available ${affordClass} ${themeClass}">
                         <h4>${sub.name}</h4>
                         <p>${shortDescription}</p>
                         <div class="subresearch-cost">
@@ -1236,11 +1240,12 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
                     </div>
                 `;
             } else {
-                // Для недоступных подисследований показываем требуемый уровень (этот блок теперь не будет использоваться)
+                // Для недоступных подисследований показываем заблокированное состояние с условиями разблокировки
                 subresearchItems += `
-                    <div class="subresearch-item locked">
+                    <div class="subresearch-item locked ${themeClass}">
                         <h4>${sub.name}</h4>
-                        <p>Недоступно</p>
+                        <p>${shortDescription}</p>
+                        <div class="subresearch-cost">Стоимость разблокировки: ${sub.cost}</div>
                     </div>
                 `;
             }
