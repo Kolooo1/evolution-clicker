@@ -1962,154 +1962,213 @@ body:not(.dark-theme) .footer-copyright {
 }
 
 .subresearch-item {
-    padding: 18px; /* Увеличиваем внутренние отступы */
-    border-radius: 8px;
-    background: rgba(230, 230, 230, 0.15);
+    margin-bottom: 16px;
+    padding: 18px 18px 18px 60px;
+    border-radius: 12px;  /* Увеличиваем скругление углов */
+    position: relative;
     transition: all 0.3s ease;
+    border-left-width: 3px;  /* Установить стандартную ширину левой границы */
 }
 
-.dark-theme .subresearch-item {
-    background: rgba(50, 50, 80, 0.2);
+.subresearch-item:last-child {
+    margin-bottom: 0;
 }
 
-.subresearch-item h4 {
-    font-size: 15px;
-    margin: 0 0 8px 0;
-    color: #333;
+/* Иконки для разных типов подисследований */
+.subresearch-item[data-type="biology"]::before {
+    content: '🧬';
 }
 
-.dark-theme .subresearch-item h4 {
-    color: #e0e0e0;
+.subresearch-item[data-type="chemistry"]::before {
+    content: '⚗️';
 }
 
-.subresearch-item p {
-    font-size: 14px; /* Увеличиваем размер шрифта для лучшей читаемости */
-    margin: 0 0 12px 0;
-    line-height: 1.5;
-    color: #555;
+.subresearch-item[data-type="physics"]::before {
+    content: '⚛️';
 }
 
-.dark-theme .subresearch-item p {
-    color: #aaa;
+.subresearch-item[data-type="astronomy"]::before {
+    content: '🔭';
 }
 
-.subresearch-item.unlocked {
-    background: rgba(100, 200, 100, 0.15);
-    border-left: 3px solid #4caf50;
+.subresearch-item[data-type="quantum"]::before {
+    content: '🌀';
 }
 
-.dark-theme .subresearch-item.unlocked {
-    background: rgba(50, 150, 50, 0.2);
-    border-left: 3px solid #388e3c;
+.subresearch-item[data-type="energy"]::before {
+    content: '⚡';
 }
 
-.subresearch-item.available {
-    background: rgba(100, 150, 230, 0.15);
-    border-left: 3px solid #2196f3;
+.subresearch-item[data-type="fusion"]::before {
+    content: '🌟';
 }
 
-.dark-theme .subresearch-item.available {
-    background: rgba(50, 100, 180, 0.2);
-    border-left: 3px solid #1976d2;
+.subresearch-item[data-type="nuclear"]::before {
+    content: '☢️';
 }
 
-.subresearch-item.locked {
-    background: rgba(150, 150, 150, 0.15);
-    border-left: 3px solid #9e9e9e;
-    opacity: 0.7;
+.subresearch-item[data-type="robotics"]::before {
+    content: '🤖';
 }
 
-.dark-theme .subresearch-item.locked {
-    background: rgba(80, 80, 80, 0.2);
-    border-left: 3px solid #616161;
+.subresearch-item[data-type="computer"]::before {
+    content: '💻';
 }
 
-.subresearch-effect {
-    font-size: 13px;
-    margin-top: 8px;
-    padding: 6px 10px;
-    background: rgba(100, 200, 100, 0.2);
-    border-radius: 4px;
-    display: inline-block;
+.subresearch-item[data-type="ai"]::before {
+    content: '🧠';
 }
 
-.dark-theme .subresearch-effect {
-    background: rgba(50, 150, 50, 0.25);
+.subresearch-item[data-type="space"]::before {
+    content: '🚀';
 }
 
-.subresearch-bonus {
-    color: #2e7d32;
-    font-weight: 500;
+.subresearch-item[data-type="medicine"]::before {
+    content: '🩺';
 }
 
-.dark-theme .subresearch-bonus {
-    color: #81c784;
+.subresearch-item[data-type="evolution"]::before {
+    content: '🧫';
 }
 
-.subresearch-cost {
-    font-size: 13px;
-    margin-top: 8px;
-    margin-bottom: 10px;
-    color: #555;
+.subresearch-item[data-type="biotech"]::before {
+    content: '🧪';
 }
 
-.dark-theme .subresearch-cost {
-    color: #bbb;
+.subresearch-item[data-type="nanotech"]::before {
+    content: '🔬';
 }
 
-.subresearch-unlock-btn {
-    display: inline-block;
-    padding: 10px 18px;
-    background: #2196f3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.2s ease;
+.subresearch-item[data-type="material"]::before {
+    content: '🧰';
 }
 
-.subresearch-unlock-btn:hover {
-    background: #1976d2;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.subresearch-item[data-type="environment"]::before {
+    content: '🌍';
 }
 
-.dark-theme .subresearch-unlock-btn {
-    background: #1976d2;
+.subresearch-item[data-type="social"]::before {
+    content: '👥';
 }
 
-.dark-theme .subresearch-unlock-btn:hover {
-    background: #1565c0;
+.subresearch-item[data-type="philosophy"]::before {
+    content: '🧘';
 }
 
-@media (max-width: 768px) {
-    .subresearch-list {
-        max-height: 250px;
-    }
-    
-    .subresearch-item {
-        padding: 12px;
-    }
-    
-    .subresearch-item h4 {
-        font-size: 14px;
-    }
-    
-    .subresearch-item p {
-        font-size: 12px;
-    }
+.subresearch-item[data-type="mathematics"]::before {
+    content: '🔢';
 }
 
-@media (max-width: 480px) {
-    .subresearch-list {
-        max-height: 200px;
-    }
-    
-    .subresearch-unlock-btn {
-        width: 100%;
-        padding: 10px;
-    }
+.subresearch-item[data-type="cosmic"]::before {
+    content: '🌌';
+}
+
+.subresearch-item[data-type="time"]::before {
+    content: '⏳';
+}
+
+.subresearch-item[data-type="particle"]::before {
+    content: '✨';
+}
+
+.subresearch-item[data-type="gravity"]::before {
+    content: '🪨';
+}
+
+.subresearch-item[data-type="water"]::before {
+    content: '💧';
+}
+
+.subresearch-item[data-type="fire"]::before {
+    content: '🔥';
+}
+
+.subresearch-item[data-type="earth"]::before {
+    content: '🌱';
+}
+
+.subresearch-item[data-type="air"]::before {
+    content: '💨';
+}
+
+.subresearch-item[data-type="metal"]::before {
+    content: '⚙️';
+}
+
+.subresearch-item[data-type="light"]::before {
+    content: '💡';
+}
+
+/* Декоративная линия для визуального разделения */
+.subresearch-item::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 25px;
+    right: 25px;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, 
+        transparent, 
+        transparent 3px, 
+        rgba(150, 150, 150, 0.2) 3px, 
+        rgba(150, 150, 150, 0.2) 6px);
+    border-radius: 2px;
+    z-index: 1;
+}
+
+.subresearch-item:last-child::after {
+    display: none;
+}
+
+/* Тематические стили для фона в зависимости от типа исследования */
+.subresearch-item[data-type="biology"], 
+.subresearch-item[data-type="evolution"],
+.subresearch-item[data-type="biotech"],
+.subresearch-item[data-type="medicine"] {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.08), transparent);
+}
+
+.subresearch-item[data-type="physics"],
+.subresearch-item[data-type="energy"],
+.subresearch-item[data-type="gravity"] {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.08), transparent);
+}
+
+.subresearch-item[data-type="astronomy"],
+.subresearch-item[data-type="cosmic"],
+.subresearch-item[data-type="space"] {
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.08), transparent);
+}
+
+.subresearch-item[data-type="computer"],
+.subresearch-item[data-type="ai"],
+.subresearch-item[data-type="robotics"] {
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.08), transparent);
+}
+
+.subresearch-item[data-type="nuclear"],
+.subresearch-item[data-type="fusion"],
+.subresearch-item[data-type="quantum"] {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.08), transparent);
+}
+
+/* Темная тема */
+.dark-theme .subresearch-item::after {
+    background: repeating-linear-gradient(90deg, 
+        transparent, 
+        transparent 3px, 
+        rgba(200, 200, 200, 0.15) 3px, 
+        rgba(200, 200, 200, 0.15) 6px);
+}
+
+/* Улучшения для hover-эффекта */
+.subresearch-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dark-theme .subresearch-item:hover {
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
 }
 
 /* Индикатор доступных подисследований */
@@ -2147,7 +2206,253 @@ body:not(.dark-theme) .footer-copyright {
     }
 }
 
-/* Дополнительные стили для подисследований */
+/* Общие стили для подисследований */
+.subresearch-item::before {
+    font-size: 24px;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Увеличиваем z-index для отображения */
+}
+
+/* Приоритеты для типов подисследований - перемещаем ниже и даем более высокий приоритет */
+.subresearch-item[data-type]::before {
+    content: '🔬' !important; /* Базовая иконка по умолчанию */
+}
+
+.subresearch-item[data-type="biology"]::before {
+    content: '🧬' !important;
+}
+
+.subresearch-item[data-type="chemistry"]::before {
+    content: '⚗️' !important;
+}
+
+.subresearch-item[data-type="physics"]::before {
+    content: '⚛️' !important;
+}
+
+.subresearch-item[data-type="astronomy"]::before {
+    content: '🔭' !important;
+}
+
+.subresearch-item[data-type="quantum"]::before {
+    content: '🌀' !important;
+}
+
+.subresearch-item[data-type="energy"]::before {
+    content: '⚡' !important;
+}
+
+.subresearch-item[data-type="fusion"]::before {
+    content: '🌟' !important;
+}
+
+.subresearch-item[data-type="nuclear"]::before {
+    content: '☢️' !important;
+}
+
+.subresearch-item[data-type="robotics"]::before {
+    content: '🤖' !important;
+}
+
+.subresearch-item[data-type="computer"]::before {
+    content: '💻' !important;
+}
+
+.subresearch-item[data-type="ai"]::before {
+    content: '🧠' !important;
+}
+
+.subresearch-item[data-type="space"]::before {
+    content: '🚀' !important;
+}
+
+.subresearch-item[data-type="medicine"]::before {
+    content: '🩺' !important;
+}
+
+.subresearch-item[data-type="evolution"]::before {
+    content: '🧫' !important;
+}
+
+.subresearch-item[data-type="biotech"]::before {
+    content: '🧪' !important;
+}
+
+.subresearch-item[data-type="nanotech"]::before {
+    content: '🔬' !important;
+}
+
+.subresearch-item[data-type="material"]::before {
+    content: '🧰' !important;
+}
+
+.subresearch-item[data-type="environment"]::before {
+    content: '🌍' !important;
+}
+
+.subresearch-item[data-type="social"]::before {
+    content: '👥' !important;
+}
+
+.subresearch-item[data-type="philosophy"]::before {
+    content: '🧘' !important;
+}
+
+.subresearch-item[data-type="mathematics"]::before {
+    content: '🔢' !important;
+}
+
+.subresearch-item[data-type="cosmic"]::before {
+    content: '🌌' !important;
+}
+
+.subresearch-item[data-type="time"]::before {
+    content: '⏳' !important;
+}
+
+.subresearch-item[data-type="particle"]::before {
+    content: '✨' !important;
+}
+
+.subresearch-item[data-type="gravity"]::before {
+    content: '🪨' !important;
+}
+
+.subresearch-item[data-type="water"]::before {
+    content: '💧' !important;
+}
+
+.subresearch-item[data-type="fire"]::before {
+    content: '🔥' !important;
+}
+
+.subresearch-item[data-type="earth"]::before {
+    content: '🌱' !important;
+}
+
+.subresearch-item[data-type="air"]::before {
+    content: '💨' !important;
+}
+
+.subresearch-item[data-type="metal"]::before {
+    content: '⚙️' !important;
+}
+
+.subresearch-item[data-type="light"]::before {
+    content: '💡' !important;
+}
+
+/* Стандартные иконки для состояний подисследований */
+.subresearch-item.unlocked::before {
+    content: '✅';
+    background: rgba(76, 175, 80, 0.2);
+}
+
+.subresearch-item.available::before {
+    content: '🔓';
+    background: rgba(33, 150, 243, 0.2);
+}
+
+.subresearch-item.locked::before {
+    content: '🔒';
+    background: rgba(158, 158, 158, 0.2);
+}
+
+.subresearch-item.available.can-afford::before {
+    content: '💰';
+    background: rgba(255, 193, 7, 0.2);
+}
+
+.subresearch-item.available.cannot-afford::before {
+    content: '⏳';
+    background: rgba(233, 30, 99, 0.15);
+}
+
+/* Улучшения для иконок подисследований на темной теме */
+.dark-theme .subresearch-item::before {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .subresearch-item.unlocked::before {
+    background: rgba(76, 175, 80, 0.15);
+}
+
+.dark-theme .subresearch-item.available::before {
+    background: rgba(33, 150, 243, 0.15);
+}
+
+.dark-theme .subresearch-item.locked::before {
+    background: rgba(158, 158, 158, 0.15);
+}
+
+.dark-theme .subresearch-item.available.can-afford::before {
+    background: rgba(255, 193, 7, 0.15);
+}
+
+.dark-theme .subresearch-item.available.cannot-afford::before {
+    background: rgba(233, 30, 99, 0.1);
+}
+
+/* Улучшенный дизайн полосы прокрутки */
+.research-info-body::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.research-info-body::-webkit-scrollbar-thumb {
+    background-color: var(--button-bg);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.research-info-body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--button-hover);
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.research-info-body::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.subresearch-list::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.subresearch-list::-webkit-scrollbar-thumb {
+    background-color: var(--button-bg);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.subresearch-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--button-hover);
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.subresearch-list::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+/* Стилизация счетчика подисследований */
 .subresearch-counter {
     font-size: 0.85rem;
     color: #7a7a7a;
@@ -2190,6 +2495,141 @@ body:not(.dark-theme) .footer-copyright {
     font-size: 1rem;
 }
 
+/* Стилизация внутренних элементов подисследований */
+.dark-theme .subresearch-item {
+    background: rgba(50, 50, 80, 0.2);
+}
+
+.subresearch-item h4 {
+    font-size: 15px;
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.dark-theme .subresearch-item h4 {
+    color: #e0e0e0;
+}
+
+.subresearch-item p {
+    font-size: 14px;
+    margin: 0 0 12px 0;
+    line-height: 1.5;
+    color: #555;
+}
+
+.dark-theme .subresearch-item p {
+    color: #aaa;
+}
+
+/* Состояния подисследований */
+.subresearch-item.unlocked {
+    background: rgba(100, 200, 100, 0.15);
+    border-left: 3px solid #4caf50;
+}
+
+.dark-theme .subresearch-item.unlocked {
+    background: rgba(50, 150, 50, 0.2);
+    border-left: 3px solid #388e3c;
+}
+
+.subresearch-item.available {
+    background: rgba(100, 150, 230, 0.15);
+    border-left: 3px solid #2196f3;
+}
+
+.dark-theme .subresearch-item.available {
+    background: rgba(50, 100, 180, 0.2);
+    border-left: 3px solid #1976d2;
+}
+
+.subresearch-item.locked {
+    background: rgba(150, 150, 150, 0.15);
+    border-left: 3px solid #9e9e9e;
+    opacity: 0.7;
+}
+
+.dark-theme .subresearch-item.locked {
+    background: rgba(80, 80, 80, 0.2);
+    border-left: 3px solid #616161;
+}
+
+/* Эффекты и бонусы подисследований */
+.subresearch-effect {
+    font-size: 13px;
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: rgba(100, 200, 100, 0.2);
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.dark-theme .subresearch-effect {
+    background: rgba(50, 150, 50, 0.25);
+}
+
+.subresearch-bonus {
+    color: #2e7d32;
+    font-weight: 500;
+}
+
+.dark-theme .subresearch-bonus {
+    color: #81c784;
+}
+
+/* Стоимость подисследования */
+.subresearch-cost {
+    font-size: 13px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.subresearch-cost::before {
+    content: '💎';
+    margin-right: 5px;
+    font-size: 16px;
+}
+
+.dark-theme .subresearch-cost {
+    color: #bbb;
+}
+
+/* Кнопка разблокировки */
+.subresearch-unlock-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.subresearch-unlock-btn:hover {
+    background: #1976d2;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.subresearch-unlock-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .subresearch-unlock-btn {
+    background: #1976d2;
+}
+
+.dark-theme .subresearch-unlock-btn:hover {
+    background: #1565c0;
+}
+
+/* Состояния кнопки в зависимости от того, может ли игрок позволить себе исследование */
 .subresearch-item.can-afford .subresearch-unlock-btn {
     background: #2196f3;
 }
@@ -2208,8 +2648,42 @@ body:not(.dark-theme) .footer-copyright {
     color: #ef9a9a;
 }
 
-/* Улучшения для мобильных */
+/* Респонсивность для мобильных устройств */
+@media (max-width: 768px) {
+    .subresearch-list {
+        max-height: 250px;
+    }
+    
+    .subresearch-item {
+        padding: 12px 12px 12px 50px;
+    }
+    
+    .subresearch-item::before {
+        left: 12px;
+        width: 28px;
+        height: 28px;
+        font-size: 20px;
+    }
+    
+    .subresearch-item h4 {
+        font-size: 14px;
+    }
+    
+    .subresearch-item p {
+        font-size: 12px;
+    }
+}
+
 @media (max-width: 480px) {
+    .subresearch-list {
+        max-height: 200px;
+    }
+    
+    .subresearch-unlock-btn {
+        width: 100%;
+        padding: 10px;
+    }
+    
     .subresearch-summary {
         flex-direction: column;
         gap: 5px;
