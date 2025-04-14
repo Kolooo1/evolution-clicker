@@ -1962,12 +1962,198 @@ body:not(.dark-theme) .footer-copyright {
 }
 
 .subresearch-item {
-    padding: 18px; /* Увеличиваем внутренние отступы */
+    padding: 18px 18px 18px 60px; /* Добавляем отступ слева для иконки */
     border-radius: 8px;
     background: rgba(230, 230, 230, 0.15);
     transition: all 0.3s ease;
+    position: relative; /* Для позиционирования иконки */
 }
 
+.subresearch-item::before {
+    content: '🔬';
+    font-size: 24px;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.subresearch-item.unlocked::before {
+    content: '✅';
+    background: rgba(76, 175, 80, 0.2);
+}
+
+.subresearch-item.available::before {
+    content: '🔓';
+    background: rgba(33, 150, 243, 0.2);
+}
+
+.subresearch-item.locked::before {
+    content: '🔒';
+    background: rgba(158, 158, 158, 0.2);
+}
+
+.subresearch-item.available.can-afford::before {
+    content: '💰';
+    background: rgba(255, 193, 7, 0.2);
+}
+
+.subresearch-item.available.cannot-afford::before {
+    content: '⏳';
+    background: rgba(233, 30, 99, 0.15);
+}
+
+/* Улучшения для иконок подисследований на темной теме */
+.dark-theme .subresearch-item::before {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .subresearch-item.unlocked::before {
+    background: rgba(76, 175, 80, 0.15);
+}
+
+.dark-theme .subresearch-item.available::before {
+    background: rgba(33, 150, 243, 0.15);
+}
+
+.dark-theme .subresearch-item.locked::before {
+    background: rgba(158, 158, 158, 0.15);
+}
+
+.dark-theme .subresearch-item.available.can-afford::before {
+    background: rgba(255, 193, 7, 0.15);
+}
+
+.dark-theme .subresearch-item.available.cannot-afford::before {
+    background: rgba(233, 30, 99, 0.1);
+}
+
+/* Улучшенный дизайн полосы прокрутки */
+.research-info-body::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.research-info-body::-webkit-scrollbar-thumb {
+    background-color: var(--button-bg);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.research-info-body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--button-hover);
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.research-info-body::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.subresearch-list::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.subresearch-list::-webkit-scrollbar-thumb {
+    background-color: var(--button-bg);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.subresearch-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--button-hover);
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.subresearch-list::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+/* Дополнительные стили для подисследований */
+.subresearch-counter {
+    font-size: 0.85rem;
+    color: #7a7a7a;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.dark-theme .subresearch-counter {
+    color: #aaa;
+}
+
+.subresearch-summary {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.unlocked-count {
+    color: #388e3c;
+    display: flex;
+    align-items: center;
+}
+
+.unlocked-count::before {
+    content: '✅';
+    margin-right: 5px;
+    font-size: 1rem;
+}
+
+.available-count {
+    color: #1976d2;
+    display: flex;
+    align-items: center;
+}
+
+.available-count::before {
+    content: '🔓';
+    margin-right: 5px;
+    font-size: 1rem;
+}
+
+.subresearch-item.can-afford .subresearch-unlock-btn {
+    background: #2196f3;
+}
+
+.subresearch-item.cannot-afford .subresearch-unlock-btn {
+    background: #90a4ae;
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.subresearch-item.cannot-afford .subresearch-cost {
+    color: #e57373;
+}
+
+.dark-theme .subresearch-item.cannot-afford .subresearch-cost {
+    color: #ef9a9a;
+}
+
+/* Улучшения для мобильных */
+@media (max-width: 480px) {
+    .subresearch-summary {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+/* Восстановление и улучшение стилей для подисследований */
 .dark-theme .subresearch-item {
     background: rgba(50, 50, 80, 0.2);
 }
@@ -2051,6 +2237,14 @@ body:not(.dark-theme) .footer-copyright {
     margin-top: 8px;
     margin-bottom: 10px;
     color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.subresearch-cost::before {
+    content: '💎';
+    margin-right: 5px;
+    font-size: 16px;
 }
 
 .dark-theme .subresearch-cost {
@@ -2063,16 +2257,22 @@ body:not(.dark-theme) .footer-copyright {
     background: #2196f3;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 20px;
     cursor: pointer;
     font-size: 15px;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .subresearch-unlock-btn:hover {
     background: #1976d2;
     transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.subresearch-unlock-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .dark-theme .subresearch-unlock-btn {
@@ -2089,7 +2289,14 @@ body:not(.dark-theme) .footer-copyright {
     }
     
     .subresearch-item {
-        padding: 12px;
+        padding: 12px 12px 12px 50px;
+    }
+    
+    .subresearch-item::before {
+        left: 12px;
+        width: 28px;
+        height: 28px;
+        font-size: 20px;
     }
     
     .subresearch-item h4 {
@@ -2144,74 +2351,5 @@ body:not(.dark-theme) .footer-copyright {
     100% {
         transform: scale(1);
         opacity: 0.7;
-    }
-}
-
-/* Дополнительные стили для подисследований */
-.subresearch-counter {
-    font-size: 0.85rem;
-    color: #7a7a7a;
-    font-weight: normal;
-    margin-left: 5px;
-}
-
-.dark-theme .subresearch-counter {
-    color: #aaa;
-}
-
-.subresearch-summary {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-.unlocked-count {
-    color: #388e3c;
-    display: flex;
-    align-items: center;
-}
-
-.unlocked-count::before {
-    content: '✅';
-    margin-right: 5px;
-    font-size: 1rem;
-}
-
-.available-count {
-    color: #1976d2;
-    display: flex;
-    align-items: center;
-}
-
-.available-count::before {
-    content: '🔓';
-    margin-right: 5px;
-    font-size: 1rem;
-}
-
-.subresearch-item.can-afford .subresearch-unlock-btn {
-    background: #2196f3;
-}
-
-.subresearch-item.cannot-afford .subresearch-unlock-btn {
-    background: #90a4ae;
-    opacity: 0.8;
-    cursor: not-allowed;
-}
-
-.subresearch-item.cannot-afford .subresearch-cost {
-    color: #e57373;
-}
-
-.dark-theme .subresearch-item.cannot-afford .subresearch-cost {
-    color: #ef9a9a;
-}
-
-/* Улучшения для мобильных */
-@media (max-width: 480px) {
-    .subresearch-summary {
-        flex-direction: column;
-        gap: 5px;
     }
 } 
