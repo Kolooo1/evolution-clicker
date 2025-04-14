@@ -1801,8 +1801,8 @@ const RESEARCH_TREE = [
         baseCost: 10,
         costMultiplier: 1.3,
         maxLevel: 10,
-        effect: { type: "click", value: 2.5 },
-        effectPerLevel: 1.5,
+        effect: { type: "click", value: 5.0 },
+        effectPerLevel: 3.0,
         x: 50, 
         y: 5,
         stage: "cosmos",
@@ -1847,7 +1847,7 @@ const RESEARCH_TREE = [
         costMultiplier: 1.3,
         maxLevel: 40,
         effect: { type: "passive", value: 2.0 },
-        effectPerLevel: 1.5,
+        effectPerLevel: 3.0,
         x: 30,
         y: 25,
         stage: "cosmos",
@@ -3119,8 +3119,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 90000,
         multiplier: 20,
-        reasonText: "за культурную ценность",
-        requiresLevel: 25
+        reasonText: "за культурную ценность"
     },
     {
         id: "renaissance_humanism",
@@ -3129,8 +3128,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 95000,
         multiplier: 25,
-        reasonText: "за философский прогресс",
-        requiresLevel: 20
+        reasonText: "за философский прогресс"
     },
     {
         id: "renaissance_printing",
@@ -3139,8 +3137,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 110000,
         multiplier: 35,
-        reasonText: "за информационную революцию",
-        requiresLevel: 15
+        reasonText: "за информационную революцию"
     },
     {
         id: "renaissance_architecture",
@@ -3149,8 +3146,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 100000,
         multiplier: 28,
-        reasonText: "за архитектурную гармонию",
-        requiresLevel: 20
+        reasonText: "за архитектурную гармонию"
     },
     {
         id: "renaissance_astronomy",
@@ -3159,8 +3155,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 115000,
         multiplier: 40,
-        reasonText: "за космологический переворот",
-        requiresLevel: 30
+        reasonText: "за космологический переворот"
     },
     {
         id: "renaissance_banking",
@@ -3169,8 +3164,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 98000,
         multiplier: 27,
-        reasonText: "за финансовые инновации",
-        requiresLevel: 18
+        reasonText: "за финансовые инновации"
     },
     {
         id: "renaissance_exploration",
@@ -3179,8 +3173,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 112000,
         multiplier: 36,
-        reasonText: "за исследование мира",
-        requiresLevel: 25
+        reasonText: "за исследование мира"
     },
     {
         id: "renaissance_mathematics",
@@ -3189,8 +3182,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 107000,
         multiplier: 33,
-        reasonText: "за математический прогресс",
-        requiresLevel: 28
+        reasonText: "за математический прогресс"
     },
     {
         id: "renaissance_music",
@@ -3199,8 +3191,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 97000,
         multiplier: 26,
-        reasonText: "за музыкальную гармонию",
-        requiresLevel: 19
+        reasonText: "за музыкальную гармонию"
     },
     {
         id: "renaissance_diplomacy",
@@ -3209,8 +3200,7 @@ const RESEARCH_TREE = [
         parentId: "renaissance",
         cost: 93000,
         multiplier: 23,
-        reasonText: "за международную политику",
-        requiresLevel: 16
+        reasonText: "за международную политику"
     },
     {
         id: "industrial_steam",
