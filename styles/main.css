@@ -3336,105 +3336,103 @@ body:not(.dark-theme) .footer-copyright {
     }
 }
 
-/* Кнопка настроек для ПК */
-.settings-toggle {
+/* Кнопка настроек */
+.settings-button {
     background: none;
     border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s;
-    color: var(--text-color);
+    transition: all 0.3s ease;
 }
 
-.settings-toggle svg {
-    width: 20px;
-    height: 20px;
-    transition: transform 0.3s;
+.settings-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
 }
 
-.settings-toggle:hover {
+.dark-theme .settings-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.settings-toggle:hover svg {
-    transform: rotate(30deg);
-}
-
-/* ПК меню настроек */
+/* Меню настроек для ПК */
 .desktop-settings-menu {
     position: absolute;
-    top: 50px;
+    top: 55px;
     right: 10px;
     background-color: var(--panel-bg);
     border-radius: 8px;
-    width: 250px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    min-width: 220px;
     z-index: 1000;
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-    transition: all 0.3s;
-}
-
-.desktop-settings-menu.active {
+    overflow: hidden;
+    transition: all 0.3s ease;
     opacity: 1;
     transform: translateY(0);
-    pointer-events: auto;
 }
 
 .desktop-settings-menu.hidden {
     display: none;
     opacity: 0;
     transform: translateY(-10px);
-    pointer-events: none;
 }
 
-.settings-menu-content {
+.desktop-menu-content {
     padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
 }
 
-.settings-menu-item {
+.desktop-menu-item {
     display: flex;
     align-items: center;
-    padding: 10px;
+    width: 100%;
+    padding: 12px 15px;
     border: none;
     background: none;
-    cursor: pointer;
-    border-radius: 5px;
-    color: var(--text-color);
-    transition: background-color 0.2s;
-    gap: 10px;
     text-align: left;
+    cursor: pointer;
+    color: var(--text-color);
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.2s;
 }
 
-.settings-menu-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+.desktop-menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
-.dark-theme .settings-menu-item:hover {
+.dark-theme .desktop-menu-item:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-.settings-icon {
+.desktop-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    margin-right: 15px;
 }
 
-/* Адаптация для мобильных устройств */
+.desktop-icon svg {
+    stroke: var(--text-color);
+    stroke-width: 2;
+}
+
+.desktop-item-text {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Медиа-запрос для скрытия кнопок настроек на мобильных устройствах */
 @media (max-width: 768px) {
-    .settings-toggle {
+    .settings-button {
+        display: none;
+    }
+    
+    .desktop-settings-menu {
         display: none;
     }
 }

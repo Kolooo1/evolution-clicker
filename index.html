@@ -25,45 +25,44 @@
             <span class="burger-line"></span>
             <span class="burger-line"></span>
         </button>
-        <div class="header-controls">
+            <div class="header-controls">
             <button id="achievements-button" class="achievements-button" title="Достижения">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
             </button>
-            <button id="settings-toggle" class="settings-toggle" title="Настройки">
+            <button id="settings-button" class="settings-button" title="Настройки">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
             </button>
         </div>
         
-        <!-- ПК меню настроек -->
+        <!-- Меню настроек для ПК -->
         <div id="desktop-settings-menu" class="desktop-settings-menu hidden">
-            <div class="settings-menu-content">
-                <button id="desktop-theme-toggle" class="settings-menu-item">
-                    <span class="settings-icon">
+            <div class="desktop-menu-content">
+                <button id="desktop-theme-toggle" class="desktop-menu-item">
+                    <span class="desktop-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                     </span>
-                    <span>Сменить тему</span>
+                    <span class="desktop-item-text">Сменить тему</span>
                 </button>
-                <button id="desktop-language-toggle" class="settings-menu-item">
-                    <span class="settings-icon">
+                <button id="desktop-language-toggle" class="desktop-menu-item">
+                    <span class="desktop-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
                     </span>
-                    <span>Сменить язык (RU)</span>
+                    <span class="desktop-item-text">Сменить язык (RU)</span>
                 </button>
-                <button id="desktop-sound-toggle" class="settings-menu-item">
-                    <span class="settings-icon">
+                <button id="desktop-sound-toggle" class="desktop-menu-item">
+                    <span class="desktop-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
                     </span>
-                    <span>Звук</span>
+                    <span class="desktop-item-text">Звук</span>
                 </button>
-                <button id="desktop-reset" class="settings-menu-item">
-                    <span class="settings-icon">
+                <button id="desktop-reset" class="desktop-menu-item">
+                    <span class="desktop-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"></path></svg>
                     </span>
-                    <span>Сбросить прогресс</span>
+                    <span class="desktop-item-text">Сбросить прогресс</span>
                 </button>
             </div>
         </div>
-        
         <!-- Мобильное меню -->
         <div id="mobile-menu" class="mobile-menu hidden">
             <div class="mobile-menu-content">

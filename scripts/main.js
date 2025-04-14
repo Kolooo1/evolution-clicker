@@ -18,6 +18,12 @@ const languageToggle = document.getElementById('language-toggle');
 const themeToggle = document.getElementById('theme-toggle');
 const soundToggle = document.getElementById('sound-toggle');
 const resetButton = document.getElementById('reset-button');
+const settingsButton = document.getElementById('settings-button');
+const desktopSettingsMenu = document.getElementById('desktop-settings-menu');
+const desktopThemeToggle = document.getElementById('desktop-theme-toggle');
+const desktopLanguageToggle = document.getElementById('desktop-language-toggle');
+const desktopSoundToggle = document.getElementById('desktop-sound-toggle');
+const desktopReset = document.getElementById('desktop-reset');
 const notification = document.getElementById('notification');
 const notificationMessage = document.getElementById('notification-message');
 const confirmModal = document.getElementById('confirm-modal');
@@ -78,14 +84,6 @@ offlineProgressModal.innerHTML = `
 document.body.appendChild(offlineProgressModal);
 const collectOfflineButton = document.getElementById('collect-offline-progress');
 const offlinePointsAmount = document.getElementById('offline-points-amount');
-
-// Получаем элементы для ПК настроек
-const settingsToggle = document.getElementById('settings-toggle');
-const desktopSettingsMenu = document.getElementById('desktop-settings-menu');
-const desktopThemeToggle = document.getElementById('desktop-theme-toggle');
-const desktopLanguageToggle = document.getElementById('desktop-language-toggle');
-const desktopSoundToggle = document.getElementById('desktop-sound-toggle');
-const desktopReset = document.getElementById('desktop-reset');
 
 /**
  * Инициализация игры
@@ -252,17 +250,62 @@ function setupEventListeners() {
     // Обработчик клика по основной кнопке
     mainButton.addEventListener('click', handleMainButtonClick);
     
-    // Обработчик переключения языка
-    languageToggle.addEventListener('click', handleLanguageToggle);
+    // Обработчик переключения языка (для обратной совместимости)
+    if (languageToggle) {
+        languageToggle.addEventListener('click', handleLanguageToggle);
+    }
     
-    // Обработчик переключения темы
-    themeToggle.addEventListener('click', handleThemeToggle);
+    // Обработчик переключения темы (для обратной совместимости)
+    if (themeToggle) {
+        themeToggle.addEventListener('click', handleThemeToggle);
+    }
     
-    // Обработчик включения/выключения звука
-    soundToggle.addEventListener('click', handleSoundToggle);
+    // Обработчик включения/выключения звука (для обратной совместимости)
+    if (soundToggle) {
+        soundToggle.addEventListener('click', handleSoundToggle);
+    }
     
-    // Обработчик кнопки сброса прогресса
-    resetButton.addEventListener('click', showResetConfirmation);
+    // Обработчик кнопки сброса прогресса (для обратной совместимости)
+    if (resetButton) {
+        resetButton.addEventListener('click', showResetConfirmation);
+    }
+    
+    // Обработчик кнопки достижений
+    document.getElementById('achievements-button').addEventListener('click', () => {
+        document.getElementById('achievements-modal').classList.remove('hidden');
+    });
+    
+    // Обработчик кнопки настроек для ПК
+    settingsButton.addEventListener('click', toggleDesktopSettingsMenu);
+    
+    // Обработчики кнопок в меню настроек для ПК
+    desktopThemeToggle.addEventListener('click', () => {
+        handleThemeToggle();
+        closeDesktopSettingsMenu();
+    });
+    
+    desktopLanguageToggle.addEventListener('click', () => {
+        handleLanguageToggle();
+        closeDesktopSettingsMenu();
+    });
+    
+    desktopSoundToggle.addEventListener('click', () => {
+        handleSoundToggle();
+        closeDesktopSettingsMenu();
+    });
+    
+    desktopReset.addEventListener('click', () => {
+        showResetConfirmation();
+        closeDesktopSettingsMenu();
+    });
+    
+    // Закрытие меню настроек при клике вне его
+    document.addEventListener('click', (e) => {
+        if (!desktopSettingsMenu.contains(e.target) && !settingsButton.contains(e.target) && 
+            !desktopSettingsMenu.classList.contains('hidden')) {
+            closeDesktopSettingsMenu();
+        }
+    });
     
     // Обработчики кнопок подтверждения сброса
     confirmYes.addEventListener('click', handleResetConfirm);
@@ -298,43 +341,6 @@ function setupEventListeners() {
     // Добавляем обработчик для мобильной кнопки если она существует
     if (mobileMainButton) {
         mobileMainButton.addEventListener('click', handleMainButtonClick);
-    }
-
-    // Добавляем обработчики событий для ПК настроек
-    if (settingsToggle) {
-        settingsToggle.addEventListener('click', () => {
-            desktopSettingsMenu.classList.remove('hidden');
-            desktopSettingsMenu.classList.add('active');
-        });
-
-        // Закрываем меню при клике вне его
-        document.addEventListener('click', (e) => {
-            if (!settingsToggle.contains(e.target) && !desktopSettingsMenu.contains(e.target)) {
-                desktopSettingsMenu.classList.remove('active');
-                desktopSettingsMenu.classList.add('hidden');
-            }
-        });
-    }
-
-    // Обработчики для элементов в меню настроек
-    if (desktopThemeToggle) {
-        desktopThemeToggle.addEventListener('click', toggleTheme);
-    }
-
-    if (desktopLanguageToggle) {
-        desktopLanguageToggle.addEventListener('click', toggleLanguage);
-    }
-
-    if (desktopSoundToggle) {
-        desktopSoundToggle.addEventListener('click', toggleSound);
-    }
-
-    if (desktopReset) {
-        desktopReset.addEventListener('click', () => {
-            showConfirmModal('Вы уверены, что хотите сбросить весь прогресс?', resetProgress);
-            desktopSettingsMenu.classList.remove('active');
-            desktopSettingsMenu.classList.add('hidden');
-        });
     }
 }
 
@@ -978,6 +984,24 @@ function checkOfflineProgress() {
             collectOfflineButton.onclick = null;
         };
     }
+}
+
+/**
+ * Переключение видимости меню настроек для ПК
+ */
+function toggleDesktopSettingsMenu() {
+    if (desktopSettingsMenu.classList.contains('hidden')) {
+        desktopSettingsMenu.classList.remove('hidden');
+    } else {
+        closeDesktopSettingsMenu();
+    }
+}
+
+/**
+ * Закрытие меню настроек для ПК
+ */
+function closeDesktopSettingsMenu() {
+    desktopSettingsMenu.classList.add('hidden');
 }
 
 // Инициализация игры при полной загрузке DOM
