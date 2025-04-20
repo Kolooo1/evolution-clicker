@@ -681,15 +681,23 @@ function animateValue(element) {
  * Пересчитывает значения игры на основе исследований и достижений
  */
 function updateGameValues() {
-    // Базовое значение силы клика
-    let baseClickPower = 1.0;
+    // Экспоненциальный рост дохода от клика для поздних этапов
+    const totalResearch = Object.keys(gameStorage.gameData.research).length;
+    const totalLevels = Object.values(gameStorage.gameData.research).reduce((sum, level) => sum + level, 0);
+    
+    // Изменяем формулу экспоненциального фактора для более плавного роста в начале
+    const earlyGameDamping = Math.min(1, totalLevels / 15); // Увеличено время выхода на полную мощность
+    const exponentialFactor = 1 + (Math.pow(1.25, Math.min(100, totalResearch / 3 + totalLevels / 15)) - 1) * earlyGameDamping;
+    
+    // Сильно уменьшаем базовое значение силы клика
+    let baseClickPower = 0.1;
     
     // Базовое значение пассивного дохода
     let basePassiveIncome = 0;
     
     // Сбрасываем множители до 1
-    let clickMultiplier = gameStorage.gameData.clickMultiplier;
-    let passiveMultiplier = gameStorage.gameData.passiveMultiplier;
+    let clickMultiplier = gameStorage.gameData.clickMultiplier || 1;
+    let passiveMultiplier = gameStorage.gameData.passiveMultiplier || 1;
     
     // Проходим по всем исследованиям
     for (const researchId in gameStorage.gameData.research) {
@@ -702,38 +710,51 @@ function updateGameValues() {
             const research = RESEARCH_TREE.find(item => item.id === researchId);
             if (!research) continue;
             
-            // Рассчитываем эффект исследования
-            const effectValue = research.effect.value + (research.effectPerLevel * (level - 1));
+            // Рассчитываем эффект исследования с прогрессивным ростом
+            const baseEffect = research.effect.value * 0.3; // Ещё сильнее уменьшаем базовый эффект
+            const levelBonus = research.effectPerLevel * (level - 1) * 0.4; // Уменьшаем бонус за уровень
             
-            // Применяем эффект в зависимости от типа
+            // Прогрессивный рост становится заметнее с каждым уровнем
+            const progressiveBonus = Math.pow(1.08, Math.max(0, level - 3)); // Уменьшен множитель и начало роста с 3-го уровня
+            const effectValue = (baseEffect + levelBonus) * progressiveBonus;
+            
+            // Применяем эффект в зависимости от типа с учетом прогресса игры
             switch (research.effect.type) {
                 case "click":
-                    baseClickPower += effectValue * 1;
+                    // Более плавный рост силы клика
+                    const clickScaling = Math.min(1, level / 8); // Увеличено время достижения максимума
+                    baseClickPower += effectValue * (0.8 + clickScaling); // Уменьшен базовый множитель
                     break;
                     
                 case "passive":
-                    basePassiveIncome += effectValue;
+                    // Пассивный доход теперь растёт быстрее в начале
+                    const passiveScaling = Math.min(1, level / 4);
+                    basePassiveIncome += effectValue * (1.2 + passiveScaling); // Увеличен базовый множитель
                     break;
                     
                 case "multiplier":
-                    // Увеличиваем оба множителя
-                    const multiplierValue = effectValue * level;
+                    // Множители растут медленнее в начале
+                    const multiplierScaling = Math.min(1, totalLevels / 20); // Увеличено время роста
+                    const multiplierValue = effectValue * level * Math.pow(1.12, level - 1) * multiplierScaling;
                     clickMultiplier += multiplierValue;
-                    passiveMultiplier += multiplierValue;
+                    passiveMultiplier += multiplierValue * 1.2; // Пассивный множитель растёт быстрее
                     break;
             }
         }
     }
     
-    // Добавляем множители от подисследований, если они есть
+    // Добавляем множители от подисследований с увеличенным эффектом
     if (gameStorage.gameData.subresearchMultiplier) {
-        clickMultiplier += gameStorage.gameData.subresearchMultiplier;
-        passiveMultiplier += gameStorage.gameData.subresearchMultiplier;
+        const subresearchScaling = Math.min(1, totalLevels / 25);
+        const subresearchBonus = gameStorage.gameData.subresearchMultiplier * (1 + subresearchScaling);
+        clickMultiplier += subresearchBonus;
+        passiveMultiplier += subresearchBonus * 1.1; // Больший бонус для пассивного дохода
     }
     
-    // Применяем множители с дополнительным бонусным коэффициентом
-    gameStorage.gameData.clickPower = baseClickPower * clickMultiplier * 200
-    gameStorage.gameData.passiveIncome = basePassiveIncome * passiveMultiplier
+    // Применяем множители с учетом прогресса игры
+    const lateGameScaling = Math.min(1, totalLevels / 30); // Увеличено время до поздней игры
+    gameStorage.gameData.clickPower = baseClickPower * (1 + clickMultiplier * 3 * (1 + lateGameScaling * 2)) * exponentialFactor;
+    gameStorage.gameData.passiveIncome = basePassiveIncome * (1 + passiveMultiplier * 2 * (1 + lateGameScaling * 2)) * exponentialFactor;
     
     // Округляем значения до 2 знаков после запятой для лучшего отображения
     gameStorage.gameData.clickPower = Math.round(gameStorage.gameData.clickPower * 100) / 100;

@@ -626,12 +626,16 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
      * @returns {number} - Стоимость улучшения
      */
     calculateCost(node, currentLevel) {
-        if (currentLevel >= node.maxLevel) {
-            return Infinity; // Узел уже на максимальном уровне
-        }
+        // Более агрессивный рост стоимости для высоких уровней
+        // Вместо простого возведения в степень добавляем дополнительный квадратичный фактор
+        const base = node.baseCost;
+        const multiplier = node.costMultiplier;
+        const levelFactor = currentLevel >= 10 ? 1 + (currentLevel - 9) / 10 : 1;
         
-        // Базовая стоимость для первого уровня или увеличенная для последующих
-        return Math.floor(node.baseCost * Math.pow(node.costMultiplier, currentLevel));
+        // Если это 20+ уровень, еще больше ускоряем рост
+        const highLevelFactor = currentLevel >= 20 ? 1 + (currentLevel - 19) / 5 : 1;
+        
+        return Math.floor(base * Math.pow(multiplier, currentLevel) * levelFactor * highLevelFactor);
     }
     
     /**
@@ -1327,7 +1331,14 @@ ${currentLevel > 0 ? 'Текущий уровень: ' + currentLevel : 'Не и
      */
     calculateEffect(node, level) {
         if (level <= 0) return 0;
-        return node.effect.value + node.effectPerLevel * (level - 1);
+        
+        // Геометрический рост эффекта вместо линейного
+        // Используем формулу: базовое_значение * (1 + множитель/100)^(уровень-1)
+        // где множитель - это процент увеличения с каждым уровнем
+        const baseValue = node.effect.value;
+        const growthMultiplier = node.effectPerLevel / baseValue / 10; // Коэффициент роста
+        
+        return baseValue * Math.pow(1 + growthMultiplier, level - 1);
     }
     
     /**

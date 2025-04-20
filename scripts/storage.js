@@ -33,7 +33,7 @@ class GameStorage {
             sessionStartTime: Date.now(), // Время начала первого сеанса
             options: {
                 soundEnabled: true, // Включен ли звук
-                theme: 'light' // Тема (светлая/темная)
+                theme: 'dark' // Тема (светлая/темная)
             }
         };
         
